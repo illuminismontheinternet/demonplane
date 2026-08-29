@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgyc3wmaqpve4"]
+
+[ext_resource type="Material" uid="uid://csm4vm8sryr0y" path="res://mat/light_box.tres" id="1_57rs8"]
+[ext_resource type="Script" uid="uid://fevmes5bqppv" path="res://scenes/lightbox_dynamic.gd" id="2_wsqgc"]
+
+[node name="lightbox3" type="CSGBox3D"]
+size = Vector3(0.5, 0.1, 0.5)
+material = ExtResource("1_57rs8")
+script = ExtResource("2_wsqgc")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.21711016, 0)
+light_temperature = 2200.0
+shadow_enabled = true
+spot_angle_attenuation = 5.4641585

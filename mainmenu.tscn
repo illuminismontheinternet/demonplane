@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://da0oeauvub05s"]
+
+[ext_resource type="Script" uid="uid://cglxa0pw52sig" path="res://mainmenu.gd" id="1_d2nv2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cmhrf"]
+font_size = 90
+font_color = Color(0.8694111, 0.5770215, 0.57200843, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Mainmenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d2nv2")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -415.0
+offset_top = -4.0
+offset_right = -110.0
+offset_bottom = 110.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "START"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "OPTIONS
+"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "QUIT
+"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -539.0
+offset_top = -197.0
+offset_right = 70.0
+offset_bottom = 119.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DEMON PLANE"
+label_settings = SubResource("LabelSettings_cmhrf")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]

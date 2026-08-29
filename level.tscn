@@ -1,0 +1,180 @@
+[gd_scene load_steps=13 format=3 uid="uid://bhcfqsa0van8b"]
+
+[ext_resource type="Shader" uid="uid://ck40qndldugld" path="res://sky_bor.gdshader" id="1_u52ul"]
+[ext_resource type="PackedScene" uid="uid://bcaabpotsubyv" path="res://player.tscn" id="2_vonw3"]
+[ext_resource type="Material" uid="uid://csm4vm8sryr0y" path="res://mat/light_box.tres" id="3_oi3di"]
+[ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_0b4ue"]
+
+[sub_resource type="Gradient" id="Gradient_u52ul"]
+offsets = PackedFloat32Array(0, 0.31364277, 0.62728554, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.38695168, 0.0012866312, 0.5946897, 1, 1.2513996e-06, 0.5406728, 0.39288568, 1, 0.38465282, 0.9999997, 0.850049, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vonw3"]
+gradient = SubResource("Gradient_u52ul")
+
+[sub_resource type="Gradient" id="Gradient_oi3di"]
+offsets = PackedFloat32Array(0, 0.17721519, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.17721519, 0.17721519, 0.17721519, 1, 0.60795295, 0.55437976, 0.460842, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0b4ue"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f2txt"]
+noise = SubResource("FastNoiseLite_0b4ue")
+color_ramp = SubResource("Gradient_oi3di")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vonw3"]
+shader = ExtResource("1_u52ul")
+shader_parameter/equirectangular_sky_texture = SubResource("NoiseTexture2D_f2txt")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_vonw3")
+shader_parameter/brightness = 1.7
+shader_parameter/speed = 0.12
+shader_parameter/height = 42.0
+shader_parameter/scale = 0.8
+
+[sub_resource type="Sky" id="Sky_u52ul"]
+sky_material = SubResource("ShaderMaterial_vonw3")
+
+[sub_resource type="Environment" id="Environment_vonw3"]
+background_mode = 2
+background_intensity = 1.0
+sky = SubResource("Sky_u52ul")
+glow_enabled = true
+glow_normalized = true
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vonw3")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_vonw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7402081, 0)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="plane_Base_exterior" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+radius = 7.5
+height = 35.0
+sides = 32
+
+[node name="plane_Base_interior" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+operation = 2
+radius = 7.0
+height = 30.0
+sides = 16
+
+[node name="floor" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.4976459, 0)
+size = Vector3(16, 1, 40)
+
+[node name="ceiling" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2351265, 0)
+size = Vector3(16, 1, 40)
+
+[node name="cockpit_wall" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.180859)
+size = Vector3(16, 20, 1)
+
+[node name="cockpit_door" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 10.180859)
+operation = 2
+size = Vector3(2, 3, 1)
+
+[node name="engine_wall" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.184479)
+size = Vector3(16, 20, 1)
+
+[node name="engine_door" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -11.184479)
+operation = 2
+size = Vector3(2, 3, 1)
+
+[node name="window_1" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, -9.391404)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_2" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, -7.391404)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_3" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, -5.391404)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_4" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, -3.3914042)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_5" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, -1.3914042)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_6" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0.5541105)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_7" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 2.5541105)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_8" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 4.5541105)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_9" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 6.5541105)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="window_10" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 8.554111)
+operation = 2
+height = 18.0
+sides = 16
+
+[node name="lights" type="Node3D" parent="CSGCombiner3D"]
+
+[node name="lightbox" type="CSGBox3D" parent="CSGCombiner3D/lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6694474, 7.0700636)
+size = Vector3(0.5, 0.1, 0.5)
+material = ExtResource("3_oi3di")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CSGCombiner3D/lights/lightbox"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.21711016, 0)
+light_temperature = 2200.0
+shadow_enabled = true
+spot_angle_attenuation = 5.4641585
+
+[node name="lightbox2" type="CSGBox3D" parent="CSGCombiner3D/lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7005043, 0)
+size = Vector3(0.5, 0.1, 0.5)
+material = ExtResource("3_oi3di")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CSGCombiner3D/lights/lightbox2"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.21711016, 0)
+light_temperature = 2200.0
+shadow_enabled = true
+spot_angle_attenuation = 5.4641585
+
+[node name="lightbox3" parent="CSGCombiner3D/lights" instance=ExtResource("4_0b4ue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7005043, -8.034164)

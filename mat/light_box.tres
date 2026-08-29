@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://csm4vm8sryr0y"]
+
+[resource]
+emission_enabled = true
+emission = Color(0.9999997, 0.22147286, 0.0019602692, 1)
+emission_intensity = 10.0
