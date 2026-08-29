@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=14 format=3 uid="uid://bhcfqsa0van8b"]
 
-[ext_resource type="Shader" uid="uid://ck40qndldugld" path="res://sky_bor.gdshader" id="1_u52ul"]
-[ext_resource type="PackedScene" uid="uid://bcaabpotsubyv" path="res://player.tscn" id="2_vonw3"]
-[ext_resource type="Material" uid="uid://csm4vm8sryr0y" path="res://mat/light_box.tres" id="3_oi3di"]
-[ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_0b4ue"]
+[ext_resource type="Shader" uid="uid://ck40qndldugld" path="res://mat/sky_bor.gdshader" id="1_5mrsh"]
+[ext_resource type="PackedScene" uid="uid://bcaabpotsubyv" path="res://player.tscn" id="2_safpt"]
+[ext_resource type="Material" uid="uid://csm4vm8sryr0y" path="res://mat/light_box.tres" id="3_gjl0y"]
+[ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
+[ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_vnv7o"]
 
 [sub_resource type="Gradient" id="Gradient_u52ul"]
 offsets = PackedFloat32Array(0, 0.31364277, 0.62728554, 1)
@@ -24,7 +25,7 @@ color_ramp = SubResource("Gradient_oi3di")
 seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vonw3"]
-shader = ExtResource("1_u52ul")
+shader = ExtResource("1_5mrsh")
 shader_parameter/equirectangular_sky_texture = SubResource("NoiseTexture2D_f2txt")
 shader_parameter/color_gradient = SubResource("GradientTexture1D_vonw3")
 shader_parameter/brightness = 1.7
@@ -47,11 +48,12 @@ glow_normalized = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vonw3")
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("2_vonw3")]
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_safpt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7402081, 0)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 use_collision = true
+script = ExtResource("3_safpt")
 
 [node name="plane_Base_exterior" type="CSGCylinder3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
@@ -157,7 +159,7 @@ sides = 16
 [node name="lightbox" type="CSGBox3D" parent="CSGCombiner3D/lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6694474, 7.0700636)
 size = Vector3(0.5, 0.1, 0.5)
-material = ExtResource("3_oi3di")
+material = ExtResource("3_gjl0y")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CSGCombiner3D/lights/lightbox"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.21711016, 0)
@@ -168,7 +170,7 @@ spot_angle_attenuation = 5.4641585
 [node name="lightbox2" type="CSGBox3D" parent="CSGCombiner3D/lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7005043, 0)
 size = Vector3(0.5, 0.1, 0.5)
-material = ExtResource("3_oi3di")
+material = ExtResource("3_gjl0y")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CSGCombiner3D/lights/lightbox2"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.21711016, 0)
@@ -176,5 +178,5 @@ light_temperature = 2200.0
 shadow_enabled = true
 spot_angle_attenuation = 5.4641585
 
-[node name="lightbox3" parent="CSGCombiner3D/lights" instance=ExtResource("4_0b4ue")]
+[node name="lightbox3" parent="CSGCombiner3D/lights" instance=ExtResource("4_vnv7o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7005043, -8.034164)
