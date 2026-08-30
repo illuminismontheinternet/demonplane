@@ -1,12 +1,14 @@
+class_name plane_director
 extends CSGCombiner3D
 
 @onready var plane = $"."
 
 enum ENUM_PLANESTATUS {
+	TAKEOFF,
 	IDLE,
 	TURBULENCE,
-	TAKEOFF,
 	LAND,
+	POWEROFF
 }
 var current_status = ENUM_PLANESTATUS.IDLE
 
@@ -20,7 +22,15 @@ var target_pitch = 0.0
 var target_yaw = 0.0
 var target_roll = 0.0
 const takeoff_pitch = 5
+var target_basis : Basis
 
+func set_target_basis():
+	target_basis = Basis.from_euler(Vector3(
+	deg_to_rad(target_pitch),
+	deg_to_rad(target_yaw),
+	deg_to_rad(target_roll)
+	))
+	
 func set_nose_pitch(inPitch):
 	target_pitch = inPitch
 
@@ -45,16 +55,19 @@ func set_stats():
 		ENUM_PLANESTATUS.LAND:
 			set_delta_spread(0,1)
 			set_nose_pitch(-takeoff_pitch)
+		ENUM_PLANESTATUS.POWEROFF:
+			set_delta_spread(0,0)
+			set_nose_pitch(0)
 
 func _ready():
 	current_status = ENUM_PLANESTATUS.TAKEOFF
 	
 func _physics_process(delta):
 	set_stats()
-	var target_basis = Basis.from_euler(Vector3(
-		deg_to_rad(target_pitch),
-		deg_to_rad(target_yaw),
-		deg_to_rad(target_roll)
-		))
+	set_target_basis()
 	var t = 1.0 - exp(-rotation_speed * delta)
 	plane.transform.basis = plane.transform.basis.slerp(target_basis, t)
+
+
+func _on_level_plane_event(new_state: plane_director.ENUM_PLANESTATUS) -> void:
+	current_status = new_state

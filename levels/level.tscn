@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=15 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Shader" uid="uid://ck40qndldugld" path="res://mat/sky_bor.gdshader" id="1_5mrsh"]
+[ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="PackedScene" uid="uid://bcaabpotsubyv" path="res://player.tscn" id="2_safpt"]
 [ext_resource type="Material" uid="uid://csm4vm8sryr0y" path="res://mat/light_box.tres" id="3_gjl0y"]
 [ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
@@ -44,6 +45,7 @@ glow_enabled = true
 glow_normalized = true
 
 [node name="Level" type="Node3D"]
+script = ExtResource("1_gjl0y")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vonw3")
@@ -180,3 +182,5 @@ spot_angle_attenuation = 5.4641585
 
 [node name="lightbox3" parent="CSGCombiner3D/lights" instance=ExtResource("4_vnv7o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7005043, -8.034164)
+
+[connection signal="plane_event" from="." to="CSGCombiner3D" method="_on_level_plane_event"]
