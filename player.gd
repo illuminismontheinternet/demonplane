@@ -56,7 +56,7 @@ func _physics_process(delta: float) -> void:
 	var direction := (transform.basis * Vector3(-input_dir.x, 0, -input_dir.y)).normalized()
 	if is_on_floor():
 		if bWasFalling:
-			print("we landed!")
+			#print("we landed!")
 			bWasFalling = false
 			# calculate velocity difference for damage
 			_handle_land()

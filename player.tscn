@@ -1,8 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=7 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_onrkg"]
+shader = ExtResource("2_i3pqv")
+shader_parameter/blur_radius = 8
+shader_parameter/blur_scale = 4.00000019
+shader_parameter/darkness = 0.6000000285
+shader_parameter/fade_direction = 0
+shader_parameter/fade_cutoff = 1.0
+shader_parameter/fade_intensity = 0.10000000149012
+
+[sub_resource type="LabelSettings" id="LabelSettings_i3pqv"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_onrkg"]
+font_size = 48
+font_color = Color(0.623739, 0, 0.07081313, 1)
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 script = ExtResource("1_4flbx")
@@ -17,3 +34,57 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25565803, 0)
 
 [node name="Camera3D" type="Camera3D" parent="neck/head"]
+
+[node name="player_ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="player_ui"]
+visible = false
+material = SubResource("ShaderMaterial_onrkg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="win" type="Label" parent="player_ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "VICTORY"
+label_settings = SubResource("LabelSettings_i3pqv")
+
+[node name="lose" type="Label" parent="player_ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "DEFEAT"
+label_settings = SubResource("LabelSettings_onrkg")
