@@ -3,6 +3,14 @@ extends CharacterBody3D
 @onready var head = $neck/head
 @onready var body = $"."
 @onready var camera = $neck/head/Camera3D
+@onready var wep_parent = $neck/head/Camera3D/weapon
+@onready var melee_parent = $neck/head/Camera3D/weapon/melee
+@onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench
+
+# viewbob constants
+const viewbob_const = 0.05
+var target_melee_basis = Basis.IDENTITY
+const melee_rand_pos = 1.0
 
 const SPEED_MULT = 1.0
 var SPRINT_MULT = 1.0
@@ -32,6 +40,28 @@ var wish_dir : Vector3
 
 var bWasFalling = false
 
+func _handle_weapon_input():
+	if Input.is_action_just_pressed("attack"):
+		_action_swing_melee()
+		
+func _action_swing_melee():
+	var rand_rot := Vector3(
+		randf_range(-melee_rand_pos, -melee_rand_pos/2),
+		randf_range(melee_rand_pos*0.75, melee_rand_pos),
+		randf_range(0, 0),
+	)
+	target_melee_basis = Basis.from_euler(rand_rot)
+	
+func _handle_melee_reset(delta):
+	var t = delta * 10
+	melee_parent.basis = melee_parent.basis.slerp(target_melee_basis,t*2)
+	target_melee_basis = target_melee_basis.slerp(Basis.IDENTITY,t)
+	print(melee_parent.basis)
+		
+func _handle_movebob():
+	wep_parent.position.y = sin(position.x) * viewbob_const
+	wep_parent.position.x = sin(position.z) * viewbob_const
+	
 func _handle_land():
 	print("_handle_land")
 	
@@ -114,5 +144,7 @@ func _physics_process(delta: float) -> void:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(TARGET_SWAY), LERP_SWAY)
 	else:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
-	
+	_handle_weapon_input()
+	_handle_melee_reset(delta)
+	_handle_movebob()
 	move_and_slide()

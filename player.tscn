@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=8 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="2_hqtel"]
 [ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
@@ -34,6 +35,14 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25565803, 0)
 
 [node name="Camera3D" type="Camera3D" parent="neck/head"]
+
+[node name="weapon" type="Node3D" parent="neck/head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
+
+[node name="melee" type="Node3D" parent="neck/head/Camera3D/weapon"]
+
+[node name="wrench" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("2_hqtel")]
+transform = Transform3D(0.5, 1.1489362e-08, 1.5369856e-09, -1.1489361e-08, 0.48241892, 0.13142298, 1.5369821e-09, -0.13142298, 0.48241892, 0.29562628, -0.20023149, -0.6098715)
 
 [node name="player_ui" type="Control" parent="."]
 layout_mode = 3
