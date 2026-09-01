@@ -7,12 +7,16 @@ signal match_finished(bVictory: bool)
 @export var match_duration := 300
 @onready var act_engines = $CSGCombiner3D/ACT_Engines
 
+# game ending variables
+var bEnginesBroken = false
+
 enum ENUM_ACT {
 	NONE,
 	ENGINES,
 	PILOT,
 	WING_RIGHT,
-	WING_LEFT
+	WING_LEFT,
+	ATTEMPT_LAND
 }
 var current_act = ENUM_ACT.NONE
 
@@ -46,7 +50,7 @@ var events = [
 	{
 		"time": 40,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
-		"act" : ENUM_ACT.NONE
+		"act" : ENUM_ACT.ATTEMPT_LAND
 	},
 	{
 		"time": 50,
@@ -69,8 +73,14 @@ func execute_plane_event(event_type: plane_director.ENUM_PLANESTATUS):
 
 func execute_act_event(act_type: ENUM_ACT):
 	if act_type == ENUM_ACT.ENGINES:
+		bEnginesBroken = true
 		print("ENGINES ARE BROKEN - GO FIX THEM!!")
 		act_engines.start_broken_minigame()
+	if act_type == ENUM_ACT.ATTEMPT_LAND:
+		if bEnginesBroken:
+			match_finished.emit(false)
+		else:
+			match_finished.emit(true)
 		
 # normal funcs
 func _ready() -> void:
@@ -83,6 +93,9 @@ func _physics_process(_delta: float) -> void:
 		execute_act_event(events[next_event].act)
 		print(events[next_event])
 		next_event += 1
-		
-	if seconds >= match_duration:
-		match_finished.emit()
+	# calling this on the schedule now
+	#if seconds >= match_duration:
+		#match_finished.emit()
+
+func _on_act_engines_fully_repaired() -> void:
+	bEnginesBroken = false

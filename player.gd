@@ -4,8 +4,13 @@ extends CharacterBody3D
 @onready var body = $"."
 @onready var camera = $neck/head/Camera3D
 @onready var wep_parent = $neck/head/Camera3D/weapon
+
 @onready var melee_parent = $neck/head/Camera3D/weapon/melee
 @onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench
+@onready var melee_ray = $neck/head/Camera3D/weapon/melee_ray
+
+# ui elements
+@onready var hud_manager = $player_ui
 
 # viewbob constants
 const viewbob_const = 0.05
@@ -40,6 +45,9 @@ var wish_dir : Vector3
 
 var bWasFalling = false
 
+func _show_end_screen(bVictory):
+	hud_manager.ui_recieve_match_end(bVictory)
+		
 func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
 		_action_swing_melee()
@@ -51,12 +59,15 @@ func _action_swing_melee():
 		randf_range(0, 0),
 	)
 	target_melee_basis = Basis.from_euler(rand_rot)
+	# attempt fix
+	if melee_ray.is_colliding():
+		var current_interactable = melee_ray.get_collider()
+		current_interactable.do_repair()
 	
 func _handle_melee_reset(delta):
 	var t = delta * 10
 	melee_parent.basis = melee_parent.basis.slerp(target_melee_basis,t*2)
 	target_melee_basis = target_melee_basis.slerp(Basis.IDENTITY,t)
-	print(melee_parent.basis)
 		
 func _handle_movebob():
 	wep_parent.position.y = sin(position.x) * viewbob_const
@@ -148,3 +159,6 @@ func _physics_process(delta: float) -> void:
 	_handle_melee_reset(delta)
 	_handle_movebob()
 	move_and_slide()
+
+func _on_level_match_finished(bVictory: bool) -> void:
+	_show_end_screen(bVictory)

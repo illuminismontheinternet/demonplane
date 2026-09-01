@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=22 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Shader" uid="uid://ck40qndldugld" path="res://mat/sky_bor.gdshader" id="1_5mrsh"]
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
 [ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_vnv7o"]
 [ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="7_d5x7l"]
+[ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="7_rtcij"]
 [ext_resource type="PackedScene" uid="uid://c6n24io0njpkp" path="res://scenes/obs_box.tscn" id="7_vnv7o"]
 
 [sub_resource type="Gradient" id="Gradient_u52ul"]
@@ -274,20 +275,26 @@ size = Vector3(1, 1, 4)
 [node name="spark_cyl" type="CSGCylinder3D" parent="CSGCombiner3D/ACT_Engines"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99331605, 0)
 use_collision = true
+collision_layer = 3
 height = 1.0
 material = SubResource("StandardMaterial3D_vnv7o")
+script = ExtResource("7_rtcij")
 
 [node name="fuel_cyl" type="CSGCylinder3D" parent="CSGCombiner3D/ACT_Engines"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99331605, 1.1805305)
 use_collision = true
+collision_layer = 3
 height = 1.0
 material = SubResource("StandardMaterial3D_d5x7l")
+script = ExtResource("7_rtcij")
 
 [node name="air_cyl" type="CSGCylinder3D" parent="CSGCombiner3D/ACT_Engines"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99331605, -1.2311239)
 use_collision = true
+collision_layer = 3
 height = 1.0
 material = SubResource("StandardMaterial3D_rtcij")
+script = ExtResource("7_rtcij")
 
 [node name="lightbox3" parent="CSGCombiner3D/ACT_Engines" instance=ExtResource("4_vnv7o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5149348, 4.2138453, 0.00269413)
@@ -404,7 +411,12 @@ shape = SubResource("BoxShape3D_vnv7o")
 mesh = SubResource("BoxMesh_vnv7o")
 skeleton = NodePath("")
 
+[connection signal="match_finished" from="." to="CharacterBody3D" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGCombiner3D" method="_on_level_plane_event"]
+[connection signal="fully_repaired" from="CSGCombiner3D/ACT_Engines" to="." method="_on_act_engines_fully_repaired"]
+[connection signal="repaired" from="CSGCombiner3D/ACT_Engines/spark_cyl" to="CSGCombiner3D/ACT_Engines" method="_on_spark_cyl_repaired"]
+[connection signal="repaired" from="CSGCombiner3D/ACT_Engines/fuel_cyl" to="CSGCombiner3D/ACT_Engines" method="_on_fuel_cyl_repaired"]
+[connection signal="repaired" from="CSGCombiner3D/ACT_Engines/air_cyl" to="CSGCombiner3D/ACT_Engines" method="_on_air_cyl_repaired"]
 
 [editable path="CSGCombiner3D/obs_box"]
 [editable path="CSGCombiner3D/obs_box3"]

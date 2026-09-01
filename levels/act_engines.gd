@@ -1,5 +1,7 @@
 extends Node3D
 
+signal fully_repaired
+
 @onready var light = $lightbox3
 @onready var fuel_mesh = $fuel_cyl
 @onready var air_mesh = $air_cyl
@@ -24,9 +26,12 @@ var rng = RandomNumberGenerator.new()
 
 func start_broken_minigame():
 	required_fixes = rng.randi_range(0, max_fixes)
-	#light._change_light(broken_color)
+	light._change_light(broken_color)
 	break_random_component()
 
+func end_broken_minigame():
+	light._change_light(fixed_color)
+	
 func break_random_component():
 	print(components[rng.randi_range(0,components.size()-1)])
 	do_break_component(components[rng.randi_range(0,components.size()-1)])
@@ -41,4 +46,18 @@ func do_fix_component(inMesh):
 	inMesh.material.emission_enabled = false
 	inMesh.material.emission = fixed_color
 	required_fixes = required_fixes - 1
-	await get_tree().create_timer(randf_range(min_next_time,max_next_time)).break_random_component
+	if required_fixes > 0:
+		await get_tree().create_timer(randf_range(min_next_time,max_next_time))
+		break_random_component()
+	else:
+		end_broken_minigame()
+		fully_repaired.emit()
+		
+func _on_fuel_cyl_repaired() -> void:
+	do_fix_component(fuel_mesh)
+
+func _on_spark_cyl_repaired() -> void:
+	do_fix_component(spark_mesh)
+
+func _on_air_cyl_repaired() -> void:
+	do_fix_component(air_mesh)

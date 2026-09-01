@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=9 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="2_hqtel"]
 [ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
+[ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
 
@@ -44,6 +45,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
 [node name="wrench" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("2_hqtel")]
 transform = Transform3D(0.5, 1.1489362e-08, 1.5369856e-09, -1.1489361e-08, 0.48241892, 0.13142298, 1.5369821e-09, -0.13142298, 0.48241892, 0.29562628, -0.20023149, -0.6098715)
 
+[node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+collision_mask = 2
+
 [node name="player_ui" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -52,6 +57,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("3_hqtel")
 
 [node name="ColorRect" type="ColorRect" parent="player_ui"]
 visible = false
