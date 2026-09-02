@@ -1,6 +1,5 @@
-[gd_scene load_steps=22 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=21 format=3 uid="uid://bhcfqsa0van8b"]
 
-[ext_resource type="Shader" uid="uid://ck40qndldugld" path="res://mat/sky_bor.gdshader" id="1_5mrsh"]
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="PackedScene" uid="uid://bcaabpotsubyv" path="res://player.tscn" id="2_safpt"]
 [ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
@@ -8,43 +7,24 @@
 [ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="7_d5x7l"]
 [ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="7_rtcij"]
 [ext_resource type="PackedScene" uid="uid://c6n24io0njpkp" path="res://scenes/obs_box.tscn" id="7_vnv7o"]
+[ext_resource type="Shader" uid="uid://b8aq4c5dlffo8" path="res://mat/water.gdshader" id="9_rtcij"]
 
-[sub_resource type="Gradient" id="Gradient_u52ul"]
-offsets = PackedFloat32Array(0, 0.31364277, 0.62728554, 0.9901547, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.5032813, 6.738305e-07, 0.3009595, 1, 0.56402194, 0.43999133, 0, 1, 0.96024495, 0.8226407, 0.8807736, 1, 0.38465282, 0.9999997, 0.850049, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_vonw3"]
-gradient = SubResource("Gradient_u52ul")
-
-[sub_resource type="Gradient" id="Gradient_oi3di"]
-offsets = PackedFloat32Array(0, 0.17721519, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.17721519, 0.17721519, 0.17721519, 1, 0.62399334, 0.54408586, 0.48687285, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0b4ue"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f2txt"]
-noise = SubResource("FastNoiseLite_0b4ue")
-color_ramp = SubResource("Gradient_oi3di")
-seamless = true
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vonw3"]
-shader = ExtResource("1_5mrsh")
-shader_parameter/equirectangular_sky_texture = SubResource("NoiseTexture2D_f2txt")
-shader_parameter/color_gradient = SubResource("GradientTexture1D_vonw3")
-shader_parameter/brightness = 3.0
-shader_parameter/speed = 0.5
-shader_parameter/height = 42.0
-shader_parameter/scale = 0.8
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x7l"]
+sky_top_color = Color(0.35638684, 0.3110089, 0.4883088, 1)
+sky_horizon_color = Color(0.8895735, 0.54596925, 0.5331669, 1)
+ground_bottom_color = Color(0.09256179, 0.18272755, 0.26183534, 1)
+ground_horizon_color = Color(0.8247961, 0.5846919, 0.5599907, 1)
+sun_angle_max = 5.0
 
 [sub_resource type="Sky" id="Sky_u52ul"]
-sky_material = SubResource("ShaderMaterial_vonw3")
+sky_material = SubResource("ProceduralSkyMaterial_d5x7l")
 
 [sub_resource type="Environment" id="Environment_vonw3"]
 background_mode = 2
 background_intensity = 1.0
 sky = SubResource("Sky_u52ul")
 ambient_light_source = 3
-ambient_light_sky_contribution = 0.25
+reflected_light_source = 2
 ssao_enabled = true
 glow_enabled = true
 glow_normalized = true
@@ -67,11 +47,38 @@ size = Vector3(2, 1, 2)
 [sub_resource type="BoxMesh" id="BoxMesh_vnv7o"]
 size = Vector3(2, 1, 2)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ukwr8"]
+render_priority = 0
+shader = ExtResource("9_rtcij")
+shader_parameter/wave_scale = 1.0
+shader_parameter/albedo = Color(0.35862193, 0.40556702, 0.6082154, 1)
+shader_parameter/emission = Color(0.22248173, 0.22452569, 0.27934548, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_d5x7l"]
+material = SubResource("ShaderMaterial_ukwr8")
+size = Vector2(10000, 10000)
+subdivide_width = 1000
+subdivide_depth = 1000
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukwr8"]
+albedo_color = Color(5.2943824e-07, 0.29862964, 0.13570657, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pb8y7"]
+material = SubResource("StandardMaterial3D_ukwr8")
+size = Vector2(10000, 10000)
+
 [node name="Level" type="Node3D"]
 script = ExtResource("1_gjl0y")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vonw3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.43213362, 0.10573232, 0.8955898, -0.0737806, -0.98562866, 0.15196228, 0.89878637, -0.13174514, -0.41812235, 0, 18.594637, 0)
+light_intensity_lux = 1.0
+light_temperature = 5717.0
+light_bake_mode = 0
+shadow_enabled = true
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("2_safpt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7402081, 0)
@@ -151,17 +158,10 @@ operation = 2
 height = 18.0
 sides = 16
 
-[node name="window_5" type="CSGCylinder3D" parent="CSGCombiner3D"]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, -1.3914042)
+[node name="neg_doors" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8253302, -0.53859997)
 operation = 2
-height = 18.0
-sides = 16
-
-[node name="window_6" type="CSGCylinder3D" parent="CSGCombiner3D"]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0.5541105)
-operation = 2
-height = 18.0
-sides = 16
+size = Vector3(20, 2, 1.5)
 
 [node name="window_7" type="CSGCylinder3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 2.5541105)
@@ -410,6 +410,14 @@ shape = SubResource("BoxShape3D_vnv7o")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CSGCombiner3D/obs_box10"]
 mesh = SubResource("BoxMesh_vnv7o")
 skeleton = NodePath("")
+
+[node name="ocean" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -48.675934, 0)
+mesh = SubResource("PlaneMesh_d5x7l")
+
+[node name="oceanfloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -51.825363, 0)
+mesh = SubResource("PlaneMesh_pb8y7")
 
 [connection signal="match_finished" from="." to="CharacterBody3D" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGCombiner3D" method="_on_level_plane_event"]

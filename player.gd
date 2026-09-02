@@ -62,7 +62,7 @@ func _action_swing_melee():
 	# attempt fix
 	if melee_ray.is_colliding():
 		var current_interactable = melee_ray.get_collider()
-		current_interactable.do_repair()
+		current_interactable.attempt_repair()
 	
 func _handle_melee_reset(delta):
 	var t = delta * 10

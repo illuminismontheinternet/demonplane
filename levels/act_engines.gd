@@ -42,16 +42,17 @@ func do_break_component(inMesh):
 	inMesh.material.emission = broken_color
 	
 func do_fix_component(inMesh):
-	#inMesh.get_material(0).emission = fixed_color
-	inMesh.material.emission_enabled = false
-	inMesh.material.emission = fixed_color
-	required_fixes = required_fixes - 1
 	if required_fixes > 0:
-		await get_tree().create_timer(randf_range(min_next_time,max_next_time))
-		break_random_component()
-	else:
-		end_broken_minigame()
-		fully_repaired.emit()
+		#inMesh.get_material(0).emission = fixed_color
+		inMesh.material.emission_enabled = false
+		inMesh.material.emission = fixed_color
+		required_fixes = required_fixes - 1
+		if required_fixes > 0:
+			await get_tree().create_timer(randf_range(min_next_time,max_next_time))
+			break_random_component()
+		else:
+			end_broken_minigame()
+			fully_repaired.emit()
 		
 func _on_fuel_cyl_repaired() -> void:
 	do_fix_component(fuel_mesh)
