@@ -85,13 +85,20 @@ func _rotate_look(inRelX, inRelY):
 		camera.rotation.x = temp_rot
 		
 func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority(): return
 	if event is InputEventMouseMotion:
 		_rotate_look(event.relative.x, event.relative.y)
-		
+
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
+	
 func _ready():
+	if not is_multiplayer_authority(): return
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	camera.current = true
 		
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority(): return
 	# do normal inputs
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction := (transform.basis * Vector3(-input_dir.x, 0, -input_dir.y)).normalized()

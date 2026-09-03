@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=11 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="2_hqtel"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hqtel"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_onrkg"]
 shader = ExtResource("2_i3pqv")
@@ -23,11 +25,25 @@ font_size = 48
 font_size = 48
 font_color = Color(0.623739, 0, 0.07081313, 1)
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_hqtel"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("neck/head/Camera3D:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_4flbx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_5xgho")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_hqtel")
 
 [node name="neck" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.47167963, 0)
@@ -103,3 +119,6 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "DEFEAT"
 label_settings = SubResource("LabelSettings_onrkg")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_hqtel")
