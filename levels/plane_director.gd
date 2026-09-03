@@ -94,9 +94,11 @@ func set_stats():
 			set_nose_pitch(0)
 
 func _ready():
+	if not is_multiplayer_authority(): return
 	current_status = ENUM_PLANESTATUS.TAKEOFF
 	
 func _physics_process(delta):
+	if not is_multiplayer_authority(): return
 	set_stats()
 	set_plane_yaw_roll()
 	set_plane_y_pos()

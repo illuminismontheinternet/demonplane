@@ -488,6 +488,7 @@ text = "JOIN GAME"
 layout_mode = 2
 placeholder_text = "ENTER IP:"
 
+[connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGCombiner3D" method="_on_level_plane_event"]
 [connection signal="fully_repaired" from="CSGCombiner3D/ACT_Engines" to="." method="_on_act_engines_fully_repaired"]
 [connection signal="repaired" from="CSGCombiner3D/ACT_Engines/spark_cyl" to="CSGCombiner3D/ACT_Engines" method="_on_spark_cyl_repaired"]

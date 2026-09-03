@@ -28,32 +28,32 @@ var events = [
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 10,
+		"time": 1,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 15,
+		"time": 2,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.ENGINES
 	},
 	{
-		"time": 20,
+		"time": 3,
 		"type": plane_director.ENUM_PLANESTATUS.TURBULENCE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 30,
+		"time": 5,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 40,
+		"time": 9,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
 		"act" : ENUM_ACT.ATTEMPT_LAND
 	},
 	{
-		"time": 50,
+		"time": 10,
 		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
 		"act" : ENUM_ACT.NONE
 	}
@@ -62,6 +62,14 @@ var events = [
 var next_event := 0
 var start_time := 0.0
 
+@rpc("authority", "call_local", "reliable")
+func end_match():
+	print("level manager end match - peer: ", multiplayer.get_unique_id())
+	if bEnginesBroken:
+		match_finished.emit(false)
+	else:
+		match_finished.emit(true)
+		
 func start_match():
 	start_time = Time.get_ticks_msec() /  1000.0
 
@@ -74,24 +82,23 @@ func execute_plane_event(event_type: plane_director.ENUM_PLANESTATUS):
 func execute_act_event(act_type: ENUM_ACT):
 	if act_type == ENUM_ACT.ENGINES:
 		bEnginesBroken = true
-		print("ENGINES ARE BROKEN - GO FIX THEM!!")
+		#print("ENGINES ARE BROKEN - GO FIX THEM!!")
 		act_engines.start_broken_minigame()
 	if act_type == ENUM_ACT.ATTEMPT_LAND:
-		if bEnginesBroken:
-			match_finished.emit(false)
-		else:
-			match_finished.emit(true)
+		end_match.rpc()
 		
 # normal funcs
 func _ready() -> void:
+	if not is_multiplayer_authority(): return
 	start_match()
 	
 func _physics_process(_delta: float) -> void:
+	if not is_multiplayer_authority(): return
 	var seconds = get_elapsed_time()
 	while next_event < events.size() and seconds >= events[next_event].time:
 		execute_plane_event(events[next_event].type)
 		execute_act_event(events[next_event].act)
-		print(events[next_event])
+		#print(events[next_event])
 		next_event += 1
 	# calling this on the schedule now
 	#if seconds >= match_duration:

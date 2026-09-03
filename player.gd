@@ -74,7 +74,9 @@ func _handle_movebob():
 	wep_parent.position.x = sin(position.z) * viewbob_const
 	
 func _handle_land():
-	print("_handle_land")
+	#print("_handle_land")
+	for i in range(1):
+		break
 	
 func _rotate_look(inRelX, inRelY):
 	if bCanLook:
@@ -93,6 +95,8 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 	
 func _ready():
+	# network manager bind for end match
+	get_parent().network_match_finished.connect(_on_level_match_finished)
 	if not is_multiplayer_authority(): return
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = true
@@ -168,4 +172,5 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _on_level_match_finished(bVictory: bool) -> void:
+	print("player end match - peer: ", multiplayer.get_unique_id())
 	_show_end_screen(bVictory)
