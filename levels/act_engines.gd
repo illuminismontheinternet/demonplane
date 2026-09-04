@@ -32,7 +32,8 @@ func start_broken_minigame_rpc(inFixes):
 
 func start_broken_minigame():
 	if not is_multiplayer_authority(): return
-	var fix_count = randi_range(0, max_fixes)
+	var fix_count = randi_range(1, max_fixes)
+	print("act_engines: fix_count is: ", fix_count)
 	start_broken_minigame_rpc.rpc(fix_count)
 	break_random_component()
 	
@@ -58,6 +59,7 @@ func fully_repaired_rpc():
 	
 func inner_fix_component():
 	required_fixes = required_fixes - 1
+	print("act_engines required fixes: ", required_fixes)
 	if required_fixes > 0:
 		break_random_component()
 	else:
