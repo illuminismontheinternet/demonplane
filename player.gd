@@ -172,5 +172,5 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _on_level_match_finished(bVictory: bool) -> void:
-	print("player end match - peer: ", multiplayer.get_unique_id())
+	#print("player end match - peer: ", multiplayer.get_unique_id())
 	_show_end_screen(bVictory)

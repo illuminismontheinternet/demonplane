@@ -24,41 +24,60 @@ var fixed_color = Color.GREEN
 
 var rng = RandomNumberGenerator.new()
 
-func start_broken_minigame():
-	required_fixes = rng.randi_range(0, max_fixes)
+@rpc("authority", "call_local", "reliable")
+func start_broken_minigame_rpc(inFixes):
+	#print("start broken mini game - peer: ", multiplayer.get_unique_id())
+	required_fixes = inFixes
 	light._change_light(broken_color)
-	break_random_component()
 
-func end_broken_minigame():
+func start_broken_minigame():
+	if not is_multiplayer_authority(): return
+	var fix_count = randi_range(0, max_fixes)
+	start_broken_minigame_rpc.rpc(fix_count)
+	break_random_component()
+	
+@rpc("authority", "call_local", "reliable")
+func end_broken_minigame_rpc():
 	light._change_light(fixed_color)
 	
+@rpc("authority", "call_local", "reliable")
+func break_component_rpc(inID):
+	do_break_component(inID)
+	
 func break_random_component():
-	print(components[rng.randi_range(0,components.size()-1)])
-	do_break_component(components[rng.randi_range(0,components.size()-1)])
+	var target_comp = rng.randi_range(0,components.size()-1)
+	break_component_rpc.rpc(target_comp)
 	
-func do_break_component(inMesh):
-	#inMesh.get_material(0).emission = broken_color
-	inMesh.material.emission_enabled = true
-	inMesh.material.emission = broken_color
+func do_break_component(inID):
+	components[inID].material.emission_enabled = true
+	components[inID].material.emission = broken_color
 	
-func do_fix_component(inMesh):
+@rpc("authority", "call_local", "reliable")
+func fully_repaired_rpc():
+	fully_repaired.emit()
+	
+func inner_fix_component():
+	required_fixes = required_fixes - 1
 	if required_fixes > 0:
-		#inMesh.get_material(0).emission = fixed_color
-		inMesh.material.emission_enabled = false
-		inMesh.material.emission = fixed_color
-		required_fixes = required_fixes - 1
-		if required_fixes > 0:
-			await get_tree().create_timer(randf_range(min_next_time,max_next_time))
-			break_random_component()
-		else:
-			end_broken_minigame()
-			fully_repaired.emit()
+		break_random_component()
+	else:
+		end_broken_minigame_rpc.rpc()
+		fully_repaired_rpc.rpc()
+		
+@rpc("any_peer", "call_local", "reliable")
+func do_fix_component_rpc(inComponentID):
+	print("do_fix_component - peer: ", multiplayer.get_unique_id())
+	if required_fixes > 0:
+		components[inComponentID].material.emission_enabled = false
+		components[inComponentID].material.emission = fixed_color
+		if not is_multiplayer_authority(): return
+		inner_fix_component()
 		
 func _on_fuel_cyl_repaired() -> void:
-	do_fix_component(fuel_mesh)
+	do_fix_component_rpc.rpc(0)
 
 func _on_spark_cyl_repaired() -> void:
-	do_fix_component(spark_mesh)
+	do_fix_component_rpc.rpc(2)
 
 func _on_air_cyl_repaired() -> void:
-	do_fix_component(air_mesh)
+	do_fix_component_rpc.rpc(1)
