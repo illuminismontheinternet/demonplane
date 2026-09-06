@@ -38,22 +38,22 @@ var events = [
 		"act" : ENUM_ACT.ENGINES
 	},
 	{
-		"time": 15,
+		"time": 25,
 		"type": plane_director.ENUM_PLANESTATUS.TURBULENCE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 20,
+		"time": 30,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 25,
+		"time": 35,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
 		"act" : ENUM_ACT.ATTEMPT_LAND
 	},
 	{
-		"time": 30,
+		"time": 40,
 		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
 		"act" : ENUM_ACT.NONE
 	}

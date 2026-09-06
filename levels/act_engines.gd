@@ -13,11 +13,12 @@ signal fully_repaired
 	spark_mesh
 ]
 
-var bNeedsFixing = false
 var required_fixes = 0
 const max_fixes = 5
 const min_next_time = 1.0
 const max_next_time = 6.0
+
+var currently_broken_component = 0
 
 var broken_color = Color.RED
 var fixed_color = Color.GREEN
@@ -48,6 +49,7 @@ func break_component_rpc(inID):
 	
 func break_random_component():
 	var target_comp = rng.randi_range(0,components.size()-1)
+	currently_broken_component = target_comp
 	break_component_rpc.rpc(target_comp)
 	
 func do_break_component(inID):
@@ -57,6 +59,11 @@ func do_break_component(inID):
 @rpc("authority", "call_local", "reliable")
 func fully_repaired_rpc():
 	fully_repaired.emit()
+
+@rpc("authority", "call_local", "reliable")
+func update_mesh_for_all_rpc(inComponentID):
+	components[inComponentID].material.emission_enabled = false
+	components[inComponentID].material.emission = fixed_color
 	
 func inner_fix_component():
 	required_fixes = required_fixes - 1
@@ -69,11 +76,10 @@ func inner_fix_component():
 		
 @rpc("any_peer", "call_local", "reliable")
 func do_fix_component_rpc(inComponentID):
-	print("do_fix_component - peer: ", multiplayer.get_unique_id())
-	if required_fixes > 0:
-		components[inComponentID].material.emission_enabled = false
-		components[inComponentID].material.emission = fixed_color
-		if not is_multiplayer_authority(): return
+	if not is_multiplayer_authority(): return
+	#print("do_fix_component - peer: ", multiplayer.get_unique_id())
+	if required_fixes > 0 and inComponentID == currently_broken_component:
+		update_mesh_for_all_rpc.rpc(inComponentID)
 		inner_fix_component()
 		
 func _on_fuel_cyl_repaired() -> void:
