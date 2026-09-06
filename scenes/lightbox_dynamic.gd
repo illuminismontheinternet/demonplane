@@ -8,6 +8,7 @@ extends CSGBox3D
 #		editor_update_light()
 		
 @export var start_temp := 2200
+@export var target_intensity = 1000.0
 @onready var current_light = $SpotLight3D
 @onready var current_box = $"."
 
@@ -22,6 +23,7 @@ func _ready() -> void:
 		current_box.material = custom_mat
 	current_light.light_temperature = start_temp
 	current_box.material.emission = start_color
+	current_light.light_intensity_lumens = target_intensity
 
 func _change_light(inColor):
 	current_light.light_color = inColor

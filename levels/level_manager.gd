@@ -83,7 +83,7 @@ func execute_plane_event(event_type: plane_director.ENUM_PLANESTATUS):
 func execute_act_event(act_type: ENUM_ACT):
 	if act_type == ENUM_ACT.ENGINES:
 		bEnginesBroken = true
-		#print("execute_act_event - peer: ", multiplayer.get_unique_id())
+		print("execute_act_event - peer: ", multiplayer.get_unique_id())
 		#print("ENGINES ARE BROKEN - GO FIX THEM!!")
 		act_engines.start_broken_minigame()
 	if act_type == ENUM_ACT.ATTEMPT_LAND:
@@ -101,6 +101,8 @@ func _physics_process(_delta: float) -> void:
 		execute_plane_event.rpc(events[next_event].type)
 		execute_act_event.rpc(events[next_event].act)
 		next_event += 1
+	# TODO: move this to network manager
+	get_tree().call_group("enemy", "target_position", act_engines.global_transform.origin)
 	# calling this on the schedule now
 	#if seconds >= match_duration:
 		#match_finished.emit()

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://6eq33ntfj8n8"]
+
+[ext_resource type="PackedScene" uid="uid://cpciptftrgaiw" path="res://enemies/fbx_imp_v1.fbx" id="1_hvgea"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hvgea"]
+cull_mode = 1
+shading_mode = 0
+albedo_color = Color(0.104866765, 0.11391113, 0.108826764, 1)
+grow = true
+grow_amount = 0.001
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5e8fx"]
+next_pass = SubResource("StandardMaterial3D_hvgea")
+
+[node name="fbx_imp_v1" instance=ExtResource("1_hvgea")]
+
+[node name="pCube79" parent="." index="0"]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_5e8fx")

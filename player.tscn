@@ -1,13 +1,32 @@
-[gd_scene load_steps=11 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=16 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="2_hqtel"]
 [ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
+[ext_resource type="Shader" uid="uid://dkwg1ioqdlx0m" path="res://mat/postprocess.gdshader" id="3_sweqy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hqtel"]
+
+[sub_resource type="Curve" id="Curve_sweqy"]
+_data = [Vector2(0.0077821016, 0), 0.0, 0.0, 0, 0, Vector2(0.74967575, 0.10283369), -0.3748005, -0.3748005, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_2hs0m"]
+curve = SubResource("Curve_sweqy")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2hs0m"]
+render_priority = 0
+shader = ExtResource("3_sweqy")
+shader_parameter/distance_curve = SubResource("CurveTexture_2hs0m")
+shader_parameter/aberration_strength = 0.05
+
+[sub_resource type="QuadMesh" id="QuadMesh_1jxqw"]
+material = SubResource("ShaderMaterial_2hs0m")
+flip_faces = true
+size = Vector2(2, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_onrkg"]
 shader = ExtResource("2_i3pqv")
@@ -69,7 +88,13 @@ transform = Transform3D(0.5, 1.1489362e-08, 1.5369856e-09, -1.1489361e-08, 0.482
 
 [node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+target_position = Vector3(0, -2, 0)
 collision_mask = 2
+debug_shape_custom_color = Color(1, 0, 1, 1)
+
+[node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
+mesh = SubResource("QuadMesh_1jxqw")
 
 [node name="player_ui" type="Control" parent="."]
 layout_mode = 3
