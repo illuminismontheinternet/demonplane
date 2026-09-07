@@ -15,6 +15,7 @@ properties/1/replication_mode = 1
 
 [node name="character_imp" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_1r7yi")
+attack_damage = 90
 
 [node name="fbx_imp_v1" parent="." instance=ExtResource("1_qfmvp")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -0.9926328, 0)
@@ -22,7 +23,19 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rtcij")
 
+[node name="melee_ray" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.316149, 0)
+target_position = Vector3(0, -2, 0)
+collision_mask = 4
+debug_shape_custom_color = Color(1, 0, 1, 1)
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+target_desired_distance = 2.0
+avoidance_enabled = true
+debug_enabled = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_1r7yi")
+
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]

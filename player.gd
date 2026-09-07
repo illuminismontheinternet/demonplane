@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal signal_player_died(peerID : int)
+
 @onready var head = $neck/head
 @onready var body = $"."
 @onready var camera = $neck/head/Camera3D
@@ -45,6 +47,28 @@ var wish_dir : Vector3
 
 var bWasFalling = false
 
+# Health variables 
+const max_health = 100
+var health = max_health
+
+func restart_health():
+	health = max_health
+
+func get_current_health() -> float:
+	return health
+	
+func die():
+	if not multiplayer.is_server(): return
+	print("server: player dead")
+	signal_player_died.emit(int(multiplayer.get_unique_id()))
+	
+func apply_damage(inAmount):
+	if not multiplayer.is_server(): return
+	print("server: applying damage: ",inAmount )
+	health -= inAmount
+	if health <= 0:
+		die()
+		
 func _show_end_screen(bVictory):
 	hud_manager.ui_recieve_match_end(bVictory)
 		

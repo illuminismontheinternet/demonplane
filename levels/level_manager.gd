@@ -101,8 +101,6 @@ func _physics_process(_delta: float) -> void:
 		execute_plane_event.rpc(events[next_event].type)
 		execute_act_event.rpc(events[next_event].act)
 		next_event += 1
-	# TODO: move this to network manager
-	get_tree().call_group("enemy", "target_position", act_engines.global_transform.origin)
 	# calling this on the schedule now
 	#if seconds >= match_duration:
 		#match_finished.emit()

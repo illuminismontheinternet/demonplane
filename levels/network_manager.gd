@@ -16,6 +16,7 @@ extends Node3D
 	sp3
 ]
 var current_spawn_index = -1
+@onready var respawn_point = $RespawnPoint0
 
 var active_players : Dictionary = {}
 
@@ -27,6 +28,12 @@ var enet_peer = ENetMultiplayerPeer.new()
 
 signal network_match_finished(bVictory: bool)
 
+func respawn_player(inPeerID):
+	var respawning_player = 	active_players[inPeerID]
+	respawning_player.global_position = respawn_point.global_position
+	respawning_player.restart_health()
+	print("respawn_player - peer: ", multiplayer.get_unique_id())
+	
 func get_spawn_point() -> Vector3:
 	current_spawn_index = current_spawn_index + 1
 	return spawn_points[current_spawn_index].global_position
@@ -44,6 +51,8 @@ func add_player(peer_id):
 	# IMPORTANT: players are children of the network manager NOT the level
 	add_child(new_player)
 	new_player.global_position = get_spawn_point()
+	new_player.signal_player_died.connect(respawn_player)
+	
 	# IMPORTANT: add this to the active_players
 	active_players[peer_id] = new_player
 		
