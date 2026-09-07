@@ -31,7 +31,9 @@ signal network_match_finished(bVictory: bool)
 func respawn_player(inPeerID):
 	var respawning_player = 	active_players[inPeerID]
 	respawning_player.global_position = respawn_point.global_position
-	respawning_player.restart_health()
+	var health_component = respawning_player.get_node_or_null("Health")
+	if health_component:
+		health_component.restart_health()
 	print("respawn_player - peer: ", multiplayer.get_unique_id())
 	
 func get_spawn_point() -> Vector3:

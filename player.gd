@@ -14,6 +14,9 @@ signal signal_player_died(peerID : int)
 # ui elements
 @onready var hud_manager = $player_ui
 
+# health component
+@onready var health_component = $Health
+
 # viewbob constants
 const viewbob_const = 0.05
 var target_melee_basis = Basis.IDENTITY
@@ -47,27 +50,13 @@ var wish_dir : Vector3
 
 var bWasFalling = false
 
-# Health variables 
-const max_health = 100
-var health = max_health
+# damage values
+var damage = 20.0
 
-func restart_health():
-	health = max_health
-
-func get_current_health() -> float:
-	return health
-	
-func die():
+func player_die():
 	if not multiplayer.is_server(): return
 	print("server: player dead")
 	signal_player_died.emit(int(multiplayer.get_unique_id()))
-	
-func apply_damage(inAmount):
-	if not multiplayer.is_server(): return
-	print("server: applying damage: ",inAmount )
-	health -= inAmount
-	if health <= 0:
-		die()
 		
 func _show_end_screen(bVictory):
 	hud_manager.ui_recieve_match_end(bVictory)
@@ -85,8 +74,14 @@ func _action_swing_melee():
 	target_melee_basis = Basis.from_euler(rand_rot)
 	# attempt fix
 	if melee_ray.is_colliding():
-		var current_interactable = melee_ray.get_collider()
-		current_interactable.attempt_repair()
+		var current_collider = melee_ray.get_collider()
+		if current_collider.has_method("attempt_repair"):
+			current_collider.attempt_repair()
+		else:
+			# NOTE: this requires the health on same level as collider
+			var health_component = current_collider.get_node_or_null("Health")
+			if health_component:
+				health_component.apply_damage(damage)
 	
 func _handle_melee_reset(delta):
 	var t = delta * 10
@@ -119,6 +114,8 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 	
 func _ready():
+	health_component.signal_died.connect(player_die)
+	
 	# network manager bind for end match
 	get_parent().network_match_finished.connect(_on_level_match_finished)
 	if not is_multiplayer_authority(): return

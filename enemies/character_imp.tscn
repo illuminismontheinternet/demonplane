@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bbljovy1yg3fh"]
+[gd_scene load_steps=6 format=3 uid="uid://bbljovy1yg3fh"]
 
 [ext_resource type="Script" uid="uid://bwr4kd304u2pk" path="res://enemies/character_imp.gd" id="1_1r7yi"]
 [ext_resource type="PackedScene" uid="uid://6eq33ntfj8n8" path="res://enemies/mesh_imp.tscn" id="1_qfmvp"]
+[ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_eeun4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rtcij"]
 
@@ -12,25 +13,36 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("mesh_parent:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [node name="character_imp" type="CharacterBody3D" groups=["enemy"]]
+collision_layer = 9
 script = ExtResource("1_1r7yi")
 attack_damage = 90
 
-[node name="fbx_imp_v1" parent="." instance=ExtResource("1_qfmvp")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, -0.9926328, 0)
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_eeun4")
+metadata/_custom_type_script = "uid://bjty7py16yihl"
+
+[node name="mesh_parent" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9946107, 0)
+
+[node name="fbx_imp_v1" parent="mesh_parent" instance=ExtResource("1_qfmvp")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 0)
+
+[node name="melee_ray" type="RayCast3D" parent="mesh_parent"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1.2946107, 0)
+target_position = Vector3(0, -1.5, 0)
+collision_mask = 4
+debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rtcij")
 
-[node name="melee_ray" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.316149, 0)
-target_position = Vector3(0, -2, 0)
-collision_mask = 4
-debug_shape_custom_color = Color(1, 0, 1, 1)
-
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-target_desired_distance = 2.0
+target_desired_distance = 3.0
 avoidance_enabled = true
 debug_enabled = true
 

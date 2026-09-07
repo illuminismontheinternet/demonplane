@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=17 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
 [ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="2_hqtel"]
 [ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
@@ -65,8 +66,13 @@ properties/4/replication_mode = 1
 collision_layer = 5
 script = ExtResource("1_4flbx")
 
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_2hs0m")
+metadata/_custom_type_script = "uid://bjty7py16yihl"
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_5xgho")
+debug_fill = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_hqtel")
@@ -90,7 +96,7 @@ transform = Transform3D(0.5, 1.1489362e-08, 1.5369856e-09, -1.1489361e-08, 0.482
 [node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 target_position = Vector3(0, -2, 0)
-collision_mask = 2
+collision_mask = 10
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
