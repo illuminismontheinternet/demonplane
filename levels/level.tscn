@@ -458,7 +458,7 @@ replication_config = SubResource("SceneReplicationConfig_d5x7l")
 navigation_mesh = SubResource("NavigationMesh_rtcij")
 
 [node name="character_imp" parent="." instance=ExtResource("10_ukwr8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9842987, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9842987, -1.1861379)
 
 [connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]

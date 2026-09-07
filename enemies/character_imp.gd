@@ -8,6 +8,7 @@ extends CharacterBody3D
 var bCanAttack = true
 const attack_delay = 2.0
 @export var attack_damage = 10
+var attack_velocity_multiplier = 5.0
 
 var bHasTarget = false
 var current_target_node : Node3D
@@ -18,6 +19,10 @@ var SPEED = 3.0
 @onready var health_component = $Health
 var bIsAlive = true
 
+func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
+	print("imp_hurt")
+	velocity += inVelocity
+	
 func imp_die():
 	bIsAlive = false
 	imp_mesh.rotation.x = -85
@@ -37,7 +42,8 @@ func attempt_attack_rpc():
 		var target_health = incoming_target.get_node_or_null("Health")
 		if target_health:
 			print("imp found health component")
-			target_health.apply_damage(attack_damage)
+			var hurt_velocity = (incoming_target.global_position - parent.global_position).normalized() * attack_velocity_multiplier
+			target_health.apply_damage(attack_damage, hurt_velocity)
 			
 			# check if player 'died'
 			if target_health.get_current_health() <= 50:
@@ -54,8 +60,12 @@ func get_target_player():
 
 func _ready() -> void:
 	health_component.signal_died.connect(imp_die)
-		
+	health_component.signal_health_changed.connect(imp_hurt)
+	
 func _physics_process(_delta: float):
+	if not is_on_floor():
+		velocity.y -= 9.8
+		
 	if !is_multiplayer_authority(): return
 	if bIsAlive:
 		var current_loc = global_transform.origin
