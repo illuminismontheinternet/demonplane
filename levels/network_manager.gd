@@ -1,7 +1,9 @@
 extends Node3D
+class_name NetworkManager
 
 @onready var multiplayer_panel = $"../CanvasLayer/MultiplayerPanel"
 @onready var addy_box = $"../CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/Addy"
+@onready var decal_manager = $DecalManager
 
 # spawn points
 @onready var sp0 = $SpawnPoint0
@@ -28,17 +30,28 @@ var enet_peer = ENetMultiplayerPeer.new()
 
 signal network_match_finished(bVictory: bool)
 
-func respawn_player(inPeerID):
-	var respawning_player = 	active_players[inPeerID]
-	respawning_player.global_position = respawn_point.global_position
+func place_impact_decal(inPosition, inNormal) -> void:
+	decal_manager.place_decal_impact(inPosition, inNormal)
+	
+func get_respawn_loc() -> Vector3:
+	return respawn_point.global_position
+	
+@rpc("any_peer", "call_local", "reliable")
+func respawn_player_rpc(inPeerID):
+	if not is_multiplayer_authority(): return
+	var respawning_player = active_players[inPeerID]
 	var health_component = respawning_player.get_node_or_null("Health")
 	if health_component:
 		health_component.restart_health()
-	print("respawn_player - peer: ", multiplayer.get_unique_id())
 	
+func respawn_player(inPeerID):
+	respawn_player_rpc.rpc(inPeerID)
+
 func get_spawn_point() -> Vector3:
 	current_spawn_index = current_spawn_index + 1
-	return spawn_points[current_spawn_index].global_position
+	#print("current spawn index: ", current_spawn_index)
+	#print(spawn_points.get(current_spawn_index).global_position)
+	return spawn_points.get(current_spawn_index).global_position
 	
 func remove_player(peer_id):
 	var leaving_player = get_node_or_null(str(peer_id))
@@ -48,15 +61,14 @@ func remove_player(peer_id):
 		leaving_player.queue_free()
 		
 func add_player(peer_id):
+	# WARNING peer_id is unique but the originating call is only ran on the host machine
 	var new_player = player_scene.instantiate()
 	new_player.name = str(peer_id)
+	#print("add_player - peer: ", peer_id)
 	# IMPORTANT: players are children of the network manager NOT the level
 	add_child(new_player)
-	new_player.global_position = get_spawn_point()
-	new_player.signal_player_died.connect(respawn_player)
-	
-	# IMPORTANT: add this to the active_players
 	active_players[peer_id] = new_player
+	print(active_players)
 		
 func _on_host_button_pressed() -> void:
 	multiplayer_panel.hide()
@@ -97,3 +109,4 @@ func _on_level_match_finished(bVictory: bool) -> void:
 	# DO NOT notify players manually let rpc handle it
 	#for key in active_players:
 		#active_players[key]._on_level_match_finished(bVictory)
+	

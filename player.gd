@@ -10,12 +10,16 @@ signal signal_player_died(peerID : int)
 @onready var melee_parent = $neck/head/Camera3D/weapon/melee
 @onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench
 @onready var melee_ray = $neck/head/Camera3D/weapon/melee_ray
+@onready var env_ray = $neck/head/Camera3D/weapon/env_ray
 
 # ui elements
 @onready var hud_manager = $player_ui
 
 # health component
 @onready var health_component = $Health
+
+# network manager is just parent
+var network_manager : NetworkManager
 
 # viewbob constants
 const viewbob_const = 0.05
@@ -26,7 +30,7 @@ const SPEED_MULT = 1.0
 var SPRINT_MULT = 1.0
 const SPRINT_MAX = 2.0
 const STOP_SPEED = 2
-const OUTSIDE_STOP_SPEED = 0.5
+const OUTSIDE_STOP_SPEED = 0.9
 var MOMEMTUM_MULT = 1.1
 
 const JUMP_VELOCITY = 5.5
@@ -56,14 +60,19 @@ var damage = 20.0
 var attack_velocity_multiplier = 6.0
 
 func player_hurt(inVelocity, _inHealth, _inMaxHealth):
-	print("player_hurt")
+	#print("player_hurt")
 	OUTSIDE_VELOCITY += inVelocity
 	velocity.y += inVelocity.y
+
+@rpc("any_peer", "call_local", "reliable")
+func player_reset_loc_rpc():
+	global_position = network_manager.get_respawn_loc()
 	
 func player_die():
-	if not multiplayer.is_server(): return
-	print("server: player dead")
-	signal_player_died.emit(int(multiplayer.get_unique_id()))
+	#if not multiplayer.is_server(): return
+	print("player dead ", multiplayer.get_unique_id())
+	player_reset_loc_rpc.rpc()
+	signal_player_died.emit(multiplayer.get_unique_id())
 		
 func _show_end_screen(bVictory):
 	hud_manager.ui_recieve_match_end(bVictory)
@@ -71,7 +80,11 @@ func _show_end_screen(bVictory):
 func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
 		_action_swing_melee()
-		
+
+func place_impact_decal(inPosition, inNormal):
+	print("place decal")
+	network_manager.place_impact_decal(inPosition, inNormal)
+
 func _action_swing_melee():
 	var rand_rot := Vector3(
 		randf_range(-melee_rand_pos, -melee_rand_pos/2),
@@ -79,17 +92,20 @@ func _action_swing_melee():
 		randf_range(0, 0),
 	)
 	target_melee_basis = Basis.from_euler(rand_rot)
-	# attempt fix
+
 	if melee_ray.is_colliding():
 		var current_collider = melee_ray.get_collider()
+		# Attempt repair
 		if current_collider.has_method("attempt_repair"):
 			current_collider.attempt_repair()
-		else:
-			# NOTE: this requires the health on same level as collider
-			var target_health_component = current_collider.get_node_or_null("Health")
+		# Attempt damage NOTE: this requires the health on same level as collider
+		var target_health_component = current_collider.get_node_or_null("Health")
+		if target_health_component:
 			var hurt_velocity = (current_collider.global_position - global_position).normalized() * attack_velocity_multiplier
-			if target_health_component:
-				target_health_component.apply_damage(damage,hurt_velocity)
+			target_health_component.apply_damage(damage,hurt_velocity)
+	if env_ray.is_colliding():
+		# Place decal
+		place_impact_decal(env_ray.get_collision_point(), env_ray.get_collision_normal())
 	
 func _handle_melee_reset(delta):
 	var t = delta * 10
@@ -122,12 +138,15 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 	
 func _ready():
+	network_manager = get_parent()
+	global_position = network_manager.get_spawn_point()
 	health_component.signal_died.connect(player_die)
 	health_component.signal_health_changed.connect(player_hurt)
-	
-	# network manager bind for end match
-	get_parent().network_match_finished.connect(_on_level_match_finished)
+	# network manager bind for end match and respawn
+	signal_player_died.connect(network_manager.respawn_player)
+	network_manager.network_match_finished.connect(_on_level_match_finished)
 	if not is_multiplayer_authority(): return
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = true
 		

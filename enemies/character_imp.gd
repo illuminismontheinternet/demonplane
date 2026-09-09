@@ -8,7 +8,7 @@ extends CharacterBody3D
 var bCanAttack = true
 const attack_delay = 2.0
 @export var attack_damage = 10
-var attack_velocity_multiplier = 5.0
+var attack_velocity_multiplier = 2.0
 
 var bHasTarget = false
 var current_target_node : Node3D
@@ -20,7 +20,7 @@ var SPEED = 3.0
 var bIsAlive = true
 
 func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
-	print("imp_hurt")
+	#print("imp_hurt")
 	velocity += inVelocity
 	
 func imp_die():
@@ -31,32 +31,27 @@ func imp_die():
 func reset_attack():
 	bCanAttack = true
 
-@rpc("authority", "call_local","reliable")
-func attempt_attack_rpc():
+func attempt_attack():
 	if bIsAlive and bCanAttack and melee_ray.is_colliding():
 		bCanAttack = false
 		get_tree().create_timer(attack_delay).timeout.connect(reset_attack)
 		var incoming_target = melee_ray.get_collider()
 		# NOTE: this requires the health on same level as collider
-		print(incoming_target)
+		#print("imp incoming target: ",incoming_target)
 		var target_health = incoming_target.get_node_or_null("Health")
+		#print("target health: ", target_health)
 		if target_health:
-			print("imp found health component")
 			var hurt_velocity = (incoming_target.global_position - parent.global_position).normalized() * attack_velocity_multiplier
 			target_health.apply_damage(attack_damage, hurt_velocity)
-			
-			# check if player 'died'
-			if target_health.get_current_health() <= 50:
-				bHasTarget = false
 
 func get_target_player():
 	if !is_multiplayer_authority(): return
 	if bIsAlive:
 		var players = get_tree().get_nodes_in_group("player")
 		#print(players.size())
-		if players.size() > 0:
+		if players.size() > 1:
 			bHasTarget = true
-			current_target_node = players.pick_random()
+			current_target_node = players.get(1)#players.pick_random()
 
 func _ready() -> void:
 	health_component.signal_died.connect(imp_die)
@@ -87,8 +82,7 @@ func update_target_position(inTarget):
 	nav.target_position = current_target_position
 	
 func _on_navigation_agent_3d_target_reached() -> void:
-	if !is_multiplayer_authority(): return
-	attempt_attack_rpc.rpc()
+	attempt_attack()
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
 	velocity = velocity.move_toward(safe_velocity,0.25)

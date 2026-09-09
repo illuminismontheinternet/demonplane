@@ -13,17 +13,25 @@ func _ready() -> void:
 func get_current_health() -> float:
 	return health
 	
-func restart_health():
+@rpc("any_peer", "call_local","reliable")
+func restart_health_rpc():
 	health = max_health
+	
+func restart_health():
+	restart_health_rpc.rpc()
 
 func apply_damage(inAmount, inVelocity):
-	apply_damage_rpc.rpc(inAmount, inVelocity)
-
-@rpc("any_peer", "call_local", "reliable")
+	apply_damage_rpc.rpc_id(get_multiplayer_authority(), inAmount, inVelocity)
+	#apply_damage_rpc(inAmount, inVelocity)
+	
+@rpc("any_peer", "call_local","reliable")
 func apply_damage_rpc(inAmount, inVelocity):
-	if not multiplayer.is_server(): return
-	if health <= 0: return
-	print("server: applying damage: ",inAmount )
+	#if not multiplayer.is_server(): return
+	if health <= 0: 
+		print("Health component: already dead on peer id: ", multiplayer.get_unique_id())
+		return
+	#print("server: applying damage: ",inAmount )
+	print("apply_damage_rpc - peer: ", multiplayer.get_unique_id())
 	health = max(health - inAmount, 0)
 	signal_health_changed.emit(inVelocity, health, max_health)
 	if health <= 0:
