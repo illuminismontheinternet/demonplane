@@ -51,7 +51,7 @@ func get_target_player():
 		#print(players.size())
 		if players.size() > 1:
 			bHasTarget = true
-			current_target_node = players.get(1)#players.pick_random()
+			current_target_node = players.get(0)#players.pick_random()
 
 func _ready() -> void:
 	health_component.signal_died.connect(imp_die)

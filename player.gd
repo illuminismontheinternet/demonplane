@@ -81,9 +81,9 @@ func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
 		_action_swing_melee()
 
-func place_impact_decal(inPosition, inNormal):
+func place_impact_decal(inCollider, inPosition, inNormal):
 	print("place decal")
-	network_manager.place_impact_decal(inPosition, inNormal)
+	network_manager.place_impact_decal(inCollider, inPosition, inNormal)
 
 func _action_swing_melee():
 	var rand_rot := Vector3(
@@ -105,7 +105,7 @@ func _action_swing_melee():
 			target_health_component.apply_damage(damage,hurt_velocity)
 	if env_ray.is_colliding():
 		# Place decal
-		place_impact_decal(env_ray.get_collision_point(), env_ray.get_collision_normal())
+		place_impact_decal(env_ray.get_collider(), env_ray.get_collision_point(), env_ray.get_collision_normal())
 	
 func _handle_melee_reset(delta):
 	var t = delta * 10

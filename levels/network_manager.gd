@@ -30,8 +30,8 @@ var enet_peer = ENetMultiplayerPeer.new()
 
 signal network_match_finished(bVictory: bool)
 
-func place_impact_decal(inPosition, inNormal) -> void:
-	decal_manager.place_decal_impact(inPosition, inNormal)
+func place_impact_decal(inCollider, inPosition, inNormal) -> void:
+	decal_manager.place_decal_impact(inCollider, inPosition, inNormal)
 	
 func get_respawn_loc() -> Vector3:
 	return respawn_point.global_position

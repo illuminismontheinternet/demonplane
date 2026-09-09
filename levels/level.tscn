@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=30 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -12,11 +12,18 @@
 [ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="10_pb8y7"]
 [ext_resource type="PackedScene" uid="uid://bbljovy1yg3fh" path="res://enemies/character_imp.tscn" id="10_ukwr8"]
 
+[sub_resource type="Gradient" id="Gradient_pb8y7"]
+offsets = PackedFloat32Array(0, 0.19052133, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.2618196, 0.091250695, 0.034063023, 1, 0.90374976, 0.80115616, 0.52303016, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hy0rb"]
+gradient = SubResource("Gradient_pb8y7")
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x7l"]
-sky_top_color = Color(1, 0.5019608, 0.050980393, 1)
-sky_horizon_color = Color(0.44313726, 0.18039216, 0.09019608, 1)
-ground_bottom_color = Color(0.28627452, 0.09803922, 0.05490196, 1)
-ground_horizon_color = Color(0.47058824, 0.18039216, 0.08627451, 1)
+sky_top_color = Color(0.5975234, 0.67152905, 0.728787, 1)
+sky_horizon_color = Color(0.6945631, 0.48628956, 0.36584297, 1)
+ground_bottom_color = Color(0.06654992, 0.19039017, 0.17399111, 1)
+ground_horizon_color = Color(0.69411767, 0.4862745, 0.3647059, 1)
 sun_angle_max = 45.0
 sun_curve = 0.05792626
 
@@ -30,6 +37,8 @@ sky = SubResource("Sky_u52ul")
 ambient_light_source = 3
 ambient_light_sky_contribution = 0.1
 reflected_light_source = 2
+tonemap_mode = 2
+tonemap_exposure = 0.9
 ssao_enabled = true
 glow_enabled = true
 glow_normalized = true
@@ -37,8 +46,8 @@ volumetric_fog_density = 0.01
 volumetric_fog_albedo = Color(0.04755766, 0.047557645, 0.047557645, 1)
 volumetric_fog_length = 6.08
 adjustment_enabled = true
-adjustment_contrast = 1.5
-adjustment_saturation = 1.5
+adjustment_contrast = 1.2
+adjustment_color_correction = SubResource("GradientTexture1D_hy0rb")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vnv7o"]
 
@@ -58,13 +67,14 @@ size = Vector3(2, 1, 2)
 size = Vector3(2, 1, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ukwr8"]
-render_priority = 0
+render_priority = 1
 shader = ExtResource("9_rtcij")
 shader_parameter/wave_scale = 3.0
-shader_parameter/albedo = Color(0.79638106, 0.77340955, 0.94327766, 1)
-shader_parameter/emission = Color(4.0911138e-07, 0.26556662, 0.34057277, 1)
+shader_parameter/albedo = Color(0.6866371, 0.84266186, 0.735329, 1)
+shader_parameter/emission = Color(0.076027654, 0.25118437, 0.38261053, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_d5x7l"]
+lightmap_size_hint = Vector2i(50002, 50002)
 material = SubResource("ShaderMaterial_ukwr8")
 size = Vector2(10000, 10000)
 subdivide_width = 1000
@@ -137,9 +147,9 @@ spawn_path = NodePath("..")
 environment = SubResource("Environment_vonw3")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.43213362, 0.10573232, 0.8955898, -0.0737806, -0.98562866, 0.15196228, 0.89878637, -0.13174514, -0.41812235, 0, 18.594637, 0)
+transform = Transform3D(0.43743622, 0.33229834, 0.8356001, 0.028855072, -0.9339278, 0.3562954, 0.8987865, -0.13174519, -0.41812232, 0, 18.594637, 0)
 light_intensity_lux = 1.5
-light_temperature = 1836.0
+light_temperature = 3500.0
 light_bake_mode = 0
 shadow_enabled = true
 
@@ -244,9 +254,9 @@ height = 18.0
 sides = 16
 
 [node name="neg_doors" type="CSGBox3D" parent="CSGPlaneParent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8253302, -0.53859997)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.539)
 operation = 2
-size = Vector3(20, 2, 1.5)
+size = Vector3(20, 3, 1.5)
 
 [node name="window_7" type="CSGCylinder3D" parent="CSGPlaneParent"]
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 2.5541105)

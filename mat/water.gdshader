@@ -14,8 +14,8 @@ void vertex() {
 void fragment() {
 	ALBEDO = albedo.rgb;
 	EMISSION = emission.rgb;
-	ROUGHNESS = 0.25;
-	ALPHA = 0.9;
-	SPECULAR = 0.4;
+	//ROUGHNESS = 0.15;
+	ALPHA = 0.5;
+	SPECULAR = 0.1;
 	METALLIC = 0.01;
 }

@@ -7,10 +7,11 @@ extends Node3D
 var current_index = 0
 var impact_array = []
 
-func place_decal_impact(inPosition, inNormal) -> void:
+func place_decal_impact(inCollider, inPosition, inNormal) -> void:
 	impact_array.get(current_index).global_position = inPosition
 	impact_array.get(current_index).look_at(inPosition, inNormal)
-	print(impact_array.get(current_index).rotation)
+	#print(impact_array.get(current_index).rotation)
+	impact_array.get(current_index).reparent(inCollider)
 	current_index = current_index + 1
 	if current_index >= decal_impact_pool_size:
 		current_index = 0
