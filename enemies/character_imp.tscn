@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://bbljovy1yg3fh"]
 
 [ext_resource type="Script" uid="uid://bwr4kd304u2pk" path="res://enemies/character_imp.gd" id="1_1r7yi"]
-[ext_resource type="PackedScene" uid="uid://6eq33ntfj8n8" path="res://enemies/mesh_imp.tscn" id="1_qfmvp"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_eeun4"]
+[ext_resource type="PackedScene" uid="uid://7vna7unlodmx" path="res://enemies/mesh_imp_v2.tscn" id="3_eeun4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rtcij"]
 
@@ -29,13 +29,13 @@ metadata/_custom_type_script = "uid://bjty7py16yihl"
 [node name="mesh_parent" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9946107, 0)
 
-[node name="fbx_imp_v1" parent="mesh_parent" instance=ExtResource("1_qfmvp")]
-transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 0)
-
 [node name="melee_ray" type="RayCast3D" parent="mesh_parent"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1.2946107, 0)
 collision_mask = 4
 debug_shape_custom_color = Color(1, 0, 1, 1)
+
+[node name="fbx_imp_v3" parent="mesh_parent" instance=ExtResource("3_eeun4")]
+transform = Transform3D(-15, 0, -1.3113416e-06, 0, 15, 0, 1.3113416e-06, 0, -15, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rtcij")

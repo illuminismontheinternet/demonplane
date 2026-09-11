@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://7pp3owc3skbj"]
+
+[ext_resource type="PackedScene" uid="uid://cvfax5ya1x2pl" path="res://characters/fbx_pilot_v1.fbx" id="1_iwqai"]
+[ext_resource type="Shader" uid="uid://d1xp5g3oc7ris" path="res://mat/matcap.gdshader" id="2_n3kg4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5xqy"]
+cull_mode = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.13682577, 0.13682574, 0.13682571, 1)
+texture_filter = 0
+texture_repeat = false
+disable_receive_shadows = true
+grow = true
+grow_amount = 0.001
+stencil_flags = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bpxrc"]
+render_priority = 0
+next_pass = SubResource("StandardMaterial3D_u5xqy")
+shader = ExtResource("2_n3kg4")
+shader_parameter/color1 = Color(0.5172278, 0.58873284, 0.5951136, 1)
+shader_parameter/color2 = Color(0.41340116, 0.25630078, 0.049324207, 1)
+shader_parameter/lightness = 0.50000002375
+shader_parameter/sharpness = 1.5
+shader_parameter/x_offset = 0.0
+shader_parameter/y_offset = 0.0
+shader_parameter/z_offset = 1.0
+
+[node name="fbx_pilot_v1" instance=ExtResource("1_iwqai")]
+
+[node name="pCube17" parent="." index="0"]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
+surface_material_override/0 = SubResource("ShaderMaterial_bpxrc")

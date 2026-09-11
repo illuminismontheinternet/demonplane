@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://6eq33ntfj8n8"]
+[gd_scene load_steps=5 format=3 uid="uid://7vna7unlodmx"]
 
-[ext_resource type="PackedScene" uid="uid://cpciptftrgaiw" path="res://enemies/fbx_imp_v1.fbx" id="1_hvgea"]
-[ext_resource type="Shader" uid="uid://d1xp5g3oc7ris" path="res://mat/matcap.gdshader" id="2_10vfq"]
+[ext_resource type="PackedScene" uid="uid://dqox7n3ud3x5w" path="res://enemies/fbx_imp_v2.fbx" id="1_fu48i"]
+[ext_resource type="Shader" uid="uid://d1xp5g3oc7ris" path="res://mat/matcap.gdshader" id="2_dp0s2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0dej"]
 cull_mode = 1
@@ -16,10 +16,10 @@ grow = true
 grow_amount = 0.001
 stencil_flags = 2
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yybn7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2thc"]
 render_priority = 0
 next_pass = SubResource("StandardMaterial3D_a0dej")
-shader = ExtResource("2_10vfq")
+shader = ExtResource("2_dp0s2")
 shader_parameter/color1 = Color(0.7658544, 0.50423986, 0.2995176, 1)
 shader_parameter/color2 = Color(0, 0, 0, 1)
 shader_parameter/lightness = 0.50000002375
@@ -28,8 +28,8 @@ shader_parameter/x_offset = 0.0
 shader_parameter/y_offset = 0.0
 shader_parameter/z_offset = 1.0
 
-[node name="fbx_imp_v1" instance=ExtResource("1_hvgea")]
-
-[node name="pCube79" parent="." index="0"]
+[node name="fbx_imp_v2" instance=ExtResource("1_fu48i")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
-surface_material_override/0 = SubResource("ShaderMaterial_yybn7")
+
+[node name="polySurface25" parent="." index="0"]
+material_override = SubResource("ShaderMaterial_v2thc")

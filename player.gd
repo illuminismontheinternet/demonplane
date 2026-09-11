@@ -4,6 +4,7 @@ signal signal_player_died(peerID : int)
 
 @onready var head = $neck/head
 @onready var body = $"."
+@onready var playermesh = $fbx_pilot_v1
 @onready var camera = $neck/head/Camera3D
 @onready var wep_parent = $neck/head/Camera3D/weapon
 
@@ -146,7 +147,7 @@ func _ready():
 	signal_player_died.connect(network_manager.respawn_player)
 	network_manager.network_match_finished.connect(_on_level_match_finished)
 	if not is_multiplayer_authority(): return
-
+	playermesh.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = true
 		
