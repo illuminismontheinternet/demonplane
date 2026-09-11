@@ -9,7 +9,7 @@ signal signal_player_died(peerID : int)
 @onready var wep_parent = $neck/head/Camera3D/weapon
 
 @onready var melee_parent = $neck/head/Camera3D/weapon/melee
-@onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench
+@onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench2
 @onready var melee_ray = $neck/head/Camera3D/weapon/melee_ray
 @onready var env_ray = $neck/head/Camera3D/weapon/env_ray
 

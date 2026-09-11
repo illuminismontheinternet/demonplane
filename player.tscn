@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://7pp3owc3skbj" path="res://characters/pilot_mesh.tscn" id="2_1jxqw"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
-[ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="2_hqtel"]
 [ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
 [ext_resource type="Shader" uid="uid://dkwg1ioqdlx0m" path="res://mat/postprocess.gdshader" id="3_sweqy"]
+[ext_resource type="PackedScene" uid="uid://cu6db4bdainc0" path="res://mesh/mesh_wrench.tscn" id="4_1jxqw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
 
@@ -89,8 +89,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
 
 [node name="melee" type="Node3D" parent="neck/head/Camera3D/weapon"]
 
-[node name="wrench" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("2_hqtel")]
-transform = Transform3D(0.3, 9.441573e-09, 1.7584192e-09, -9.441575e-09, 0.27988607, 0.10799904, 1.7584121e-09, -0.10799904, 0.27988607, 0.16416463, -0.16538495, -0.27407527)
+[node name="wrench2" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("4_1jxqw")]
+transform = Transform3D(0.3, 9.441573e-09, 1.7584197e-09, -9.441575e-09, 0.27988607, 0.10799904, 1.7584122e-09, -0.10799904, 0.27988607, 0.16416463, -0.16538495, -0.27407527)
 
 [node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)

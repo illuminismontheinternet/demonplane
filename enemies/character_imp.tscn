@@ -20,7 +20,6 @@ properties/2/replication_mode = 1
 [node name="character_imp" type="CharacterBody3D" groups=["enemy"]]
 collision_layer = 9
 script = ExtResource("1_1r7yi")
-attack_damage = 90
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_eeun4")

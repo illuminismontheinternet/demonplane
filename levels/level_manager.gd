@@ -6,6 +6,7 @@ signal match_finished(bVictory: bool)
 # 300 seconds is 5 minutes
 @export var match_duration := 300
 @onready var act_engines = $CSGPlaneParent/ACT_Engines
+@onready var act_enemies = $CSGPlaneParent/ACT_Enemies
 
 # game ending variables
 var bEnginesBroken = false
@@ -13,6 +14,7 @@ var bEnginesBroken = false
 enum ENUM_ACT {
 	NONE,
 	ENGINES,
+	IMP_WAVE,
 	PILOT,
 	WING_RIGHT,
 	WING_LEFT,
@@ -30,7 +32,7 @@ var events = [
 	{
 		"time": 5,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
-		"act" : ENUM_ACT.NONE
+		"act" : ENUM_ACT.IMP_WAVE
 	},
 	{
 		"time": 10,
@@ -86,6 +88,8 @@ func execute_act_event(act_type: ENUM_ACT):
 		print("execute_act_event - peer: ", multiplayer.get_unique_id())
 		#print("ENGINES ARE BROKEN - GO FIX THEM!!")
 		act_engines.start_broken_minigame()
+	if act_type == ENUM_ACT.IMP_WAVE:
+		act_enemies.start_enemy_wave()
 	if act_type == ENUM_ACT.ATTEMPT_LAND:
 		end_match.rpc()
 		

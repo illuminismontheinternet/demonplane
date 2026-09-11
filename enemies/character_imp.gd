@@ -1,9 +1,14 @@
 extends CharacterBody3D
 
+signal signal_imp_died 
+
 @onready var nav = $NavigationAgent3D
 @onready var parent = $"."
 @onready var melee_ray = $mesh_parent/melee_ray
 @onready var imp_mesh = $mesh_parent
+# network manager is just parent
+var act_enemies : ActEnemies
+
 
 var bCanAttack = true
 const attack_delay = 2.0
@@ -17,15 +22,24 @@ var SPEED = 3.0
 
 # health variables
 @onready var health_component = $Health
-var bIsAlive = true
+# WARNING isAlive is used as a 'sleep variable'
+var bIsAlive = false
 
+@rpc("any_peer", "call_local", "reliable")
+func imp_reset_loc_rpc():
+	global_position = act_enemies.get_imp_respawn_loc()
+	
 func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
 	#print("imp_hurt")
 	velocity += inVelocity
 	
 func imp_die():
+	signal_imp_died.emit()
 	bIsAlive = false
-	imp_mesh.rotation.x = -85
+	set_collision_layer_value(1, false)
+	set_collision_mask_value(1, false)
+	set_collision_mask_value(2, true)
+	imp_mesh.rotation.x = deg_to_rad(-85)
 	nav.set_velocity(Vector3.ZERO)
 	
 func reset_attack():
@@ -49,11 +63,12 @@ func get_target_player():
 	if bIsAlive:
 		var players = get_tree().get_nodes_in_group("player")
 		#print(players.size())
-		if players.size() > 1:
+		if players.size() > 0:
 			bHasTarget = true
-			current_target_node = players.get(0)#players.pick_random()
+			current_target_node = players.pick_random()#players.get(0)#
 
 func _ready() -> void:
+	act_enemies = get_parent()
 	health_component.signal_died.connect(imp_die)
 	health_component.signal_health_changed.connect(imp_hurt)
 	
