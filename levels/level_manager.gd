@@ -83,15 +83,17 @@ func execute_plane_event(event_type: plane_director.ENUM_PLANESTATUS):
 
 @rpc("authority", "call_local", "reliable")
 func execute_act_event(act_type: ENUM_ACT):
-	if act_type == ENUM_ACT.ENGINES:
-		bEnginesBroken = true
-		print("execute_act_event - peer: ", multiplayer.get_unique_id())
-		#print("ENGINES ARE BROKEN - GO FIX THEM!!")
-		act_engines.start_broken_minigame()
-	if act_type == ENUM_ACT.IMP_WAVE:
-		act_enemies.start_enemy_wave()
-	if act_type == ENUM_ACT.ATTEMPT_LAND:
-		end_match.rpc()
+	match act_type:
+		ENUM_ACT.ENGINES:
+			bEnginesBroken = true
+			print("execute_act_event - peer: ", multiplayer.get_unique_id())
+			#print("ENGINES ARE BROKEN - GO FIX THEM!!")
+			act_engines.start_broken_minigame()
+		ENUM_ACT.IMP_WAVE:
+			print("start_enemy_wave - peer: ", multiplayer.get_unique_id())
+			act_enemies.start_enemy_wave()
+		ENUM_ACT.ATTEMPT_LAND:
+			end_match.rpc()
 		
 # normal funcs
 func _ready() -> void:

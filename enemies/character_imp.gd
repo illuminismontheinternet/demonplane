@@ -6,19 +6,31 @@ signal signal_imp_died
 @onready var parent = $"."
 @onready var melee_ray = $mesh_parent/melee_ray
 @onready var imp_mesh = $mesh_parent
-# network manager is just parent
+
+enum IMP_STATE {
+	IDLE,
+	SEARCHING,
+	HUNTING,
+	ATTACKING,
+	JUMPINGLINK,
+	DEAD
+}
+var current_state = IMP_STATE.IDLE
+
+# act_enemies manager is just parent
 var act_enemies : ActEnemies
 
-
-var bCanAttack = true
-const attack_delay = 2.0
 @export var attack_damage = 10
+const attack_delay = 2.0
+var bCanAttack = true
 var attack_velocity_multiplier = 2.0
 
-var bHasTarget = false
 var current_target_node : Node3D
 var current_target_position : Vector3
 var SPEED = 3.0
+var new_safe_velocity : Vector3
+
+var target_jump_link : Vector3
 
 # health variables
 @onready var health_component = $Health
@@ -35,6 +47,7 @@ func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
 	
 func imp_die():
 	signal_imp_died.emit()
+	current_state = IMP_STATE.DEAD
 	bIsAlive = false
 	set_collision_layer_value(1, false)
 	set_collision_mask_value(1, false)
@@ -64,9 +77,48 @@ func get_target_player():
 		var players = get_tree().get_nodes_in_group("player")
 		#print(players.size())
 		if players.size() > 0:
-			bHasTarget = true
 			current_target_node = players.pick_random()#players.get(0)#
+			current_state = IMP_STATE.HUNTING
 
+func turn_to_loc(inPosition):
+	imp_mesh.look_at(inPosition, Vector3(0,1,0))
+	imp_mesh.rotation.x = 0
+	imp_mesh.rotation.z = 0
+			
+func handle_state_machine():
+# Handle states
+	print("state: ", current_state)
+	match current_state:
+		IMP_STATE.IDLE:
+			print("IMP IDLE")
+			current_state = IMP_STATE.SEARCHING
+		IMP_STATE.SEARCHING:
+			get_target_player()
+		IMP_STATE.HUNTING:
+			# Face the target
+			update_target_position(current_target_node.global_position)
+			turn_to_loc(current_target_position)
+			
+			# Move to target
+			var current_loc = global_transform.origin
+			var next_loc = nav.get_next_path_position()
+			var new_vel = (next_loc	 - current_loc).normalized() * SPEED
+			# update avoidance information
+			nav.set_velocity(new_vel)
+			velocity = velocity.move_toward(new_safe_velocity,0.25)
+		IMP_STATE.ATTACKING:
+			attempt_attack()
+			current_state = IMP_STATE.SEARCHING
+		IMP_STATE.JUMPINGLINK:
+			# Face the target
+			update_target_position(current_target_node.global_position)
+			turn_to_loc(current_target_position)
+			velocity = velocity.move_toward(new_safe_velocity,0.25)
+			await get_tree().create_timer(2).timeout
+			current_state = IMP_STATE.SEARCHING
+		IMP_STATE.DEAD:
+			print("IMP DEAD")
+			
 func _ready() -> void:
 	act_enemies = get_parent()
 	health_component.signal_died.connect(imp_die)
@@ -74,31 +126,23 @@ func _ready() -> void:
 	
 func _physics_process(_delta: float):
 	if not is_on_floor():
-		velocity.y -= 9.8
+		velocity.y -= 5.8
 		
 	if !is_multiplayer_authority(): return
 	if bIsAlive:
-		var current_loc = global_transform.origin
-		var next_loc = nav.get_next_path_position()
-		var new_vel = (next_loc	 - current_loc).normalized() * SPEED
-		# update avoidance information
-		nav.set_velocity(new_vel)
-		
-		if bHasTarget and current_target_node:
-			update_target_position(current_target_node.global_position)
-			imp_mesh.look_at(current_target_position, Vector3(0,1,0))
-			imp_mesh.rotation.x = 0
-			imp_mesh.rotation.z = 0
-		else:
-			get_target_player()
+		handle_state_machine()
+		move_and_slide()
 
 func update_target_position(inTarget):
 	current_target_position = inTarget
 	nav.target_position = current_target_position
 	
 func _on_navigation_agent_3d_target_reached() -> void:
-	attempt_attack()
+	current_state = IMP_STATE.ATTACKING
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
-	velocity = velocity.move_toward(safe_velocity,0.25)
-	move_and_slide()
+	new_safe_velocity = safe_velocity
+
+func _on_navigation_agent_3d_link_reached(_details: Dictionary) -> void:
+	current_state = IMP_STATE.JUMPINGLINK
+	target_jump_link = _details["link_exit_position"]
