@@ -2,6 +2,8 @@ extends Node3D
 class_name ActEnemies
 
 @onready var multiplayer_spawner = $EnemySpawner
+@onready var network_manager = $"../../NetworkManager"
+
 const imp_scene = preload("res://enemies/character_imp.tscn")
 #TODO move this thing later
 @onready var imp_respawn_point0 = $ImpRespawnPoint0
@@ -28,11 +30,11 @@ func on_enemy_defeated():
 	if not is_multiplayer_authority(): return
 	enemies_defeated = enemies_defeated + 1
 	if enemies_defeated < max_total_enemies and enemies_defeated % max_burst_enemies == 0:
-		#spawn_burst_rpc.rpc()
 		spawn_burst()
 		
-func helper_spawn_imp(inIteration) -> Node:
+func spawn_imp(inIteration) -> Node:
 	var new_imp = imp_scene.instantiate()
+	add_child(new_imp, true)
 	new_imp.global_position = get_imp_respawn_loc(0) + Vector3(inIteration,0,0)
 	new_imp.bIsAlive = true
 	new_imp.signal_imp_died.connect(on_enemy_defeated)
@@ -42,17 +44,9 @@ func helper_spawn_imp(inIteration) -> Node:
 # spawns the burst of enemies and add them to the pool for 'recycling'
 func spawn_burst():
 	for i in range(max_burst_enemies):
-		multiplayer_spawner.set_spawn_function(helper_spawn_imp)
-		multiplayer_spawner.spawn(i)
+		spawn_imp(i)
 
-@rpc("authority", "call_local", "reliable")
-func set_target_count_rpc(inCount):
-	target_enemy_count = inCount
-	print("target count is : ", target_enemy_count)
-	spawn_burst()
-	
 func start_enemy_wave():
 	if !is_multiplayer_authority(): return
-	set_target_count_rpc.rpc(randi_range(min_total_enemies, max_total_enemies))
-
-	
+	target_enemy_count = randi_range(min_total_enemies, max_total_enemies)
+	spawn_burst()

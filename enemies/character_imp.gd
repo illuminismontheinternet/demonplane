@@ -40,10 +40,14 @@ var bIsAlive = false
 @rpc("any_peer", "call_local", "reliable")
 func imp_reset_loc_rpc():
 	global_position = act_enemies.get_imp_respawn_loc(0)
+
+@rpc("any_peer", "call_local", "reliable")
+func update_velocity_rpc(inVelocity):
+	velocity += inVelocity
 	
 func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
 	#print("imp_hurt")
-	velocity += inVelocity
+	update_velocity_rpc.rpc(inVelocity)
 
 @rpc("any_peer","call_local","reliable")
 func imp_die_rpc():
@@ -75,14 +79,24 @@ func attempt_attack():
 			var hurt_velocity = (incoming_target.global_position - parent.global_position).normalized() * attack_velocity_multiplier
 			target_health.apply_damage(attack_damage, hurt_velocity)
 
-func get_target_player():
-	if !is_multiplayer_authority(): return
-	if bIsAlive:
-		var players = get_tree().get_nodes_in_group("player")
-		#print(players.size())
-		if players.size() > 0:
-			current_target_node = players.pick_random()#players.get(0)#
+@rpc("authority", "call_local", "reliable")
+func propagate_target_rpc(inID):
+	for player in get_tree().get_nodes_in_group("player"):
+		if player.get_multiplayer_authority() == inID:
+			current_target_node = player
 			current_state = IMP_STATE.HUNTING
+	
+func authority_pick_target():
+	if !is_multiplayer_authority(): return
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		var targetID = players.pick_random().get_multiplayer_authority()
+		print("targetID was :", targetID)
+		propagate_target_rpc.rpc(targetID)
+
+func get_target_player():
+	if bIsAlive:
+		authority_pick_target()
 
 func turn_to_loc(inPosition):
 	imp_mesh.look_at(inPosition, Vector3(0,1,0))
@@ -90,7 +104,7 @@ func turn_to_loc(inPosition):
 	imp_mesh.rotation.z = 0
 			
 func handle_state_machine():
-# Handle states
+	# Handle states
 	#print("state: ", current_state)
 	match current_state:
 		IMP_STATE.IDLE:
@@ -133,25 +147,20 @@ func _physics_process(_delta: float):
 	if not is_on_floor():
 		velocity.y -= 5.8
 		
-	if !is_multiplayer_authority(): return
 	if bIsAlive:
 		handle_state_machine()
 		move_and_slide()
 
 func update_target_position(inTarget):
-	if !is_multiplayer_authority(): return
 	current_target_position = inTarget
 	nav.target_position = current_target_position
 	
 func _on_navigation_agent_3d_target_reached() -> void:
-	if !is_multiplayer_authority(): return
 	current_state = IMP_STATE.ATTACKING
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
-	if !is_multiplayer_authority(): return
 	new_safe_velocity = safe_velocity
 
 func _on_navigation_agent_3d_link_reached(_details: Dictionary) -> void:
-	if !is_multiplayer_authority(): return
 	current_state = IMP_STATE.JUMPINGLINK
 	target_jump_link = _details["link_exit_position"]
