@@ -39,7 +39,7 @@ var bIsAlive = false
 
 @rpc("any_peer", "call_local", "reliable")
 func imp_reset_loc_rpc():
-	global_position = act_enemies.get_imp_respawn_loc()
+	global_position = act_enemies.get_imp_respawn_loc(0)
 	
 func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
 	#print("imp_hurt")
@@ -87,18 +87,19 @@ func turn_to_loc(inPosition):
 			
 func handle_state_machine():
 # Handle states
-	print("state: ", current_state)
+	#print("state: ", current_state)
 	match current_state:
 		IMP_STATE.IDLE:
-			print("IMP IDLE")
 			current_state = IMP_STATE.SEARCHING
 		IMP_STATE.SEARCHING:
 			get_target_player()
 		IMP_STATE.HUNTING:
 			# Face the target
-			update_target_position(current_target_node.global_position)
-			turn_to_loc(current_target_position)
-			
+			if current_target_node:
+				update_target_position(current_target_node.global_position)
+				turn_to_loc(current_target_position)
+			else:
+				current_state = IMP_STATE.SEARCHING
 			# Move to target
 			var current_loc = global_transform.origin
 			var next_loc = nav.get_next_path_position()
@@ -134,15 +135,19 @@ func _physics_process(_delta: float):
 		move_and_slide()
 
 func update_target_position(inTarget):
+	if !is_multiplayer_authority(): return
 	current_target_position = inTarget
 	nav.target_position = current_target_position
 	
 func _on_navigation_agent_3d_target_reached() -> void:
+	if !is_multiplayer_authority(): return
 	current_state = IMP_STATE.ATTACKING
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
+	if !is_multiplayer_authority(): return
 	new_safe_velocity = safe_velocity
 
 func _on_navigation_agent_3d_link_reached(_details: Dictionary) -> void:
+	if !is_multiplayer_authority(): return
 	current_state = IMP_STATE.JUMPINGLINK
 	target_jump_link = _details["link_exit_position"]

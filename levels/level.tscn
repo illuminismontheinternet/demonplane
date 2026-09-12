@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=27 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="7_d5x7l"]
 [ext_resource type="Script" uid="uid://d3k4y3e8oc6mr" path="res://levels/act_enemies.gd" id="7_pb8y7"]
 [ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="7_rtcij"]
-[ext_resource type="PackedScene" uid="uid://c6n24io0njpkp" path="res://scenes/obs_box.tscn" id="7_vnv7o"]
 [ext_resource type="Shader" uid="uid://b8aq4c5dlffo8" path="res://mat/water.gdshader" id="9_rtcij"]
 [ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="10_pb8y7"]
 
@@ -59,12 +58,6 @@ adjustment_color_correction = SubResource("GradientTexture1D_hy0rb")
 emission_enabled = true
 emission = Color(0.8070732, 0.47050834, 0.3706222, 1)
 emission_intensity = 10.0
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vnv7o"]
-size = Vector3(2, 1, 2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_vnv7o"]
-size = Vector3(2, 1, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ukwr8"]
 render_priority = 1
@@ -377,10 +370,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.7790201)
 script = ExtResource("7_pb8y7")
 
 [node name="ImpRespawnPoint0" type="Node3D" parent="CSGPlaneParent/ACT_Enemies"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.9691133, -1.7510409)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.8612585, -1.7510409)
 
 [node name="ImpRespawnPoint1" type="Node3D" parent="CSGPlaneParent/ACT_Enemies"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.9691133, 5.231558)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.1923647, 5.231558)
+
+[node name="EnemySpawner" type="MultiplayerSpawner" parent="CSGPlaneParent/ACT_Enemies"]
+_spawnable_scenes = PackedStringArray("uid://bbljovy1yg3fh")
+spawn_path = NodePath("..")
 
 [node name="ACT_Engines" type="Node3D" parent="CSGPlaneParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.425654, -1.5130289, -13.035146)
@@ -425,21 +422,6 @@ material = SubResource("StandardMaterial3D_pb8y7")
 bIsUnique = true
 start_color = Color(0.8070732, 0.47050834, 0.3706222, 1)
 start_temp = 4000
-
-[node name="obs_box" parent="CSGPlaneParent" instance=ExtResource("7_vnv7o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4642982, 0, 0)
-mass = 10.0
-
-[node name="obs_box2" type="RigidBody3D" parent="CSGPlaneParent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4642982, 0, -6.5443435)
-mass = 10.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGPlaneParent/obs_box2"]
-shape = SubResource("BoxShape3D_vnv7o")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CSGPlaneParent/obs_box2"]
-mesh = SubResource("BoxMesh_vnv7o")
-skeleton = NodePath("")
 
 [node name="ocean" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -48.675934, 0)
@@ -518,5 +500,3 @@ end_position = Vector3(0, -2.29, 0)
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/air_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_air_cyl_repaired"]
 [connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/HostButton" to="NetworkManager" method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/JoinButton" to="NetworkManager" method="_on_join_button_pressed"]
-
-[editable path="CSGPlaneParent/obs_box"]
