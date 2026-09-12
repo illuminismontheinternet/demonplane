@@ -133,7 +133,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8222592, 0, -3.4317057)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.827945, -0.4114623, 12.525468)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="NetworkManager"]
-_spawnable_scenes = PackedStringArray("uid://bcaabpotsubyv", "uid://bbljovy1yg3fh")
+_spawnable_scenes = PackedStringArray("uid://bcaabpotsubyv")
 spawn_path = NodePath("..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

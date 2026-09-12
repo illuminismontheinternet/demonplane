@@ -83,7 +83,6 @@ func _handle_weapon_input():
 		_action_swing_melee()
 
 func place_impact_decal(inCollider, inPosition, inNormal):
-	print("place decal")
 	network_manager.place_impact_decal(inCollider, inPosition, inNormal)
 
 func _action_swing_melee():

@@ -49,8 +49,10 @@ func spawn_burst():
 func set_target_count_rpc(inCount):
 	target_enemy_count = inCount
 	print("target count is : ", target_enemy_count)
+	spawn_burst()
 	
 func start_enemy_wave():
-	set_target_count_rpc(randi_range(min_total_enemies, max_total_enemies))
-	spawn_burst()
+	if !is_multiplayer_authority(): return
+	set_target_count_rpc.rpc(randi_range(min_total_enemies, max_total_enemies))
+
 	

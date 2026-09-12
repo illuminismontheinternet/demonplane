@@ -44,8 +44,9 @@ func imp_reset_loc_rpc():
 func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
 	#print("imp_hurt")
 	velocity += inVelocity
-	
-func imp_die():
+
+@rpc("any_peer","call_local","reliable")
+func imp_die_rpc():
 	signal_imp_died.emit()
 	current_state = IMP_STATE.DEAD
 	bIsAlive = false
@@ -54,6 +55,9 @@ func imp_die():
 	set_collision_mask_value(2, true)
 	imp_mesh.rotation.x = deg_to_rad(-85)
 	nav.set_velocity(Vector3.ZERO)
+
+func imp_die():
+	imp_die_rpc.rpc()
 	
 func reset_attack():
 	bCanAttack = true

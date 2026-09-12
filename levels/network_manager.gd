@@ -68,7 +68,7 @@ func add_player(peer_id):
 	# IMPORTANT: players are children of the network manager NOT the level
 	add_child(new_player)
 	active_players[peer_id] = new_player
-	print(active_players)
+	#print(active_players)
 		
 func _on_host_button_pressed() -> void:
 	multiplayer_panel.hide()
