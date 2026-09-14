@@ -23,6 +23,7 @@ script = ExtResource("1_1r7yi")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_eeun4")
+max_health = 20.0
 metadata/_custom_type_script = "uid://bjty7py16yihl"
 
 [node name="mesh_parent" type="Node3D" parent="."]

@@ -4,9 +4,11 @@ signal plane_event(new_state: plane_director.ENUM_PLANESTATUS)
 signal match_finished(bVictory: bool)
 
 # 300 seconds is 5 minutes
+var bTimerIsBlocked = false
 @export var match_duration := 300
 @onready var act_engines = $CSGPlaneParent/ACT_Engines
-@onready var act_enemies = $CSGPlaneParent/ACT_Enemies
+@onready var act_enemies = $CSGPlaneParent/ACT_Plane_Enemies
+@onready var act_islands = $ACT_Islands
 
 # game ending variables
 var bEnginesBroken = false
@@ -15,7 +17,7 @@ enum ENUM_ACT {
 	NONE,
 	ENGINES,
 	IMP_WAVE,
-	PILOT,
+	ISLAND,
 	WING_RIGHT,
 	WING_LEFT,
 	ATTEMPT_LAND
@@ -52,10 +54,35 @@ var events = [
 	{
 		"time": 35,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
-		"act" : ENUM_ACT.ATTEMPT_LAND
+		"act" : ENUM_ACT.NONE
 	},
 	{
 		"time": 40,
+		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
+		"act" : ENUM_ACT.NONE
+	},
+	{
+		"time": 45,
+		"type": plane_director.ENUM_PLANESTATUS.LOWER,
+		"act" : ENUM_ACT.ISLAND
+	},
+	{
+		"time": 55,
+		"type": plane_director.ENUM_PLANESTATUS.TAKEOFF,
+		"act" : ENUM_ACT.NONE
+	},
+	{
+		"time": 60,
+		"type": plane_director.ENUM_PLANESTATUS.IDLE,
+		"act" : ENUM_ACT.NONE
+	},
+	{
+		"time": 65,
+		"type": plane_director.ENUM_PLANESTATUS.LAND,
+		"act" : ENUM_ACT.ATTEMPT_LAND
+	},
+	{
+		"time": 70,
 		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
 		"act" : ENUM_ACT.NONE
 	}
@@ -63,6 +90,10 @@ var events = [
 var next_event := 0
 var start_time := 0.0
 
+@rpc("any_peer", "call_local", "reliable")
+func set_timer_blocked(inVal : bool):
+	bTimerIsBlocked = inVal
+		
 @rpc("authority", "call_local", "reliable")
 func end_match():
 	#print("level manager end match - peer: ", multiplayer.get_unique_id())
@@ -92,6 +123,10 @@ func execute_act_event(act_type: ENUM_ACT):
 		ENUM_ACT.IMP_WAVE:
 			print("start_enemy_wave - peer: ", multiplayer.get_unique_id())
 			act_enemies.start_enemy_wave()
+		ENUM_ACT.ISLAND:
+			print("ENUM_ACT island - peer: ", multiplayer.get_unique_id())
+			act_islands.start_island_minigame()
+			set_timer_blocked(true)
 		ENUM_ACT.ATTEMPT_LAND:
 			end_match.rpc()
 		
@@ -102,11 +137,12 @@ func _ready() -> void:
 	
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority(): return
-	var seconds = get_elapsed_time()
-	while next_event < events.size() and seconds >= events[next_event].time:
-		execute_plane_event.rpc(events[next_event].type)
-		execute_act_event.rpc(events[next_event].act)
-		next_event += 1
+	if not bTimerIsBlocked:
+		var seconds = get_elapsed_time()
+		while next_event < events.size() and seconds >= events[next_event].time:
+			execute_plane_event.rpc(events[next_event].type)
+			execute_act_event.rpc(events[next_event].act)
+			next_event += 1
 	# calling this on the schedule now
 	#if seconds >= match_duration:
 		#match_finished.emit()

@@ -18,8 +18,8 @@ config/icon="res://icon.svg"
 [global_group]
 
 enemy=""
-plane=""
 player=""
+group_navmesh=""
 
 [input]
 

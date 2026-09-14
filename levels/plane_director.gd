@@ -4,12 +4,14 @@ extends CSGCombiner3D
 var rng = RandomNumberGenerator.new()
 
 @onready var plane = $"."
+@onready var landing_spot = $"../landing_spot"
 
 enum ENUM_PLANESTATUS {
 	TAKEOFF,
 	IDLE,
 	TURBULENCE,
 	LAND,
+	LOWER,
 	POWEROFF
 }
 var current_status = ENUM_PLANESTATUS.IDLE
@@ -36,6 +38,12 @@ var em_weight = PackedFloat32Array([5,1])
 var em_active = false
 var em_roll = 0.0
 const em_mult = 20.0
+
+func set_plane_lowered(inLower : bool) -> void:
+	if inLower:
+		global_position = landing_spot.global_position
+	else:
+		global_position = Vector3.ZERO
 
 func set_target_basis():
 	target_basis = Basis.from_euler(Vector3(
@@ -82,6 +90,7 @@ func set_stats():
 			set_nose_pitch(get_random_float_range(-10,10))
 			roll_evasive_maneuvers()
 		ENUM_PLANESTATUS.TAKEOFF:
+			set_plane_lowered(false)
 			set_delta_spread(0,1)
 			set_nose_pitch(takeoff_pitch + get_random_float_range(-3,3))
 			stop_evasive_maneuvers()
@@ -89,6 +98,10 @@ func set_stats():
 			set_delta_spread(0,1)
 			set_nose_pitch(takeoff_pitch + get_random_float_range(-3,3))
 			stop_evasive_maneuvers()
+		ENUM_PLANESTATUS.LOWER:
+			set_delta_spread(0,0)
+			set_nose_pitch(0)
+			set_plane_lowered(true)
 		ENUM_PLANESTATUS.POWEROFF:
 			set_delta_spread(0,0)
 			set_nose_pitch(0)

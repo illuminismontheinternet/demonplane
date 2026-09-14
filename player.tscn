@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=20 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://7pp3owc3skbj" path="res://characters/pilot_mesh.tscn" id="2_1jxqw"]
@@ -7,8 +7,22 @@
 [ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
 [ext_resource type="Shader" uid="uid://dkwg1ioqdlx0m" path="res://mat/postprocess.gdshader" id="3_sweqy"]
 [ext_resource type="PackedScene" uid="uid://cu6db4bdainc0" path="res://mesh/mesh_wrench.tscn" id="4_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://bov0dflnrkp78" path="res://mesh/gascan.tscn" id="5_dw050"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jxqw"]
+vertex_color_use_as_albedo = true
+emission_enabled = true
+emission = Color(0.82040817, 0.438984, 0, 1)
+emission_energy_multiplier = 103.75
+emission_intensity = 1099.6
+disable_receive_shadows = true
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_dw050"]
+material = SubResource("StandardMaterial3D_1jxqw")
+size = Vector2(0.01, 0.1)
 
 [sub_resource type="Curve" id="Curve_sweqy"]
 _data = [Vector2(0.0077821016, 0), 0.0, 0.0, 0, 0, Vector2(0.74967575, 0.10283369), -0.3748005, -0.3748005, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -92,6 +106,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
 [node name="wrench2" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("4_1jxqw")]
 transform = Transform3D(0.3, 9.441573e-09, 1.7584197e-09, -9.441575e-09, 0.27988607, 0.10799904, 1.7584122e-09, -0.10799904, 0.27988607, 0.16416463, -0.16538495, -0.27407527)
 
+[node name="HitParticles" type="CPUParticles3D" parent="neck/head/Camera3D/weapon/melee/wrench2"]
+transform = Transform3D(3.3333325, -1.0490637e-07, 1.9537651e-08, 1.0490638e-07, 3.109845, -1.1999893, 1.9537907e-08, 1.1999893, 3.109845, 0.035360992, 0.92919374, -0.100271106)
+emitting = false
+mesh = SubResource("QuadMesh_dw050")
+direction = Vector3(0, 0, 1)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+color = Color(0.8553981, 0.67479974, 7.70092e-07, 1)
+
+[node name="gascan" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("5_dw050")]
+transform = Transform3D(0.86053765, 0, -0.5093869, 0, 1, 0, 0.5093869, 0, 0.86053765, 0.028000003, -0.25900638, -0.332365)
+visible = false
+
 [node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 target_position = Vector3(0, -2, 0)
@@ -162,5 +190,31 @@ grow_vertical = 2
 text = "DEFEAT"
 label_settings = SubResource("LabelSettings_onrkg")
 
+[node name="MenuOptions" type="VBoxContainer" parent="player_ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackToMain" type="Button" parent="player_ui/MenuOptions"]
+layout_mode = 2
+text = "main menu"
+
+[node name="QuitGame" type="Button" parent="player_ui/MenuOptions"]
+layout_mode = 2
+text = "quit game"
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hqtel")
+
+[connection signal="pressed" from="player_ui/MenuOptions/BackToMain" to="player_ui" method="_on_back_to_main_pressed"]
+[connection signal="pressed" from="player_ui/MenuOptions/QuitGame" to="player_ui" method="_on_quit_game_pressed"]

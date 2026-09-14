@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bov0dflnrkp78"]
+
+[ext_resource type="PackedScene" uid="uid://cbtnsckftxrpx" path="res://mesh/gascan.fbx" id="1_0285s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xlde"]
+albedo_color = Color(0.91657597, 0.115381755, 5.7756904e-07, 1)
+metallic = 0.5
+roughness = 0.5
+
+[node name="gascan" instance=ExtResource("1_0285s")]
+
+[node name="Cube" parent="." index="0"]
+material_override = SubResource("StandardMaterial3D_0xlde")

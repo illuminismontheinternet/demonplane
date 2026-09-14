@@ -10,7 +10,10 @@ signal signal_player_died(peerID : int)
 
 @onready var melee_parent = $neck/head/Camera3D/weapon/melee
 @onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench2
+@onready var wep_gascan = $neck/head/Camera3D/weapon/melee/gascan
 @onready var melee_ray = $neck/head/Camera3D/weapon/melee_ray
+@onready var melee_particle = $neck/head/Camera3D/weapon/melee/wrench2/HitParticles
+
 @onready var env_ray = $neck/head/Camera3D/weapon/env_ray
 
 # ui elements
@@ -60,6 +63,11 @@ var bWasFalling = false
 var damage = 20.0
 var attack_velocity_multiplier = 6.0
 
+func particle_play_melee():
+	melee_particle.emitting = true
+	await get_tree().create_timer(0.5).timeout
+	melee_particle.emitting = false
+	
 func player_hurt(inVelocity, _inHealth, _inMaxHealth):
 	#print("player_hurt")
 	OUTSIDE_VELOCITY += inVelocity
@@ -94,6 +102,7 @@ func _action_swing_melee():
 	target_melee_basis = Basis.from_euler(rand_rot)
 
 	if melee_ray.is_colliding():
+		particle_play_melee()
 		var current_collider = melee_ray.get_collider()
 		# Attempt repair
 		if current_collider.has_method("attempt_repair"):
@@ -104,6 +113,7 @@ func _action_swing_melee():
 			var hurt_velocity = (current_collider.global_position - global_position).normalized() * attack_velocity_multiplier
 			target_health_component.apply_damage(damage,hurt_velocity)
 	if env_ray.is_colliding():
+		particle_play_melee()
 		# Place decal
 		place_impact_decal(env_ray.get_collider(), env_ray.get_collision_point(), env_ray.get_collision_normal())
 	
