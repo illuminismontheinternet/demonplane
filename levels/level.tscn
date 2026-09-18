@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=31 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="10_pb8y7"]
 [ext_resource type="Script" uid="uid://c753tnpyna4al" path="res://levels/act_islands.gd" id="11_hy0rb"]
 [ext_resource type="PackedScene" uid="uid://ct7eey8jtkwxv" path="res://mesh/island_01.tscn" id="11_pb8y7"]
+[ext_resource type="Script" uid="uid://ce1fjqbfre44y" path="res://Pickup.gd" id="13_d7v53"]
 [ext_resource type="PackedScene" uid="uid://bov0dflnrkp78" path="res://mesh/gascan.tscn" id="13_mxp4k"]
 
 [sub_resource type="Gradient" id="Gradient_pb8y7"]
@@ -540,20 +541,18 @@ transform = Transform3D(-1.7150533, 0, -1.0288792, 0, 2, 0, 1.0288792, 0, -1.715
 [node name="PICK_Gascan" type="Node3D" parent="ACT_Islands"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 74.03005)
 
+[node name="Pickup" type="Node" parent="ACT_Islands/PICK_Gascan"]
+script = ExtResource("13_d7v53")
+metadata/_custom_type_script = "uid://ce1fjqbfre44y"
+
 [node name="gascan" parent="ACT_Islands/PICK_Gascan" instance=ExtResource("13_mxp4k")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -0.21917915, 0)
 
-[node name="PICK_Gascan2" type="Node3D" parent="ACT_Islands"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 75.46234)
-
-[node name="gascan" parent="ACT_Islands/PICK_Gascan2" instance=ExtResource("13_mxp4k")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -0.21917915, 0)
-
-[node name="PICK_Gascan3" type="Node3D" parent="ACT_Islands"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 76.93138)
-
-[node name="gascan" parent="ACT_Islands/PICK_Gascan3" instance=ExtResource("13_mxp4k")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -0.21917915, 0)
+[node name="Spotlight" type="SpotLight3D" parent="ACT_Islands/PICK_Gascan"]
+transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 2.9354763, 0)
+light_temperature = 15000.0
+shadow_enabled = true
+spot_range = 3.5
 
 [node name="CSGBox3D" type="CSGBox3D" parent="ACT_Islands"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.43049, -29.182245, 73.80887)

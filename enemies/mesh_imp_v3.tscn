@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://b3y8bxrkb7wog"]
+
+[ext_resource type="PackedScene" uid="uid://dovwvawlab47b" path="res://enemies/imp_v3.blend" id="1_cy12c"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_e412y"]
+[ext_resource type="Shader" uid="uid://d1xp5g3oc7ris" path="res://mat/matcap.gdshader" id="3_vlt1h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_olfmd"]
+render_priority = 0
+shader = ExtResource("2_e412y")
+shader_parameter/weight = 0.005
+shader_parameter/color = Color(0.10354365, 8.385279e-08, 4.512258e-09, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_861i7"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_olfmd")
+shader = ExtResource("3_vlt1h")
+shader_parameter/color1 = Color(0.7658544, 0.50423986, 0.2995176, 1)
+shader_parameter/color2 = Color(0, 0, 0, 1)
+shader_parameter/lightness = 0.50000002375
+shader_parameter/sharpness = 1.5
+shader_parameter/x_offset = 0.0
+shader_parameter/y_offset = 0.0
+shader_parameter/z_offset = 1.0
+
+[node name="imp_v3" instance=ExtResource("1_cy12c")]
+
+[node name="polySurface25" parent="Armature/Skeleton3D" index="0"]
+material_override = SubResource("ShaderMaterial_861i7")

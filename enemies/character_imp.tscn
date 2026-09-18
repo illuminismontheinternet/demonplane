@@ -1,8 +1,50 @@
-[gd_scene load_steps=6 format=3 uid="uid://bbljovy1yg3fh"]
+[gd_scene load_steps=15 format=3 uid="uid://bbljovy1yg3fh"]
 
 [ext_resource type="Script" uid="uid://bwr4kd304u2pk" path="res://enemies/character_imp.gd" id="1_1r7yi"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_eeun4"]
-[ext_resource type="PackedScene" uid="uid://7vna7unlodmx" path="res://enemies/mesh_imp_v2.tscn" id="3_eeun4"]
+[ext_resource type="PackedScene" uid="uid://b3y8bxrkb7wog" path="res://enemies/mesh_imp_v3.tscn" id="4_hvkrc"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_eeun4"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eeun4"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hvkrc"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_u4gvu"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_eeun4")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_hvkrc")
+blend_point_1/pos = 1.0
+min_space = 0.0
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_eeun4"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u4gvu"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5w5rr"]
+animation = &"dead"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_eeun4"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_5w5rr"]
+graph_offset = Vector2(-956, -63)
+nodes/output/position = Vector2(460, 20)
+nodes/IdleRun/node = SubResource("AnimationNodeBlendSpace1D_u4gvu")
+nodes/IdleRun/position = Vector2(-500, 80)
+nodes/AttackOneShot/node = SubResource("AnimationNodeOneShot_eeun4")
+nodes/AttackOneShot/position = Vector2(-100, 100)
+nodes/attack/node = SubResource("AnimationNodeAnimation_u4gvu")
+nodes/attack/position = Vector2(-480, 300)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_eeun4")
+nodes/TimeScale/position = Vector2(-280, 60)
+nodes/dead/node = SubResource("AnimationNodeAnimation_5w5rr")
+nodes/dead/position = Vector2(100, 200)
+nodes/death_blend/node = SubResource("AnimationNodeBlend2_eeun4")
+nodes/death_blend/position = Vector2(280, 20)
+node_connections = [&"output", 0, &"death_blend", &"AttackOneShot", 0, &"TimeScale", &"AttackOneShot", 1, &"attack", &"TimeScale", 0, &"IdleRun", &"death_blend", 0, &"AttackOneShot", &"death_blend", 1, &"dead"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rtcij"]
 
@@ -34,8 +76,38 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1
 collision_mask = 4
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
-[node name="fbx_imp_v3" parent="mesh_parent" instance=ExtResource("3_eeun4")]
-transform = Transform3D(-15, 0, -1.3113416e-06, 0, 15, 0, 1.3113416e-06, 0, -15, 0, 0, 0)
+[node name="imp_v3" parent="mesh_parent" instance=ExtResource("4_hvkrc")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Skeleton3D" parent="mesh_parent/imp_v3/Armature" index="0"]
+bones/0/position = Vector3(-0.0016045757, 0.5398574, 0.049402807)
+bones/1/rotation = Quaternion(-0.68954575, -0.34354454, -0.27316386, 0.576095)
+bones/2/rotation = Quaternion(0.0125837615, 0.006478302, 0.25503922, 0.9668272)
+bones/3/rotation = Quaternion(0.0094113685, 0.068733156, -0.5138313, 0.8550817)
+bones/4/position = Vector3(-0.0016045648, 0.5398574, 0.049402807)
+bones/4/rotation = Quaternion(-0.4467551, 0.5480966, 0.44675517, 0.54809666)
+bones/5/rotation = Quaternion(-0.75983703, -0.10972029, -0.08724224, 0.63482124)
+bones/6/rotation = Quaternion(0.012515797, -0.009441006, -0.33426642, 0.94234824)
+bones/7/rotation = Quaternion(0.06318722, -0.019310735, 0.93713045, 0.34266743)
+bones/8/position = Vector3(-0.0016045701, 0.5398574, 0.049402807)
+bones/9/rotation = Quaternion(0.30059037, -0.046477824, -0.054565, 0.95105624)
+bones/11/rotation = Quaternion(0.11450045, -0.22055744, -0.80690676, 0.53585976)
+bones/12/rotation = Quaternion(0.39405644, -0.0064138817, -0.047834266, 0.91781825)
+bones/13/rotation = Quaternion(0.07841295, 0.53731114, 0.06330522, 0.8373414)
+bones/15/rotation = Quaternion(0.118429504, 0.155371, 0.8557691, 0.47905496)
+bones/16/rotation = Quaternion(0.35055006, -0.025932275, 0.14814788, 0.92438865)
+bones/17/rotation = Quaternion(-0.16997209, -0.38564742, -0.02757014, 0.90643555)
+bones/19/rotation = Quaternion(-0.28759402, 0.08553268, 0.06702725, 0.95156777)
+
+[node name="AnimationTree" type="AnimationTree" parent="mesh_parent/imp_v3"]
+tree_root = SubResource("AnimationNodeBlendTree_5w5rr")
+anim_player = NodePath("../AnimationPlayer")
+parameters/IdleRun/blend_position = 0.0
+parameters/AttackOneShot/active = false
+parameters/AttackOneShot/internal_active = false
+parameters/AttackOneShot/request = 0
+parameters/TimeScale/scale = 3.0
+parameters/death_blend/blend_amount = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rtcij")
@@ -50,3 +122,5 @@ replication_config = SubResource("SceneReplicationConfig_1r7yi")
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
+
+[editable path="mesh_parent/imp_v3"]

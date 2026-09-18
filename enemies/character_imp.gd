@@ -6,6 +6,7 @@ signal signal_imp_died
 @onready var parent = $"."
 @onready var melee_ray = $mesh_parent/melee_ray
 @onready var imp_mesh = $mesh_parent
+@onready var anim_tree = $mesh_parent/imp_v3/AnimationTree
 
 enum IMP_STATE {
 	IDLE,
@@ -104,14 +105,14 @@ func turn_to_loc(inPosition):
 	imp_mesh.rotation.z = 0
 			
 func handle_state_machine():
-	# Handle states
-	#print("state: ", current_state)
 	match current_state:
 		IMP_STATE.IDLE:
 			current_state = IMP_STATE.SEARCHING
 		IMP_STATE.SEARCHING:
 			get_target_player()
 		IMP_STATE.HUNTING:
+			# set anim tree
+			anim_tree.set("parameters/IdleRun/blend_position", velocity.length())
 			# Face the target
 			if current_target_node:
 				update_target_position(current_target_node.global_position)
@@ -127,6 +128,7 @@ func handle_state_machine():
 			velocity = velocity.move_toward(new_safe_velocity,0.25)
 		IMP_STATE.ATTACKING:
 			attempt_attack()
+			anim_tree.set("parameters/AttackOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 			current_state = IMP_STATE.SEARCHING
 		IMP_STATE.JUMPINGLINK:
 			# Face the target
@@ -136,7 +138,7 @@ func handle_state_machine():
 			await get_tree().create_timer(2).timeout
 			current_state = IMP_STATE.SEARCHING
 		IMP_STATE.DEAD:
-			print("IMP DEAD")
+			anim_tree.set("parameters/death_blend/blend_amount", 1.0)
 			
 func _ready() -> void:
 	act_enemies = get_parent()
@@ -144,11 +146,10 @@ func _ready() -> void:
 	health_component.signal_health_changed.connect(imp_hurt)
 	
 func _physics_process(_delta: float):
+	handle_state_machine()
 	if not is_on_floor():
 		velocity.y -= 5.8
-		
 	if bIsAlive:
-		handle_state_machine()
 		move_and_slide()
 
 func update_target_position(inTarget):
