@@ -528,13 +528,11 @@ script = ExtResource("11_hy0rb")
 [node name="island01" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
 transform = Transform3D(-1.7484555e-07, 0, 4, 0, 4, 0, -4, 0, -1.7484555e-07, -241.90324, -51.18954, 155.51614)
 
-[node name="StaticBody3D" parent="ACT_Islands/island01/Plane" index="0" groups=["group_navmesh"]]
-
 [node name="island02" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
-transform = Transform3D(-0.7560695, 0, 1.8515829, 0, 2, 0, -1.8515829, 0, -0.7560695, -1339.2798, -51.18954, 1078.7164)
+transform = Transform3D(-3.7803473, 0, 9.257914, 0, 10, 0, -9.257914, 0, -3.7803473, -2302.8018, -51.18954, 1078.7164)
 
 [node name="island03" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
-transform = Transform3D(-1.7150533, 0, -1.0288792, 0, 2, 0, 1.0288792, 0, -1.7150533, 1404.0447, -51.18954, -1612.7695)
+transform = Transform3D(-8.575267, 0, -5.1443954, 0, 10, 0, 5.1443954, 0, -8.575267, 3371.0913, -51.18954, 690.4048)
 
 [node name="PICK_Gascan" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 74.03005)

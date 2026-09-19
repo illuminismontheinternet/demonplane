@@ -10,10 +10,27 @@ enum ENUM_PICKUPTYPE {
 }
 
 var pickup_type = ENUM_PICKUPTYPE.GASCAN
+var bIsGrounded = true
 
+@export var raycast : RayCast3D
 @export var spotlight : SpotLight3D
 @export var mesh : Node3D
 
+func attempt_gravity() -> void:
+	while not bIsGrounded:
+		await get_tree().create_timer(0.01).timeout
+		get_parent().global_position += Vector3(0,-0.1,0)
+		if raycast.is_colliding():
+			bIsGrounded = true
+	
+func on_drop(inPosition : Vector3) -> void:
+	print("drop here")
+	get_parent().global_position = inPosition
+	mesh.visible = true
+	set_spotlight_active(true)
+	bIsGrounded = false
+	attempt_gravity()
+	
 func on_pickup() -> void:
 	# hide everything
 	mesh.visible = false
@@ -27,4 +44,4 @@ func set_spotlight_active(bIsActive) -> void:
 		spotlight.visible = bIsActive
 	
 func _ready() -> void:
-	set_spotlight_active(false)
+	set_spotlight_active(true)

@@ -6,15 +6,16 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_j5mmr"]
 size = Vector3(1, 1, 0.5776367)
 
-[node name="PICK_Gas" type="RigidBody3D"]
-collision_layer = 257
+[node name="PICK_Gas" type="StaticBody3D"]
+collision_layer = 256
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32839984, -0.00024414063)
 shape = SubResource("BoxShape3D_j5mmr")
 
-[node name="Pickup" type="Node" parent="." node_paths=PackedStringArray("spotlight", "mesh")]
+[node name="Pickup" type="Node" parent="." node_paths=PackedStringArray("raycast", "spotlight", "mesh")]
 script = ExtResource("1_j5mmr")
+raycast = NodePath("../RayCast3D")
 spotlight = NodePath("../Spotlight")
 mesh = NodePath("../gascan")
 metadata/_custom_type_script = "uid://ce1fjqbfre44y"
@@ -27,3 +28,10 @@ transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 2
 light_temperature = 15000.0
 shadow_enabled = true
 spot_range = 3.5
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22113839, 0)
+exclude_parent = false
+target_position = Vector3(0, -0.1, 0)
+hit_from_inside = true
+collide_with_areas = true

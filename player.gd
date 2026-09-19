@@ -12,14 +12,25 @@ signal signal_player_died(peerID : int)
 @onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench2
 @onready var wep_gascan = $neck/head/Camera3D/weapon/melee/gascan
 
-@onready var inventory = [
+var active_inventory_slot : int
+
+@onready var inventory_mesh = [
 	wep_wrench,
 	wep_wrench,
 	wep_wrench,
 	wep_wrench,
 	wep_gascan
 ]
+var inventory_bools = [
+	true,
+	false,
+	false,
+	false,
+	false
+]
+var pickup_gascan : Node3D
 
+@onready var drop_location = $neck/head/Camera3D/weapon/DropLocation
 @onready var melee_particle = $neck/head/Camera3D/weapon/melee/wrench2/HitParticles
 
 @onready var interact_ray = $neck/head/Camera3D/weapon/int_ray
@@ -99,7 +110,11 @@ func _show_end_screen(bVictory):
 func _handle_interaction():
 	if Input.is_action_just_pressed("interact"):
 		action_interact()
-		
+	
+func _handle_drop_input():
+	if Input.is_action_just_pressed("drop"):
+		drop_inventory(active_inventory_slot)
+
 func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
 		_action_swing_melee()
@@ -107,14 +122,29 @@ func _handle_weapon_input():
 func place_impact_decal(inCollider, inPosition, inNormal):
 	network_manager.place_impact_decal(inCollider, inPosition, inNormal)
 
+func modify_inventory(inSlot : int, inOwnership: bool) -> void:
+	inventory_bools.set(inSlot, inOwnership)
+	
 func swap_inventory(inSlot : int) -> void:
 	# hide all inventory options and show the in slot only
-	for entry in inventory:
+	for entry in inventory_mesh:
 		entry.visible = false
-	inventory.get(inSlot).visible = true
+	inventory_mesh.get(inSlot).visible = true
+	active_inventory_slot = inSlot
 	print("in slot", inSlot)
+
+func drop_inventory(inSlot : int):
+	print("dropping: ", inSlot)
+	# for now just stop them from dropping the wrench
+	if inSlot != 0:
+		inventory_bools.set(inSlot, false)
+		# Restore the previous pickup and place it in front of us
+		if inSlot == inventory_mesh.size()-1:
+			var target_pickup_component = pickup_gascan.get_node_or_null("Pickup")
+			target_pickup_component.on_drop(drop_location.global_position)
+		swap_inventory(0)
 	
-func add_inventory(type : Pickup.ENUM_PICKUPTYPE) -> void:
+func add_inventory(type : Pickup.ENUM_PICKUPTYPE, inPickup : Node3D) -> void:
 	match type:
 		Pickup.ENUM_PICKUPTYPE.WRENCH:
 			print("wrench")
@@ -127,7 +157,9 @@ func add_inventory(type : Pickup.ENUM_PICKUPTYPE) -> void:
 			print("SHOVEL")
 		Pickup.ENUM_PICKUPTYPE.GASCAN:
 			print("GASCAN")
+			modify_inventory(4, true)
 			swap_inventory(4)
+			pickup_gascan = inPickup
 			
 	
 func action_interact():
@@ -135,7 +167,7 @@ func action_interact():
 		var current_collider = interact_ray.get_collider()
 		var target_pickup_component = current_collider.get_node_or_null("Pickup")
 		target_pickup_component.on_pickup()
-		add_inventory(target_pickup_component.get_type())
+		add_inventory(target_pickup_component.get_type(), current_collider)
 				
 func _action_swing_melee():
 	var rand_rot := Vector3(
@@ -192,6 +224,7 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 	
 func _ready():
+	active_inventory_slot = 0
 	network_manager = get_parent()
 	global_position = network_manager.get_spawn_point()
 	health_component.signal_died.connect(player_die)
@@ -269,6 +302,7 @@ func _physics_process(delta: float) -> void:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(TARGET_SWAY), LERP_SWAY)
 	else:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
+	_handle_drop_input()
 	_handle_weapon_input()
 	_handle_interaction()
 	_handle_melee_reset(delta)
