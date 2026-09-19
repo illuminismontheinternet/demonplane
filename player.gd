@@ -11,9 +11,19 @@ signal signal_player_died(peerID : int)
 @onready var melee_parent = $neck/head/Camera3D/weapon/melee
 @onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench2
 @onready var wep_gascan = $neck/head/Camera3D/weapon/melee/gascan
-@onready var melee_ray = $neck/head/Camera3D/weapon/melee_ray
+
+@onready var inventory = [
+	wep_wrench,
+	wep_wrench,
+	wep_wrench,
+	wep_wrench,
+	wep_gascan
+]
+
 @onready var melee_particle = $neck/head/Camera3D/weapon/melee/wrench2/HitParticles
 
+@onready var interact_ray = $neck/head/Camera3D/weapon/int_ray
+@onready var melee_ray = $neck/head/Camera3D/weapon/melee_ray
 @onready var env_ray = $neck/head/Camera3D/weapon/env_ray
 
 # ui elements
@@ -65,7 +75,7 @@ var attack_velocity_multiplier = 6.0
 
 func particle_play_melee():
 	melee_particle.emitting = true
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.1).timeout
 	melee_particle.emitting = false
 	
 func player_hurt(inVelocity, _inHealth, _inMaxHealth):
@@ -85,6 +95,10 @@ func player_die():
 		
 func _show_end_screen(bVictory):
 	hud_manager.ui_recieve_match_end(bVictory)
+
+func _handle_interaction():
+	if Input.is_action_just_pressed("interact"):
+		action_interact()
 		
 func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
@@ -93,6 +107,36 @@ func _handle_weapon_input():
 func place_impact_decal(inCollider, inPosition, inNormal):
 	network_manager.place_impact_decal(inCollider, inPosition, inNormal)
 
+func swap_inventory(inSlot : int) -> void:
+	# hide all inventory options and show the in slot only
+	for entry in inventory:
+		entry.visible = false
+	inventory.get(inSlot).visible = true
+	print("in slot", inSlot)
+	
+func add_inventory(type : Pickup.ENUM_PICKUPTYPE) -> void:
+	match type:
+		Pickup.ENUM_PICKUPTYPE.WRENCH:
+			print("wrench")
+			# 0
+		Pickup.ENUM_PICKUPTYPE.HAMMER:
+			print("hammer")
+		Pickup.ENUM_PICKUPTYPE.AXE:
+			print("axe")
+		Pickup.ENUM_PICKUPTYPE.SHOVEL:
+			print("SHOVEL")
+		Pickup.ENUM_PICKUPTYPE.GASCAN:
+			print("GASCAN")
+			swap_inventory(4)
+			
+	
+func action_interact():
+	if interact_ray.is_colliding():
+		var current_collider = interact_ray.get_collider()
+		var target_pickup_component = current_collider.get_node_or_null("Pickup")
+		target_pickup_component.on_pickup()
+		add_inventory(target_pickup_component.get_type())
+				
 func _action_swing_melee():
 	var rand_rot := Vector3(
 		randf_range(-melee_rand_pos, -melee_rand_pos/2),
@@ -226,6 +270,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
 	_handle_weapon_input()
+	_handle_interaction()
 	_handle_melee_reset(delta)
 	_handle_movebob()
 	move_and_slide()

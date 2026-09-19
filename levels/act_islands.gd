@@ -16,4 +16,4 @@ func start_island_minigame() -> void:
 	print("island mini game starting")
 
 func _ready() -> void:
-	set_islands_visible(false)
+	set_islands_visible(true)

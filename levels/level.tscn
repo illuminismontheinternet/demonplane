@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=30 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -12,8 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="10_pb8y7"]
 [ext_resource type="Script" uid="uid://c753tnpyna4al" path="res://levels/act_islands.gd" id="11_hy0rb"]
 [ext_resource type="PackedScene" uid="uid://ct7eey8jtkwxv" path="res://mesh/island_01.tscn" id="11_pb8y7"]
-[ext_resource type="Script" uid="uid://ce1fjqbfre44y" path="res://Pickup.gd" id="13_d7v53"]
-[ext_resource type="PackedScene" uid="uid://bov0dflnrkp78" path="res://mesh/gascan.tscn" id="13_mxp4k"]
+[ext_resource type="PackedScene" uid="uid://ckugt5ddg3uu2" path="res://pickups/pick_gascan.tscn" id="13_mxp4k"]
 
 [sub_resource type="Gradient" id="Gradient_pb8y7"]
 offsets = PackedFloat32Array(0, 0.19052133, 1)
@@ -48,7 +47,6 @@ glow_normalized = true
 volumetric_fog_density = 0.01
 volumetric_fog_albedo = Color(0.04755766, 0.047557645, 0.047557645, 1)
 volumetric_fog_length = 6.08
-adjustment_enabled = true
 adjustment_contrast = 1.2
 adjustment_color_correction = SubResource("GradientTexture1D_hy0rb")
 
@@ -122,7 +120,7 @@ texture_albedo = ExtResource("10_pb8y7")
 texture_orm = ExtResource("10_pb8y7")
 
 [node name="SpawnPoint0" type="Node3D" parent="NetworkManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.895993, 0, -4.3253336)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.10507, -28.074894, 71.98754)
 
 [node name="SpawnPoint1" type="Node3D" parent="NetworkManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.629957, 0, -9.451923)
@@ -538,21 +536,8 @@ transform = Transform3D(-0.7560695, 0, 1.8515829, 0, 2, 0, -1.8515829, 0, -0.756
 [node name="island03" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
 transform = Transform3D(-1.7150533, 0, -1.0288792, 0, 2, 0, 1.0288792, 0, -1.7150533, 1404.0447, -51.18954, -1612.7695)
 
-[node name="PICK_Gascan" type="Node3D" parent="ACT_Islands"]
+[node name="PICK_Gascan" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 74.03005)
-
-[node name="Pickup" type="Node" parent="ACT_Islands/PICK_Gascan"]
-script = ExtResource("13_d7v53")
-metadata/_custom_type_script = "uid://ce1fjqbfre44y"
-
-[node name="gascan" parent="ACT_Islands/PICK_Gascan" instance=ExtResource("13_mxp4k")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -0.21917915, 0)
-
-[node name="Spotlight" type="SpotLight3D" parent="ACT_Islands/PICK_Gascan"]
-transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 2.9354763, 0)
-light_temperature = 15000.0
-shadow_enabled = true
-spot_range = 3.5
 
 [node name="CSGBox3D" type="CSGBox3D" parent="ACT_Islands"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.43049, -29.182245, 73.80887)

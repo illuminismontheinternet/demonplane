@@ -22,7 +22,7 @@ billboard_mode = 1
 
 [sub_resource type="QuadMesh" id="QuadMesh_dw050"]
 material = SubResource("StandardMaterial3D_1jxqw")
-size = Vector2(0.01, 0.1)
+size = Vector2(0.005, 0.01)
 
 [sub_resource type="Curve" id="Curve_sweqy"]
 _data = [Vector2(0.0077821016, 0), 0.0, 0.0, 0, 0, Vector2(0.74967575, 0.10283369), -0.3748005, -0.3748005, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -109,15 +109,18 @@ transform = Transform3D(0.3, 9.441573e-09, 1.7584197e-09, -9.441575e-09, 0.27988
 [node name="HitParticles" type="CPUParticles3D" parent="neck/head/Camera3D/weapon/melee/wrench2"]
 transform = Transform3D(3.3333325, -1.0490637e-07, 1.9537651e-08, 1.0490638e-07, 3.109845, -1.1999893, 1.9537907e-08, 1.1999893, 3.109845, 0.035360992, 0.92919374, -0.100271106)
 emitting = false
+lifetime = 0.09999999999999999
+explosiveness = 1.0
+randomness = 1.0
 mesh = SubResource("QuadMesh_dw050")
 direction = Vector3(0, 0, 1)
 gravity = Vector3(0, 0, 0)
-initial_velocity_min = 3.0
+initial_velocity_min = 5.0
 initial_velocity_max = 6.0
 color = Color(0.8553981, 0.67479974, 7.70092e-07, 1)
 
 [node name="gascan" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("5_dw050")]
-transform = Transform3D(0.86053765, 0, -0.5093869, 0, 1, 0, 0.5093869, 0, 0.86053765, 0.028000003, -0.25900638, -0.332365)
+transform = Transform3D(0.86053765, 0, -0.5093869, 0, 1, 0, 0.5093869, 0, 0.86053765, 0.028000006, -0.6866176, -0.385186)
 visible = false
 
 [node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
@@ -129,6 +132,12 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 [node name="env_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 target_position = Vector3(0, -2, 0)
+debug_shape_custom_color = Color(1, 0, 1, 1)
+
+[node name="int_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+target_position = Vector3(0, -2, 0)
+collision_mask = 256
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
