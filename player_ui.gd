@@ -1,9 +1,9 @@
 extends Control
 
 @onready var bg_color = $ColorRect
-@onready var win = $win
-@onready var lose = $lose
-@onready var menu_buttons = $MenuOptions
+@onready var win = $VBoxContainer/win
+@onready var lose = $VBoxContainer/lose
+@onready var menu_buttons = $VBoxContainer/MenuOptions
 
 func ui_recieve_match_end(bVictory):
 	bg_color.visible = true

@@ -106,6 +106,8 @@ func player_die():
 	signal_player_died.emit(multiplayer.get_unique_id())
 		
 func _show_end_screen(bVictory):
+	bCanLook = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	hud_manager.ui_recieve_match_end(bVictory)
 
 func _handle_interaction():
@@ -132,10 +134,10 @@ func swap_inventory(inSlot : int) -> void:
 		entry.visible = false
 	inventory_mesh.get(inSlot).visible = true
 	active_inventory_slot = inSlot
-	print("in slot", inSlot)
+	#print("in slot", inSlot)
 
 func drop_inventory(inSlot : int):
-	print("dropping: ", inSlot)
+	#print("dropping: ", inSlot)
 	# for now just stop them from dropping the wrench
 	if inSlot != 0:
 		inventory_bools.set(inSlot, false)
@@ -157,7 +159,7 @@ func add_inventory(type : Pickup.ENUM_PICKUPTYPE, inPickup : Node3D) -> void:
 		Pickup.ENUM_PICKUPTYPE.SHOVEL:
 			print("SHOVEL")
 		Pickup.ENUM_PICKUPTYPE.GASCAN:
-			print("GASCAN")
+			#print("GASCAN")
 			modify_inventory(4, true)
 			swap_inventory(4)
 			pickup_gascan = inPickup

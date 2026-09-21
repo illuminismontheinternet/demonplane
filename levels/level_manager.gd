@@ -63,7 +63,7 @@ var events = [
 	},
 	{
 		"time": 45,
-		"type": plane_director.ENUM_PLANESTATUS.LOWER,
+		"type": plane_director.ENUM_PLANESTATUS.ISLAND,
 		"act" : ENUM_ACT.ISLAND
 	},
 	{
@@ -87,12 +87,19 @@ var events = [
 		"act" : ENUM_ACT.NONE
 	}
 ]
+
 var next_event := 0
 var start_time := 0.0
+var adjust_start := 0.0
+var adjust_total := 0.0
 
 @rpc("any_peer", "call_local", "reliable")
 func set_timer_blocked(inVal : bool):
 	bTimerIsBlocked = inVal
+	if inVal == true:
+		adjust_start = Time.get_ticks_msec() /  1000.0
+	else:
+		adjust_total = (Time.get_ticks_msec() /  1000.0) - adjust_start
 		
 @rpc("authority", "call_local", "reliable")
 func end_match():
@@ -138,7 +145,8 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority(): return
 	if not bTimerIsBlocked:
-		var seconds = get_elapsed_time()
+		var seconds = get_elapsed_time() - adjust_total
+		#print("seconds was: ", seconds)
 		while next_event < events.size() and seconds >= events[next_event].time:
 			execute_plane_event.rpc(events[next_event].type)
 			execute_act_event.rpc(events[next_event].act)
@@ -149,3 +157,7 @@ func _physics_process(_delta: float) -> void:
 
 func _on_act_engines_fully_repaired() -> void:
 	bEnginesBroken = false
+	
+func _on_act_plane_refueled() -> void:
+	await get_tree().create_timer(10.0).timeout
+	set_timer_blocked(false)

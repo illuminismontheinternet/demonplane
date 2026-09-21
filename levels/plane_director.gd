@@ -1,17 +1,20 @@
 class_name plane_director
 extends CSGCombiner3D
 
+signal signal_plane_refueled 
+
 var rng = RandomNumberGenerator.new()
 
 @onready var plane = $"."
 @onready var landing_spot = $"../landing_spot"
+@onready var stairs = $stairs
 
 enum ENUM_PLANESTATUS {
 	TAKEOFF,
 	IDLE,
 	TURBULENCE,
 	LAND,
-	LOWER,
+	ISLAND,
 	POWEROFF
 }
 var current_status = ENUM_PLANESTATUS.IDLE
@@ -27,8 +30,11 @@ var target_yaw = 0.0
 var target_roll = 0.0
 const takeoff_pitch = 5
 var target_basis : Basis
+
+# island stuff
 var target_position : Vector3
 var lower_to_land = false
+var refuel_count = 0
 
 # height changes
 var target_y_pos = 0.0
@@ -42,6 +48,7 @@ var em_roll = 0.0
 const em_mult = 20.0
 
 func set_plane_lowered(inLower : bool) -> void:
+	stairs.visible = inLower
 	lower_to_land = inLower
 	if lower_to_land:
 		target_position = landing_spot.global_position
@@ -101,7 +108,7 @@ func set_stats():
 			set_delta_spread(0,1)
 			set_nose_pitch(takeoff_pitch + get_random_float_range(-3,3))
 			stop_evasive_maneuvers()
-		ENUM_PLANESTATUS.LOWER:
+		ENUM_PLANESTATUS.ISLAND:
 			set_delta_spread(0,0)
 			set_nose_pitch(0)
 			set_plane_lowered(true)
@@ -125,8 +132,23 @@ func _physics_process(delta):
 	if lower_to_land:
 		plane.global_position = plane.global_position.lerp(target_position, t/20.0)
 	else:
-		plane.global_position.y = lerpf(plane.global_position.y, target_y_pos, t)
+		plane.global_position.y = lerpf(plane.global_position.y, target_y_pos, t/20.0)
+
+func prepare_takeoff() -> void:
+	print("preparing for takeoff")
+	signal_plane_refueled.emit()
 	
+func _on_refuel_event() -> void:
+	refuel_count = refuel_count + 1
+	if refuel_count >= 1:
+		prepare_takeoff()
 
 func _on_level_plane_event(new_state: plane_director.ENUM_PLANESTATUS) -> void:
 	current_status = new_state
+
+func _on_fuel_area_3d_body_entered(body: Node3D) -> void:
+	if refuel_count < 3:
+		if body.name.contains("PICK_Gascan"):
+			var target_pickup_component = body.get_node_or_null("Pickup")
+			target_pickup_component.on_pickup()
+			_on_refuel_event()

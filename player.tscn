@@ -208,65 +208,46 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="win" type="Label" parent="player_ui"]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="player_ui"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
+offset_left = -48.5
+offset_top = -33.0
+offset_right = 48.5
+offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="win" type="Label" parent="player_ui/VBoxContainer"]
+visible = false
+layout_mode = 2
 text = "VICTORY"
 label_settings = SubResource("LabelSettings_i3pqv")
 
-[node name="lose" type="Label" parent="player_ui"]
+[node name="lose" type="Label" parent="player_ui/VBoxContainer"]
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 text = "DEFEAT"
 label_settings = SubResource("LabelSettings_onrkg")
 
-[node name="MenuOptions" type="VBoxContainer" parent="player_ui"]
+[node name="MenuOptions" type="VBoxContainer" parent="player_ui/VBoxContainer"]
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
-[node name="BackToMain" type="Button" parent="player_ui/MenuOptions"]
+[node name="BackToMain" type="Button" parent="player_ui/VBoxContainer/MenuOptions"]
 layout_mode = 2
 text = "main menu"
 
-[node name="QuitGame" type="Button" parent="player_ui/MenuOptions"]
+[node name="QuitGame" type="Button" parent="player_ui/VBoxContainer/MenuOptions"]
 layout_mode = 2
 text = "quit game"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hqtel")
 
-[connection signal="pressed" from="player_ui/MenuOptions/BackToMain" to="player_ui" method="_on_back_to_main_pressed"]
-[connection signal="pressed" from="player_ui/MenuOptions/QuitGame" to="player_ui" method="_on_quit_game_pressed"]
+[connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/BackToMain" to="player_ui" method="_on_back_to_main_pressed"]
+[connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/QuitGame" to="player_ui" method="_on_quit_game_pressed"]

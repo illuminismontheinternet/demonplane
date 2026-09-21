@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=31 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -47,6 +47,9 @@ adjustment_contrast = 1.2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mxp4k"]
 size = Vector3(15, 15, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d7v53"]
+size = Vector3(20, 40, 20)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vnv7o"]
 
@@ -228,6 +231,30 @@ size = Vector3(5, 17.83, 0.5)
 [node name="divider_wall4" type="CSGBox3D" parent="CSGPlaneParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.575627, -1.085022, -6.3850865)
 size = Vector3(7, 17.83, 0.5)
+
+[node name="engine_right" type="CSGCylinder3D" parent="CSGPlaneParent"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -28.820602, -6.675164, -8.073427)
+radius = 5.0
+height = 25.0
+
+[node name="FuelArea3D" type="Area3D" parent="CSGPlaneParent/engine_right"]
+collision_layer = 257
+collision_mask = 257
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGPlaneParent/engine_right/FuelArea3D"]
+shape = SubResource("BoxShape3D_d7v53")
+
+[node name="engine_left" type="CSGCylinder3D" parent="CSGPlaneParent"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 29.144737, -6.675164, -8.073427)
+radius = 5.0
+height = 25.0
+
+[node name="FuelArea3D" type="Area3D" parent="CSGPlaneParent/engine_left"]
+collision_layer = 257
+collision_mask = 257
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGPlaneParent/engine_left/FuelArea3D"]
+shape = SubResource("BoxShape3D_d7v53")
 
 [node name="divider_wall2" type="CSGBox3D" parent="CSGPlaneParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5070205, -1.085022, 5.555735)
@@ -455,6 +482,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.1923647, 5.2315
 _spawnable_scenes = PackedStringArray("uid://bbljovy1yg3fh")
 spawn_path = NodePath("..")
 
+[node name="stairs" type="CSGBox3D" parent="CSGPlaneParent"]
+transform = Transform3D(0.89401346, -0.44803995, 0, 0.44803995, 0.89401346, 0, 0, 0, 1, -20.928093, -9.041082, 0)
+size = Vector3(30, 1, 3)
+
 [node name="landing_spot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
 
@@ -542,6 +573,21 @@ transform = Transform3D(-8.575267, 0, -5.1443954, 0, 10, 0, 5.1443954, 0, -8.575
 [node name="PICK_Gascan" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 74.03005)
 
+[node name="PICK_Gascan2" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 76.097275)
+
+[node name="PICK_Gascan3" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 71.83939)
+
+[node name="PICK_Gascan4" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.44226, -28.39695, 71.83939)
+
+[node name="PICK_Gascan5" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.44226, -28.39695, 74.950554)
+
+[node name="PICK_Gascan6" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.44226, -28.39695, 73.18866)
+
 [node name="CSGBox3D" type="CSGBox3D" parent="ACT_Islands"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.43049, -29.182245, 73.80887)
 use_collision = true
@@ -564,8 +610,13 @@ size = Vector3(10, 10, 10)
 
 [connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]
+[connection signal="signal_plane_refueled" from="CSGPlaneParent" to="." method="_on_act_plane_refueled"]
 [connection signal="body_entered" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_entered"]
 [connection signal="body_exited" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_exited"]
+[connection signal="body_entered" from="CSGPlaneParent/engine_right/FuelArea3D" to="CSGPlaneParent" method="_on_fuel_area_3d_body_entered"]
+[connection signal="body_entered" from="CSGPlaneParent/engine_right/FuelArea3D" to="CSGPlaneParent" method="_on_engine_area_3d_body_entered"]
+[connection signal="body_entered" from="CSGPlaneParent/engine_left/FuelArea3D" to="CSGPlaneParent" method="_on_fuel_area_3d_body_entered"]
+[connection signal="body_entered" from="CSGPlaneParent/engine_left/FuelArea3D" to="CSGPlaneParent" method="_on_engine_area_3d_body_entered"]
 [connection signal="fully_repaired" from="CSGPlaneParent/ACT_Engines" to="." method="_on_act_engines_fully_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/spark_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_spark_cyl_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/fuel_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_fuel_cyl_repaired"]
