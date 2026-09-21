@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=23 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://7pp3owc3skbj" path="res://characters/pilot_mesh.tscn" id="2_1jxqw"]
@@ -10,6 +10,36 @@
 [ext_resource type="PackedScene" uid="uid://bov0dflnrkp78" path="res://mesh/gascan.tscn" id="5_dw050"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x7l"]
+sky_top_color = Color(0.16323185, 0.17567575, 0.33544323, 1)
+sky_horizon_color = Color(0.10337458, 0.19443628, 0.28450903, 1)
+ground_bottom_color = Color(0.2016556, 0.11382251, 0.2784988, 1)
+ground_horizon_color = Color(0.101960786, 0.19607843, 0.28627452, 1)
+sun_angle_max = 45.0
+sun_curve = 0.05792626
+
+[sub_resource type="Sky" id="Sky_u52ul"]
+sky_material = SubResource("ProceduralSkyMaterial_d5x7l")
+
+[sub_resource type="Environment" id="Environment_vonw3"]
+background_mode = 2
+background_intensity = 1.0
+sky = SubResource("Sky_u52ul")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.1
+reflected_light_source = 2
+tonemap_mode = 2
+tonemap_exposure = 0.9
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_bounce_feedback = 0.1
+sdfgi_energy = 0.1
+glow_enabled = true
+glow_normalized = true
+volumetric_fog_enabled = true
+volumetric_fog_length = 128.0
+adjustment_contrast = 1.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jxqw"]
 vertex_color_use_as_albedo = true
@@ -97,6 +127,7 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25565803, 0)
 
 [node name="Camera3D" type="Camera3D" parent="neck/head"]
+environment = SubResource("Environment_vonw3")
 
 [node name="weapon" type="Node3D" parent="neck/head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
@@ -146,6 +177,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.919336e-08, 0.61319315, -0.
 [node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
 mesh = SubResource("QuadMesh_1jxqw")
+
+[node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]
+transform = Transform3D(-0.99933094, -3.1974032e-09, -0.03657403, 0, -1, 8.742278e-08, -0.03657403, 8.7364285e-08, 0.99933094, -0.17512584, 0.080287755, -0.32501915)
+light_intensity_lumens = 20.0
+light_temperature = 2000.0
+light_volumetric_fog_energy = 0.1
+spot_range = 20.0
+spot_angle = 35.0
+spot_angle_attenuation = 1.9999985
 
 [node name="player_ui" type="Control" parent="."]
 layout_mode = 3

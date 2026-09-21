@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://lnts3sqsxs8h" path="res://levels/decal_manager.gd" id="3_pb8y7"]
 [ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
 [ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_vnv7o"]
+[ext_resource type="Script" uid="uid://kyphb5uwrd13" path="res://levels/env_manager.gd" id="5_d7v53"]
 [ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="7_d5x7l"]
 [ext_resource type="Script" uid="uid://d3k4y3e8oc6mr" path="res://levels/act_enemies.gd" id="7_pb8y7"]
 [ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="7_rtcij"]
@@ -14,18 +15,11 @@
 [ext_resource type="PackedScene" uid="uid://ct7eey8jtkwxv" path="res://mesh/island_01.tscn" id="11_pb8y7"]
 [ext_resource type="PackedScene" uid="uid://ckugt5ddg3uu2" path="res://pickups/pick_gascan.tscn" id="13_mxp4k"]
 
-[sub_resource type="Gradient" id="Gradient_pb8y7"]
-offsets = PackedFloat32Array(0, 0.19052133, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.2618196, 0.091250695, 0.034063023, 1, 0.90374976, 0.80115616, 0.52303016, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_hy0rb"]
-gradient = SubResource("Gradient_pb8y7")
-
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x7l"]
-sky_top_color = Color(0.5975234, 0.67152905, 0.728787, 1)
-sky_horizon_color = Color(0.6945631, 0.48628956, 0.36584297, 1)
-ground_bottom_color = Color(0.06654992, 0.19039017, 0.17399111, 1)
-ground_horizon_color = Color(0.69411767, 0.4862745, 0.3647059, 1)
+sky_top_color = Color(0.16323185, 0.17567575, 0.33544323, 1)
+sky_horizon_color = Color(0.10337458, 0.19443628, 0.28450903, 1)
+ground_bottom_color = Color(0.2016556, 0.11382251, 0.2784988, 1)
+ground_horizon_color = Color(0.101960786, 0.19607843, 0.28627452, 1)
 sun_angle_max = 45.0
 sun_curve = 0.05792626
 
@@ -41,14 +35,18 @@ ambient_light_sky_contribution = 0.1
 reflected_light_source = 2
 tonemap_mode = 2
 tonemap_exposure = 0.9
-ssao_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_bounce_feedback = 0.1
+sdfgi_energy = 0.1
 glow_enabled = true
 glow_normalized = true
-volumetric_fog_density = 0.01
-volumetric_fog_albedo = Color(0.04755766, 0.047557645, 0.047557645, 1)
-volumetric_fog_length = 6.08
+volumetric_fog_enabled = true
+volumetric_fog_length = 128.0
 adjustment_contrast = 1.2
-adjustment_color_correction = SubResource("GradientTexture1D_hy0rb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mxp4k"]
+size = Vector3(15, 15, 40)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vnv7o"]
 
@@ -120,7 +118,7 @@ texture_albedo = ExtResource("10_pb8y7")
 texture_orm = ExtResource("10_pb8y7")
 
 [node name="SpawnPoint0" type="Node3D" parent="NetworkManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.10507, -28.074894, 71.98754)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1717844, -0.20824456, -3.320841)
 
 [node name="SpawnPoint1" type="Node3D" parent="NetworkManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.629957, 0, -9.451923)
@@ -140,9 +138,11 @@ spawn_path = NodePath("..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vonw3")
+script = ExtResource("5_d7v53")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.43743622, 0.33229834, 0.8356001, 0.028855072, -0.9339278, 0.3562954, 0.8987865, -0.13174519, -0.41812232, 0, 18.594637, 0)
+visible = false
 light_intensity_lux = 1.5
 light_temperature = 3500.0
 light_bake_mode = 0
@@ -153,6 +153,11 @@ use_collision = true
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("3_safpt")
+
+[node name="PlaneArea3D" type="Area3D" parent="CSGPlaneParent"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGPlaneParent/PlaneArea3D"]
+shape = SubResource("BoxShape3D_mxp4k")
 
 [node name="plane_tip_exterior" type="CSGCylinder3D" parent="CSGPlaneParent"]
 transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 0, 0, 27.59555)
@@ -559,6 +564,8 @@ size = Vector3(10, 10, 10)
 
 [connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]
+[connection signal="body_entered" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_entered"]
+[connection signal="body_exited" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_exited"]
 [connection signal="fully_repaired" from="CSGPlaneParent/ACT_Engines" to="." method="_on_act_engines_fully_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/spark_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_spark_cyl_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/fuel_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_fuel_cyl_repaired"]

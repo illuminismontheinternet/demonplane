@@ -27,6 +27,8 @@ var target_yaw = 0.0
 var target_roll = 0.0
 const takeoff_pitch = 5
 var target_basis : Basis
+var target_position : Vector3
+var lower_to_land = false
 
 # height changes
 var target_y_pos = 0.0
@@ -40,10 +42,11 @@ var em_roll = 0.0
 const em_mult = 20.0
 
 func set_plane_lowered(inLower : bool) -> void:
-	if inLower:
-		global_position = landing_spot.global_position
+	lower_to_land = inLower
+	if lower_to_land:
+		target_position = landing_spot.global_position
 	else:
-		global_position = Vector3.ZERO
+		target_position = Vector3.ZERO
 
 func set_target_basis():
 	target_basis = Basis.from_euler(Vector3(
@@ -119,7 +122,10 @@ func _physics_process(delta):
 	var t = 1.0 - exp(-rotation_speed * delta)
 	plane.transform.basis = plane.transform.basis.slerp(target_basis, t)
 	#plane.global_position.y = plane.global_position.y.lerpf(target_y_pos, t)
-	plane.global_position.y = lerpf(plane.global_position.y, target_y_pos, t)
+	if lower_to_land:
+		plane.global_position = plane.global_position.lerp(target_position, t/20.0)
+	else:
+		plane.global_position.y = lerpf(plane.global_position.y, target_y_pos, t)
 	
 
 func _on_level_plane_event(new_state: plane_director.ENUM_PLANESTATUS) -> void:

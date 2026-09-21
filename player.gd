@@ -8,6 +8,7 @@ signal signal_player_died(peerID : int)
 @onready var camera = $neck/head/Camera3D
 @onready var wep_parent = $neck/head/Camera3D/weapon
 
+@onready var flashlight = $neck/head/Camera3D/FlashLight
 @onready var melee_parent = $neck/head/Camera3D/weapon/melee
 @onready var wep_wrench = $neck/head/Camera3D/weapon/melee/wrench2
 @onready var wep_gascan = $neck/head/Camera3D/weapon/melee/gascan
@@ -192,6 +193,10 @@ func _action_swing_melee():
 		particle_play_melee()
 		# Place decal
 		place_impact_decal(env_ray.get_collider(), env_ray.get_collision_point(), env_ray.get_collision_normal())
+
+func _handle_flash_light():
+	if Input.is_action_just_pressed("flashlight"):
+		flashlight.visible = not flashlight.visible
 	
 func _handle_melee_reset(delta):
 	var t = delta * 10
@@ -302,6 +307,7 @@ func _physics_process(delta: float) -> void:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(TARGET_SWAY), LERP_SWAY)
 	else:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
+	_handle_flash_light()
 	_handle_drop_input()
 	_handle_weapon_input()
 	_handle_interaction()
