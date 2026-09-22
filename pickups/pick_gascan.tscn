@@ -30,8 +30,8 @@ shadow_enabled = true
 spot_range = 3.5
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22113839, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08071181, 0)
 exclude_parent = false
-target_position = Vector3(0, -0.1, 0)
+target_position = Vector3(0, -0.5, 0)
 hit_from_inside = true
 collide_with_areas = true

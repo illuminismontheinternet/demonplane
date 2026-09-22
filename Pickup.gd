@@ -16,25 +16,34 @@ var bIsGrounded = true
 @export var spotlight : SpotLight3D
 @export var mesh : Node3D
 
+
 func attempt_gravity() -> void:
 	while not bIsGrounded:
-		await get_tree().create_timer(0.01).timeout
+		await get_tree().create_timer(0.03).timeout
 		get_parent().global_position += Vector3(0,-0.1,0)
 		if raycast.is_colliding():
 			bIsGrounded = true
 	
-func on_drop(inPosition : Vector3) -> void:
+@rpc("any_peer", "call_local", "reliable")
+func on_drop_rpc(inPosition : Vector3) -> void:
 	print("drop here")
 	get_parent().global_position = inPosition
 	mesh.visible = true
 	set_spotlight_active(true)
 	bIsGrounded = false
 	attempt_gravity()
+
+func on_drop(inPosition : Vector3) -> void:
+	on_drop_rpc.rpc(inPosition)
 	
-func on_pickup() -> void:
+@rpc("any_peer", "call_local", "reliable")
+func on_pickup_rpc() -> void:
 	# hide everything
 	mesh.visible = false
 	set_spotlight_active(false)
+
+func on_pickup() -> void:
+	on_pickup_rpc.rpc()
 	
 func get_type() -> ENUM_PICKUPTYPE:
 	return pickup_type

@@ -120,6 +120,9 @@ metadata/_custom_type_script = "uid://bjty7py16yihl"
 shape = SubResource("CapsuleShape3D_5xgho")
 debug_color = Color(0.8327931, 0.0013441956, 0.9379297, 1)
 
+[node name="DropLocation" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.33512145, 0.88914895)
+
 [node name="neck" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.47167963, 0)
 
@@ -171,11 +174,9 @@ target_position = Vector3(0, -2, 0)
 collision_mask = 256
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
-[node name="DropLocation" type="Node3D" parent="neck/head/Camera3D/weapon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.919336e-08, 0.61319315, -0.90586644)
-
 [node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
+visible = false
 mesh = SubResource("QuadMesh_1jxqw")
 
 [node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]

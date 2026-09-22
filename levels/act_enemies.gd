@@ -43,8 +43,9 @@ func spawn_imp(inIteration) -> Node:
 	
 # spawns the burst of enemies and add them to the pool for 'recycling'
 func spawn_burst():
-	for i in range(max_burst_enemies):
-		spawn_imp(i)
+	print("target_enemy_count ", target_enemy_count)
+	#for i in range(max_burst_enemies):
+		#spawn_imp(i)
 
 func start_enemy_wave():
 	if !is_multiplayer_authority(): return

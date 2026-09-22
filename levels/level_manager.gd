@@ -37,52 +37,52 @@ var events = [
 		"act" : ENUM_ACT.IMP_WAVE
 	},
 	{
-		"time": 10,
+		"time": 6,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.ENGINES
 	},
 	{
-		"time": 25,
+		"time": 7,
 		"type": plane_director.ENUM_PLANESTATUS.TURBULENCE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 30,
+		"time": 8,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 35,
+		"time": 9,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 40,
+		"time": 10,
 		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 45,
+		"time": 12,
 		"type": plane_director.ENUM_PLANESTATUS.ISLAND,
 		"act" : ENUM_ACT.ISLAND
 	},
 	{
-		"time": 55,
+		"time": 45,
 		"type": plane_director.ENUM_PLANESTATUS.TAKEOFF,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 60,
+		"time": 46,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 65,
+		"time": 47,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
 		"act" : ENUM_ACT.ATTEMPT_LAND
 	},
 	{
-		"time": 70,
+		"time": 48,
 		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
 		"act" : ENUM_ACT.NONE
 	}
@@ -100,7 +100,12 @@ func set_timer_blocked(inVal : bool):
 		adjust_start = Time.get_ticks_msec() /  1000.0
 	else:
 		adjust_total = (Time.get_ticks_msec() /  1000.0) - adjust_start
-		
+
+@rpc("authority", "call_local", "reliable")
+func attempt_end_match():
+	if bEnginesBroken:
+		match_finished.emit(false)
+	
 @rpc("authority", "call_local", "reliable")
 func end_match():
 	#print("level manager end match - peer: ", multiplayer.get_unique_id())
@@ -131,6 +136,7 @@ func execute_act_event(act_type: ENUM_ACT):
 			print("start_enemy_wave - peer: ", multiplayer.get_unique_id())
 			act_enemies.start_enemy_wave()
 		ENUM_ACT.ISLAND:
+			#attempt_end_match()
 			print("ENUM_ACT island - peer: ", multiplayer.get_unique_id())
 			act_islands.start_island_minigame()
 			set_timer_blocked(true)

@@ -31,7 +31,7 @@ var inventory_bools = [
 ]
 var pickup_gascan : Node3D
 
-@onready var drop_location = $neck/head/Camera3D/weapon/DropLocation
+@onready var drop_location = $DropLocation
 @onready var melee_particle = $neck/head/Camera3D/weapon/melee/wrench2/HitParticles
 
 @onready var interact_ray = $neck/head/Camera3D/weapon/int_ray
