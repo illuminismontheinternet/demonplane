@@ -124,10 +124,10 @@ texture_albedo = ExtResource("10_pb8y7")
 texture_orm = ExtResource("10_pb8y7")
 
 [node name="SpawnPoint0" type="Node3D" parent="NetworkManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.01359, -27.452599, 72.0162)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0890899, -1.3255911, 11.956375)
 
 [node name="SpawnPoint1" type="Node3D" parent="NetworkManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.211853, -27.244354, 65.88512)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1048908, -1.1173468, 6.728099)
 
 [node name="SpawnPoint2" type="Node3D" parent="NetworkManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7286177, 0, -0.41099143)
@@ -624,6 +624,7 @@ replication_config = SubResource("SceneReplicationConfig_d5x7l")
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/spark_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_spark_cyl_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/fuel_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_fuel_cyl_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/air_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_air_cyl_repaired"]
+[connection signal="signal_imps_defeated" from="CSGPlaneParent/ACT_Plane_Enemies" to="." method="_on_act_imps_defeated"]
 [connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/HostButton" to="NetworkManager" method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/JoinButton" to="NetworkManager" method="_on_join_button_pressed"]
 

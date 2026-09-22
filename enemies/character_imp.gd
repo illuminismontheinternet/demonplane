@@ -7,6 +7,7 @@ signal signal_imp_died
 @onready var melee_ray = $mesh_parent/melee_ray
 @onready var imp_mesh = $mesh_parent
 @onready var anim_tree = $mesh_parent/imp_v3/AnimationTree
+@onready var collision = $CollisionShape3D
 
 enum IMP_STATE {
 	IDLE,
@@ -55,9 +56,8 @@ func imp_die_rpc():
 	signal_imp_died.emit()
 	current_state = IMP_STATE.DEAD
 	bIsAlive = false
-	set_collision_layer_value(1, false)
-	set_collision_mask_value(1, false)
-	set_collision_mask_value(2, true)
+	collision.disabled = true
+	nav.avoidance_enabled = false
 	imp_mesh.rotation.x = deg_to_rad(-85)
 	nav.set_velocity(Vector3.ZERO)
 
@@ -92,7 +92,7 @@ func authority_pick_target():
 	var players = get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
 		var targetID = players.pick_random().get_multiplayer_authority()
-		print("targetID was :", targetID)
+		#print("targetID was :", targetID)
 		propagate_target_rpc.rpc(targetID)
 
 func get_target_player():
@@ -108,9 +108,12 @@ func handle_state_machine():
 	match current_state:
 		IMP_STATE.IDLE:
 			current_state = IMP_STATE.SEARCHING
+			#print("idle")
 		IMP_STATE.SEARCHING:
 			get_target_player()
+			#print("search")
 		IMP_STATE.HUNTING:
+			#print("hunt")
 			# set anim tree
 			anim_tree.set("parameters/IdleRun/blend_position", velocity.length())
 			# Face the target
@@ -127,6 +130,7 @@ func handle_state_machine():
 			nav.set_velocity(new_vel)
 			velocity = velocity.move_toward(new_safe_velocity,0.25)
 		IMP_STATE.ATTACKING:
+			#print("attac")
 			attempt_attack()
 			anim_tree.set("parameters/AttackOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 			current_state = IMP_STATE.SEARCHING

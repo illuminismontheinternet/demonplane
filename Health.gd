@@ -28,10 +28,10 @@ func apply_damage(inAmount, inVelocity):
 func apply_damage_rpc(inAmount, inVelocity):
 	#if not multiplayer.is_server(): return
 	if health <= 0: 
-		print("Health component: already dead on peer id: ", multiplayer.get_unique_id())
+		#print("Health component: already dead on peer id: ", multiplayer.get_unique_id())
 		return
 	#print("server: applying damage: ",inAmount )
-	print("apply_damage_rpc - peer: ", multiplayer.get_unique_id())
+	#print("apply_damage_rpc - peer: ", multiplayer.get_unique_id())
 	health = max(health - inAmount, 0)
 	signal_health_changed.emit(inVelocity, health, max_health)
 	if health <= 0:

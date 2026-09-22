@@ -85,6 +85,9 @@ var bWasFalling = false
 var damage = 20.0
 var attack_velocity_multiplier = 6.0
 
+func get_player_camera() -> Camera3D:
+	return camera
+	
 func particle_play_melee():
 	melee_particle.emitting = true
 	await get_tree().create_timer(0.1).timeout

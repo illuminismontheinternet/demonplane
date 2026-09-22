@@ -1,6 +1,8 @@
 extends Node3D
 class_name ActEnemies
 
+signal signal_imps_defeated
+
 @onready var multiplayer_spawner = $EnemySpawner
 @onready var network_manager = $"../../NetworkManager"
 
@@ -13,7 +15,7 @@ const imp_scene = preload("res://enemies/character_imp.tscn")
 # TODO convert this into a spread sheet
 const max_total_enemies = 15
 const min_total_enemies = 9
-const max_burst_enemies = 5
+const max_burst_enemies = 1
 
 var target_enemy_count = 0
 var enemies_defeated = 0
@@ -31,6 +33,8 @@ func on_enemy_defeated():
 	enemies_defeated = enemies_defeated + 1
 	if enemies_defeated < max_total_enemies and enemies_defeated % max_burst_enemies == 0:
 		spawn_burst()
+	else:
+		signal_imps_defeated.emit()
 		
 func spawn_imp(inIteration) -> Node:
 	var new_imp = imp_scene.instantiate()
@@ -44,8 +48,8 @@ func spawn_imp(inIteration) -> Node:
 # spawns the burst of enemies and add them to the pool for 'recycling'
 func spawn_burst():
 	print("target_enemy_count ", target_enemy_count)
-	#for i in range(max_burst_enemies):
-		#spawn_imp(i)
+	for i in range(max_burst_enemies):
+		spawn_imp(i)
 
 func start_enemy_wave():
 	if !is_multiplayer_authority(): return

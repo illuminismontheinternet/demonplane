@@ -42,27 +42,27 @@ var events = [
 		"act" : ENUM_ACT.ENGINES
 	},
 	{
-		"time": 7,
+		"time": 20,
 		"type": plane_director.ENUM_PLANESTATUS.TURBULENCE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 8,
+		"time": 22,
 		"type": plane_director.ENUM_PLANESTATUS.IDLE,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 9,
+		"time": 23,
 		"type": plane_director.ENUM_PLANESTATUS.LAND,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 10,
+		"time": 24,
 		"type": plane_director.ENUM_PLANESTATUS.POWEROFF,
 		"act" : ENUM_ACT.NONE
 	},
 	{
-		"time": 12,
+		"time": 25,
 		"type": plane_director.ENUM_PLANESTATUS.ISLAND,
 		"act" : ENUM_ACT.ISLAND
 	},
@@ -97,7 +97,7 @@ var adjust_total := 0.0
 func set_timer_blocked(inVal : bool):
 	bTimerIsBlocked = inVal
 	if inVal == true:
-		adjust_start = Time.get_ticks_msec() /  1000.0
+		adjust_start = (Time.get_ticks_msec() /  1000.0) + adjust_total
 	else:
 		adjust_total = (Time.get_ticks_msec() /  1000.0) - adjust_start
 
@@ -135,8 +135,9 @@ func execute_act_event(act_type: ENUM_ACT):
 		ENUM_ACT.IMP_WAVE:
 			print("start_enemy_wave - peer: ", multiplayer.get_unique_id())
 			act_enemies.start_enemy_wave()
+			set_timer_blocked(true)
 		ENUM_ACT.ISLAND:
-			#attempt_end_match()
+			attempt_end_match()
 			print("ENUM_ACT island - peer: ", multiplayer.get_unique_id())
 			act_islands.start_island_minigame()
 			set_timer_blocked(true)
@@ -165,5 +166,9 @@ func _on_act_engines_fully_repaired() -> void:
 	bEnginesBroken = false
 	
 func _on_act_plane_refueled() -> void:
+	await get_tree().create_timer(10.0).timeout
+	set_timer_blocked(false)
+	
+func _on_act_imps_defeated() -> void:
 	await get_tree().create_timer(10.0).timeout
 	set_timer_blocked(false)

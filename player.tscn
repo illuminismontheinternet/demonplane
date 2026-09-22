@@ -37,7 +37,6 @@ sdfgi_bounce_feedback = 0.1
 sdfgi_energy = 0.1
 glow_enabled = true
 glow_normalized = true
-volumetric_fog_enabled = true
 volumetric_fog_length = 128.0
 adjustment_contrast = 1.2
 
@@ -104,6 +103,15 @@ properties/3/replication_mode = 1
 properties/4/path = NodePath("neck/head/Camera3D/weapon/melee:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
+properties/5/path = NodePath("neck/head/Camera3D/weapon/melee/wrench2:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("neck/head/Camera3D/weapon/melee/gascan:visible")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("neck/head/Camera3D/FlashLight:visible")
+properties/7/spawn = true
+properties/7/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 5
@@ -117,8 +125,9 @@ script = ExtResource("2_2hs0m")
 metadata/_custom_type_script = "uid://bjty7py16yihl"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape3D_5xgho")
-debug_color = Color(0.8327931, 0.0013441956, 0.9379297, 1)
+debug_fill = false
 
 [node name="DropLocation" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.33512145, 0.88914895)
@@ -159,17 +168,20 @@ visible = false
 
 [node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
 target_position = Vector3(0, -2, 0)
 collision_mask = 10
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="env_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
 target_position = Vector3(0, -2, 0)
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="int_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
 target_position = Vector3(0, -2, 0)
 collision_mask = 256
 debug_shape_custom_color = Color(1, 0, 1, 1)
