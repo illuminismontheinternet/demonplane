@@ -10,10 +10,15 @@ config_version=5
 
 [application]
 
-config/name="demonplane"
+config/name="bonestompers"
 run/main_scene="uid://da0oeauvub05s"
 config/features=PackedStringArray("26.1", "Forward Plus", "Redot")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 
 [global_group]
 

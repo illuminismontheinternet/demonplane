@@ -112,6 +112,9 @@ properties/6/replication_mode = 1
 properties/7/path = NodePath("neck/head/Camera3D/FlashLight:visible")
 properties/7/spawn = true
 properties/7/replication_mode = 1
+properties/8/path = NodePath("neck/head/Camera3D/weapon/melee/wrench2/HitParticles:emitting")
+properties/8/spawn = true
+properties/8/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 5
