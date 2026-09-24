@@ -1,10 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://db88yb5eq8lnd"]
+[gd_scene load_steps=6 format=3 uid="uid://db88yb5eq8lnd"]
 
 [ext_resource type="PackedScene" uid="uid://kmtt1l3dnyor" path="res://enemies/toon_skel.fbx" id="1_eh2kf"]
 [ext_resource type="Shader" uid="uid://d1xp5g3oc7ris" path="res://mat/matcap.gdshader" id="2_cm4iu"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_u1lrp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1l3hm"]
+render_priority = 0
+shader = ExtResource("2_u1lrp")
+shader_parameter/weight = 1.0
+shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cl2sy"]
 render_priority = 0
+next_pass = SubResource("ShaderMaterial_1l3hm")
 shader = ExtResource("2_cm4iu")
 shader_parameter/color1 = Color(0.7658544, 0.50423986, 0.2995176, 1)
 shader_parameter/color2 = Color(0, 0, 0, 1)
@@ -16,20 +24,5 @@ shader_parameter/z_offset = 1.0
 
 [node name="toon_skel" instance=ExtResource("1_eh2kf")]
 
-[node name="Skeleton3D" parent="Armature" index="0"]
-bones/1/rotation = Quaternion(0.088403694, -0.00027165344, 0.0055346307, 0.9960693)
-bones/6/rotation = Quaternion(-0.0033619353, -0.028773086, -0.70898074, 0.70463264)
-bones/7/rotation = Quaternion(0.03220962, -0.007981898, -0.061474342, 0.997557)
-bones/8/rotation = Quaternion(-0.0044012563, 0.0015299706, -0.048924707, 0.9987917)
-bones/11/rotation = Quaternion(-0.0033619392, 0.028773101, 0.7089807, 0.7046327)
-bones/12/rotation = Quaternion(0.03220961, 0.0079818955, 0.06147432, 0.997557)
-bones/13/rotation = Quaternion(-0.0044012563, -0.0015299707, 0.048924733, 0.9987917)
-bones/16/rotation = Quaternion(-0.66772175, -0.038439535, -0.042659372, 0.74219286)
-bones/17/rotation = Quaternion(0.0075943675, -0.00042818664, 0.10446577, 0.9944994)
-bones/18/rotation = Quaternion(0.045096707, 0.04362285, -0.71291214, 0.6984408)
-bones/21/rotation = Quaternion(-0.66772175, 0.038439535, 0.042659372, 0.74219286)
-bones/22/rotation = Quaternion(0.0075943675, 0.00042818664, -0.10446577, 0.9944994)
-bones/23/rotation = Quaternion(0.045096707, -0.04362285, 0.71291214, 0.6984408)
-
-[node name="polySurface25" parent="." index="1"]
+[node name="polySurface25" parent="." index="0"]
 material_override = SubResource("ShaderMaterial_cl2sy")

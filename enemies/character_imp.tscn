@@ -48,6 +48,7 @@ nodes/death_blend/position = Vector2(280, 20)
 node_connections = [&"output", 0, &"death_blend", &"AttackOneShot", 0, &"TimeScale", &"AttackOneShot", 1, &"attack", &"TimeScale", 0, &"IdleRun", &"death_blend", 0, &"AttackOneShot", &"death_blend", 1, &"dead"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rtcij"]
+height = 1.5664063
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1r7yi"]
 properties/0/path = NodePath(".:position")
@@ -82,24 +83,24 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 visible = false
 
 [node name="Skeleton3D" parent="mesh_parent/imp_v3/Armature" index="0"]
-bones/0/position = Vector3(-0.00160457, 0.55747944, 0.049402807)
-bones/1/rotation = Quaternion(-0.70604306, -0.30671105, -0.24387628, 0.5898779)
-bones/2/rotation = Quaternion(0.012563698, 0.0034050853, 0.17227468, 0.984963)
-bones/3/rotation = Quaternion(0.006526573, 0.07045212, -0.48582542, 0.8711875)
-bones/4/position = Vector3(-0.0016045743, 0.55747944, 0.049402807)
+bones/0/position = Vector3(-0.0016045712, 0.5708589, 0.049402807)
+bones/1/rotation = Quaternion(-0.7172705, -0.27829388, -0.22128089, 0.59925824)
+bones/2/rotation = Quaternion(0.012489244, 0.0010803972, 0.10928787, 0.9939312)
+bones/3/rotation = Quaternion(0.0043349224, 0.071705766, -0.46425167, 0.8827853)
+bones/4/position = Vector3(-0.0016045705, 0.5708589, 0.049402807)
 bones/4/rotation = Quaternion(-0.4467551, 0.5480966, 0.44675517, 0.54809666)
-bones/5/rotation = Quaternion(-0.7567487, -0.13004225, -0.10340092, 0.63224113)
-bones/6/rotation = Quaternion(0.012574292, -0.007261355, -0.2760338, 0.96103835)
-bones/7/rotation = Quaternion(0.06081229, -0.022457415, 0.92391443, 0.3770672)
-bones/8/position = Vector3(-0.0016045701, 0.5574795, 0.049402807)
+bones/5/rotation = Quaternion(-0.75405693, -0.14540172, -0.115613766, 0.6299922)
+bones/6/rotation = Quaternion(0.012587258, -0.0055975313, -0.23137854, 0.97276634)
+bones/7/rotation = Quaternion(0.058955997, -0.024822613, 0.9130486, 0.4028029)
+bones/8/position = Vector3(-0.0016045701, 0.5708589, 0.049402807)
 bones/9/rotation = Quaternion(0.30059037, -0.046477824, -0.054565, 0.95105624)
-bones/11/rotation = Quaternion(0.12262611, -0.23800549, -0.8013628, 0.53491485)
-bones/12/rotation = Quaternion(0.4083103, -0.006628894, -0.04546296, 0.9116863)
+bones/11/rotation = Quaternion(0.12876281, -0.25118962, -0.79693836, 0.53405356)
+bones/12/rotation = Quaternion(0.41906127, -0.0067909975, -0.04365579, 0.90688246)
 bones/13/rotation = Quaternion(0.07841295, 0.53731114, 0.06330522, 0.8373414)
-bones/15/rotation = Quaternion(0.123368435, 0.17141102, 0.85363686, 0.47613296)
-bones/16/rotation = Quaternion(0.3714615, -0.024592185, 0.14628305, 0.9165222)
+bones/15/rotation = Quaternion(0.12709326, 0.18355317, 0.8518503, 0.47382137)
+bones/16/rotation = Quaternion(0.38720328, -0.023567101, 0.14481887, 0.91024494)
 bones/17/rotation = Quaternion(-0.16997209, -0.38564742, -0.02757014, 0.90643555)
-bones/19/rotation = Quaternion(-0.27563986, 0.08597663, 0.06675353, 0.95507836)
+bones/19/rotation = Quaternion(-0.2666085, 0.08630215, 0.06654054, 0.9576243)
 
 [node name="AnimationTree" type="AnimationTree" parent="mesh_parent/imp_v3"]
 tree_root = SubResource("AnimationNodeBlendTree_5w5rr")
@@ -115,6 +116,7 @@ parameters/death_blend/blend_amount = 0.0
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.006003976, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21679688, 0)
 shape = SubResource("CapsuleShape3D_rtcij")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

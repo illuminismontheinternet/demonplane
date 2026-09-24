@@ -188,6 +188,7 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
+visible = false
 mesh = SubResource("QuadMesh_1jxqw")
 
 [node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]
