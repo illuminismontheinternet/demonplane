@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://bbljovy1yg3fh"]
+[gd_scene load_steps=16 format=3 uid="uid://bbljovy1yg3fh"]
 
 [ext_resource type="Script" uid="uid://bwr4kd304u2pk" path="res://enemies/character_imp.gd" id="1_1r7yi"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_eeun4"]
 [ext_resource type="PackedScene" uid="uid://b3y8bxrkb7wog" path="res://enemies/mesh_imp_v3.tscn" id="4_hvkrc"]
+[ext_resource type="PackedScene" uid="uid://db88yb5eq8lnd" path="res://enemies/mesh_toon_skel.tscn" id="4_u4gvu"]
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_eeun4"]
 
@@ -69,7 +70,7 @@ max_health = 20.0
 metadata/_custom_type_script = "uid://bjty7py16yihl"
 
 [node name="mesh_parent" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9946107, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0010763, 0)
 
 [node name="melee_ray" type="RayCast3D" parent="mesh_parent"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1.2946107, 0)
@@ -78,26 +79,27 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="imp_v3" parent="mesh_parent" instance=ExtResource("4_hvkrc")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+visible = false
 
 [node name="Skeleton3D" parent="mesh_parent/imp_v3/Armature" index="0"]
-bones/0/position = Vector3(-0.0016045728, 0.5683458, 0.049402807)
-bones/1/rotation = Quaternion(-0.71524966, -0.28365314, -0.22554214, 0.5975699)
-bones/2/rotation = Quaternion(0.012506997, 0.0015150034, 0.12108809, 0.9925619)
-bones/3/rotation = Quaternion(0.004746461, 0.071473785, -0.468322, 0.8806495)
-bones/4/position = Vector3(-0.00160457, 0.5683457, 0.049402807)
+bones/0/position = Vector3(-0.00160457, 0.55747944, 0.049402807)
+bones/1/rotation = Quaternion(-0.70604306, -0.30671105, -0.24387628, 0.5898779)
+bones/2/rotation = Quaternion(0.012563698, 0.0034050853, 0.17227468, 0.984963)
+bones/3/rotation = Quaternion(0.006526573, 0.07045212, -0.48582542, 0.8711875)
+bones/4/position = Vector3(-0.0016045743, 0.55747944, 0.049402807)
 bones/4/rotation = Quaternion(-0.4467551, 0.5480966, 0.44675517, 0.54809666)
-bones/5/rotation = Quaternion(-0.7545851, -0.14252263, -0.11332448, 0.6304334)
-bones/6/rotation = Quaternion(0.012586873, -0.0059100725, -0.23978, 0.9707277)
-bones/7/rotation = Quaternion(0.059307866, -0.0243803, 0.9151424, 0.39799824)
-bones/8/position = Vector3(-0.0016045701, 0.5683458, 0.049402807)
+bones/5/rotation = Quaternion(-0.7567487, -0.13004225, -0.10340092, 0.63224113)
+bones/6/rotation = Quaternion(0.012574292, -0.007261355, -0.2760338, 0.96103835)
+bones/7/rotation = Quaternion(0.06081229, -0.022457415, 0.92391443, 0.3770672)
+bones/8/position = Vector3(-0.0016045701, 0.5574795, 0.049402807)
 bones/9/rotation = Quaternion(0.30059037, -0.046477824, -0.054565, 0.95105624)
-bones/11/rotation = Quaternion(0.12761275, -0.2487184, -0.79778326, 0.5342247)
-bones/12/rotation = Quaternion(0.41704682, -0.0067606242, -0.04399564, 0.9077944)
+bones/11/rotation = Quaternion(0.12262611, -0.23800549, -0.8013628, 0.53491485)
+bones/12/rotation = Quaternion(0.4083103, -0.006628894, -0.04546296, 0.9116863)
 bones/13/rotation = Quaternion(0.07841295, 0.53731114, 0.06330522, 0.8373414)
-bones/15/rotation = Quaternion(0.12639539, 0.18127532, 0.8521969, 0.47426164)
-bones/16/rotation = Quaternion(0.38425624, -0.023760086, 0.145097, 0.9114437)
+bones/15/rotation = Quaternion(0.123368435, 0.17141102, 0.85363686, 0.47613296)
+bones/16/rotation = Quaternion(0.3714615, -0.024592185, 0.14628305, 0.9165222)
 bones/17/rotation = Quaternion(-0.16997209, -0.38564742, -0.02757014, 0.90643555)
-bones/19/rotation = Quaternion(-0.26824573, 0.08624376, 0.06657956, 0.95716953)
+bones/19/rotation = Quaternion(-0.27563986, 0.08597663, 0.06675353, 0.95507836)
 
 [node name="AnimationTree" type="AnimationTree" parent="mesh_parent/imp_v3"]
 tree_root = SubResource("AnimationNodeBlendTree_5w5rr")
@@ -108,6 +110,9 @@ parameters/AttackOneShot/internal_active = false
 parameters/AttackOneShot/request = 0
 parameters/TimeScale/scale = 3.0
 parameters/death_blend/blend_amount = 0.0
+
+[node name="toon_skel" parent="mesh_parent" instance=ExtResource("4_u4gvu")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.006003976, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rtcij")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=21 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://7pp3owc3skbj" path="res://characters/pilot_mesh.tscn" id="2_1jxqw"]
@@ -53,22 +53,19 @@ billboard_mode = 1
 material = SubResource("StandardMaterial3D_1jxqw")
 size = Vector2(0.005, 0.01)
 
-[sub_resource type="Curve" id="Curve_sweqy"]
-_data = [Vector2(0.0077821016, 0), 0.0, 0.0, 0, 0, Vector2(0.74967575, 0.10283369), -0.3748005, -0.3748005, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_2hs0m"]
-curve = SubResource("Curve_sweqy")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2hs0m"]
 render_priority = 0
 shader = ExtResource("3_sweqy")
-shader_parameter/distance_curve = SubResource("CurveTexture_2hs0m")
-shader_parameter/aberration_strength = 0.05
+shader_parameter/scale = 1.0
+shader_parameter/outline_spread = 1.0
+shader_parameter/_Color = Color(0, 0, 0, 1)
+shader_parameter/_DepthNormalThreshold = 0.05
+shader_parameter/_DepthNormalThresholdScale = 3.0
+shader_parameter/_DepthThreshold = 2000.0
+shader_parameter/_NormalThreshold = 0.5
 
 [sub_resource type="QuadMesh" id="QuadMesh_1jxqw"]
 material = SubResource("ShaderMaterial_2hs0m")
-flip_faces = true
 size = Vector2(2, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_onrkg"]
@@ -191,7 +188,6 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
-visible = false
 mesh = SubResource("QuadMesh_1jxqw")
 
 [node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]

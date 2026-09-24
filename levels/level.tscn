@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=35 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
 [ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_vnv7o"]
 [ext_resource type="Script" uid="uid://kyphb5uwrd13" path="res://levels/env_manager.gd" id="5_d7v53"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="6_0qmeg"]
 [ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="7_d5x7l"]
 [ext_resource type="Script" uid="uid://d3k4y3e8oc6mr" path="res://levels/act_enemies.gd" id="7_pb8y7"]
 [ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="7_rtcij"]
@@ -44,6 +45,19 @@ glow_normalized = true
 volumetric_fog_enabled = true
 volumetric_fog_length = 128.0
 adjustment_contrast = 1.2
+
+[sub_resource type="Gradient" id="Gradient_0qmeg"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.21380633, 0.6021093)
+colors = PackedColorArray(0, 0, 0, 1, 0.29219002, 0.29219005, 0.29219002, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ta7ci"]
+gradient = SubResource("Gradient_0qmeg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ta7ci"]
+render_priority = 0
+shader = ExtResource("6_0qmeg")
+shader_parameter/color_ramp = SubResource("GradientTexture1D_ta7ci")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mxp4k"]
 size = Vector3(15, 15, 40)
@@ -155,6 +169,7 @@ light_bake_mode = 0
 shadow_enabled = true
 
 [node name="CSGPlaneParent" type="CSGCombiner3D" parent="." groups=["group_navmesh"]]
+material_override = SubResource("ShaderMaterial_ta7ci")
 use_collision = true
 collision_layer = 3
 collision_mask = 3

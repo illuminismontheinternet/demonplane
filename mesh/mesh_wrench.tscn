@@ -1,11 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://cu6db4bdainc0"]
+[gd_scene load_steps=4 format=3 uid="uid://cu6db4bdainc0"]
 
 [ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="1_we4ti"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="2_q01h6"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_we4ti"]
-albedo_color = Color(1, 0.77281195, 0.7298706, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_we4ti"]
+render_priority = 0
+shader = ExtResource("2_q01h6")
+shader_parameter/OverlayColor = Color(0.70938915, 0.7193035, 0.41950718, 1)
+shader_parameter/ToonRampOffset = 0.5
+shader_parameter/ToonRampSmoothness = 0.05
+shader_parameter/ToonRampTinting = Color(0.41752753, 0.0016978604, 0.9723794, 1)
+shader_parameter/RimPower = 1.0
+shader_parameter/RimCutOff = 0.5
+shader_parameter/RimSmoothness = 0.05
+shader_parameter/RimLightBrightness = 20.0
+shader_parameter/SubSurfDistortion = 1.0
+shader_parameter/SubSurfTint = Color(0, 0, 0, 1)
+shader_parameter/SubSurfBrightness = 3.0
+shader_parameter/SubSurfCutoff = 0.5
+shader_parameter/SubSurfSmoothness = 0.05
 
 [node name="wrench" instance=ExtResource("1_we4ti")]
 
 [node name="Cube" parent="." index="0"]
-material_override = SubResource("StandardMaterial3D_we4ti")
+material_override = SubResource("ShaderMaterial_we4ti")
