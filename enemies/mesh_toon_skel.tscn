@@ -7,8 +7,9 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1l3hm"]
 render_priority = 0
 shader = ExtResource("2_u1lrp")
-shader_parameter/weight = 1.0
+shader_parameter/weight = 1.5000000712500001
 shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/use_divider = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cl2sy"]
 render_priority = 0
@@ -16,12 +17,14 @@ next_pass = SubResource("ShaderMaterial_1l3hm")
 shader = ExtResource("3_cm4iu")
 shader_parameter/albedo_color = Color(0.6535022, 0.49431753, 0.23729214, 1)
 shader_parameter/albedo_intensity = 1.0
-shader_parameter/band_amount = 9.0
 shader_parameter/band_helper = 99.9999977648
 shader_parameter/first_band_intensity = 0.999999977648
 shader_parameter/second_band_intensity = 0.499999988824
 shader_parameter/third_band_intensity = 0.249999994412
+shader_parameter/soften_lighting = false
 shader_parameter/use_third_band = true
+shader_parameter/first_band_zone = 0.0999999977648
+shader_parameter/second_band_zone = 0.00999999977648
 shader_parameter/current_band_intensity = 0.0
 
 [node name="toon_skel" instance=ExtResource("1_eh2kf")]

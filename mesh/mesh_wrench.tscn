@@ -1,24 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://cu6db4bdainc0"]
+[gd_scene load_steps=6 format=3 uid="uid://cu6db4bdainc0"]
 
 [ext_resource type="PackedScene" uid="uid://crksr22udejab" path="res://mesh/wrench.fbx" id="1_we4ti"]
 [ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="2_q01h6"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_rr0d2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wpeq1"]
+render_priority = 0
+shader = ExtResource("2_rr0d2")
+shader_parameter/weight = 0.50000002375
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/use_divider = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_we4ti"]
 render_priority = 0
+next_pass = SubResource("ShaderMaterial_wpeq1")
 shader = ExtResource("2_q01h6")
-shader_parameter/OverlayColor = Color(0.70938915, 0.7193035, 0.41950718, 1)
-shader_parameter/ToonRampOffset = 0.5
-shader_parameter/ToonRampSmoothness = 0.05
-shader_parameter/ToonRampTinting = Color(0.41752753, 0.0016978604, 0.9723794, 1)
-shader_parameter/RimPower = 1.0
-shader_parameter/RimCutOff = 0.5
-shader_parameter/RimSmoothness = 0.05
-shader_parameter/RimLightBrightness = 20.0
-shader_parameter/SubSurfDistortion = 1.0
-shader_parameter/SubSurfTint = Color(0, 0, 0, 1)
-shader_parameter/SubSurfBrightness = 3.0
-shader_parameter/SubSurfCutoff = 0.5
-shader_parameter/SubSurfSmoothness = 0.05
+shader_parameter/albedo_color = Color(0.5270549, 0.7766367, 1, 1)
+shader_parameter/albedo_intensity = 1.999999955296
+shader_parameter/band_helper = 0.1
+shader_parameter/first_band_intensity = 0.9
+shader_parameter/second_band_intensity = 0.6
+shader_parameter/third_band_intensity = 0.6
+shader_parameter/soften_lighting = false
+shader_parameter/use_third_band = true
+shader_parameter/first_band_zone = 0.9
+shader_parameter/second_band_zone = 0.6
+shader_parameter/current_band_intensity = 0.0
 
 [node name="wrench" instance=ExtResource("1_we4ti")]
 

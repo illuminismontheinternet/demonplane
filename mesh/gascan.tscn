@@ -1,13 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://bov0dflnrkp78"]
+[gd_scene load_steps=6 format=3 uid="uid://bov0dflnrkp78"]
 
 [ext_resource type="PackedScene" uid="uid://cbtnsckftxrpx" path="res://mesh/gascan.fbx" id="1_0285s"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="2_0xlde"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_exx0u"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xlde"]
-albedo_color = Color(0.91657597, 0.115381755, 5.7756904e-07, 1)
-metallic = 0.5
-roughness = 0.5
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4wsl"]
+render_priority = 0
+shader = ExtResource("2_exx0u")
+shader_parameter/weight = 3.0000001425
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/use_divider = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_exx0u"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_g4wsl")
+shader = ExtResource("2_0xlde")
+shader_parameter/albedo_color = Color(0.9999998, 0.14458415, 0.2826911, 1)
+shader_parameter/albedo_intensity = 1.999999955296
+shader_parameter/band_helper = 0.1
+shader_parameter/first_band_intensity = 0.9
+shader_parameter/second_band_intensity = 0.6
+shader_parameter/third_band_intensity = 0.6
+shader_parameter/soften_lighting = false
+shader_parameter/use_third_band = false
+shader_parameter/first_band_zone = 0.499999988824
+shader_parameter/second_band_zone = 0.0999999977648
+shader_parameter/current_band_intensity = 0.0
 
 [node name="gascan" instance=ExtResource("1_0285s")]
 
 [node name="Cube" parent="." index="0"]
-material_override = SubResource("StandardMaterial3D_0xlde")
+material_override = SubResource("ShaderMaterial_exx0u")

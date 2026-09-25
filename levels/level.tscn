@@ -67,12 +67,14 @@ next_pass = SubResource("ShaderMaterial_u6cys")
 shader = ExtResource("6_0qmeg")
 shader_parameter/albedo_color = Color(1, 1, 1, 1)
 shader_parameter/albedo_intensity = 1.0
-shader_parameter/band_amount = 2.0
 shader_parameter/band_helper = 4.99999988824
 shader_parameter/first_band_intensity = 0.1999999955296
 shader_parameter/second_band_intensity = 0.0999999977648
 shader_parameter/third_band_intensity = 0.0499999988824
 shader_parameter/soften_lighting = true
+shader_parameter/use_third_band = true
+shader_parameter/first_band_zone = 0.9
+shader_parameter/second_band_zone = 0.6
 shader_parameter/current_band_intensity = 0.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mxp4k"]
@@ -422,19 +424,19 @@ sides = 16
 [node name="lightbox3" parent="CSGPlaneParent/lights" instance=ExtResource("4_vnv7o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6776576, 6.9273157)
 start_color = Color(0.61374855, 0.804532, 0.72389627, 1)
-start_temp = 10000
+start_temp = 3000
 target_intensity = 600.0
 
 [node name="lightbox4" parent="CSGPlaneParent/lights" instance=ExtResource("4_vnv7o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6776576, -0.5793495)
 start_color = Color(0.61374855, 0.804532, 0.72389627, 1)
-start_temp = 10000
+start_temp = 3000
 target_intensity = 600.0
 
 [node name="lightbox5" parent="CSGPlaneParent/lights" instance=ExtResource("4_vnv7o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6776576, -7.131027)
 start_color = Color(0.61374855, 0.804532, 0.72389627, 1)
-start_temp = 10000
+start_temp = 3000
 target_intensity = 600.0
 
 [node name="ACT_Controls" type="Node3D" parent="CSGPlaneParent"]
