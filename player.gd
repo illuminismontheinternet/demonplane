@@ -4,7 +4,7 @@ signal signal_player_died(peerID : int)
 
 @onready var head = $neck/head
 @onready var body = $"."
-@onready var playermesh = $fbx_pilot_v1
+@onready var playermesh = $toon_pilot
 @onready var camera = $neck/head/Camera3D
 @onready var wep_parent = $neck/head/Camera3D/weapon
 

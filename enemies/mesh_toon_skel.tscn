@@ -7,7 +7,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1l3hm"]
 render_priority = 0
 shader = ExtResource("2_u1lrp")
-shader_parameter/weight = 1.5000000712500001
+shader_parameter/weight = 1.50000007125
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/use_divider = true
 

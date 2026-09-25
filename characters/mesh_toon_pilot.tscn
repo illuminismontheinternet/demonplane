@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci7qcx1yt2u68"]
+
+[ext_resource type="PackedScene" uid="uid://dgsfghflo7bjh" path="res://characters/toon_pilot.fbx" id="1_44vma"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_gs6ae"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="3_di38d"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qwni6"]
+render_priority = 0
+shader = ExtResource("2_gs6ae")
+shader_parameter/weight = 1.0
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/use_divider = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8nhk"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_qwni6")
+shader = ExtResource("3_di38d")
+shader_parameter/albedo_color = Color(0.40824077, 0.7290385, 1, 1)
+shader_parameter/albedo_intensity = 2.999999932944
+shader_parameter/band_helper = 0.1
+shader_parameter/first_band_intensity = 0.9
+shader_parameter/second_band_intensity = 0.6
+shader_parameter/third_band_intensity = 0.6
+shader_parameter/soften_lighting = false
+shader_parameter/use_third_band = false
+shader_parameter/first_band_zone = 0.35999999195328
+shader_parameter/second_band_zone = 0.1499999966472
+shader_parameter/current_band_intensity = 0.0
+
+[node name="toon_pilot" instance=ExtResource("1_44vma")]
+
+[node name="pilot1_001" parent="." index="0"]
+material_override = SubResource("ShaderMaterial_d8nhk")

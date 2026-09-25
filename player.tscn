@@ -1,13 +1,15 @@
-[gd_scene load_steps=21 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=24 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
-[ext_resource type="PackedScene" uid="uid://7pp3owc3skbj" path="res://characters/pilot_mesh.tscn" id="2_1jxqw"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
 [ext_resource type="Shader" uid="uid://bq5cnc6lq4ww" path="res://mat/menu_blur.gdshader" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://l0sv372tyqpm" path="res://player_ui.gd" id="3_hqtel"]
+[ext_resource type="PackedScene" uid="uid://ci7qcx1yt2u68" path="res://characters/mesh_toon_pilot.tscn" id="3_nvl01"]
 [ext_resource type="Shader" uid="uid://dkwg1ioqdlx0m" path="res://mat/postprocess.gdshader" id="3_sweqy"]
 [ext_resource type="PackedScene" uid="uid://cu6db4bdainc0" path="res://mesh/mesh_wrench.tscn" id="4_1jxqw"]
 [ext_resource type="PackedScene" uid="uid://bov0dflnrkp78" path="res://mesh/gascan.tscn" id="5_dw050"]
+[ext_resource type="Shader" uid="uid://wkv0el3jln2h" path="res://mat/canvas_overlay.gdshader" id="9_n7ghd"]
+[ext_resource type="Texture2D" uid="uid://br5fl2x5koio1" path="res://textures/h_lines.png" id="10_nvl01"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
 
@@ -111,19 +113,23 @@ properties/8/path = NodePath("neck/head/Camera3D/weapon/melee/wrench2/HitParticl
 properties/8/spawn = true
 properties/8/replication_mode = 1
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ivps1"]
+shader = ExtResource("9_n7ghd")
+shader_parameter/NOISE_TEXTURE = ExtResource("10_nvl01")
+shader_parameter/line_reduction = 19.99999955296
+
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 5
 script = ExtResource("1_4flbx")
 
-[node name="fbx_pilot_v1" parent="." instance=ExtResource("2_1jxqw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.96269774, 0)
+[node name="toon_pilot" parent="." instance=ExtResource("3_nvl01")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_2hs0m")
 metadata/_custom_type_script = "uid://bjty7py16yihl"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-visible = false
 shape = SubResource("CapsuleShape3D_5xgho")
 debug_fill = false
 
@@ -131,7 +137,7 @@ debug_fill = false
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.33512145, 0.88914895)
 
 [node name="neck" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.47167963, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.6687005, 0)
 
 [node name="head" type="Node3D" parent="neck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25565803, 0)
@@ -261,6 +267,17 @@ text = "quit game"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hqtel")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_ivps1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/BackToMain" to="player_ui" method="_on_back_to_main_pressed"]
 [connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/QuitGame" to="player_ui" method="_on_quit_game_pressed"]
