@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://db88yb5eq8lnd"]
 
 [ext_resource type="PackedScene" uid="uid://kmtt1l3dnyor" path="res://enemies/toon_skel.fbx" id="1_eh2kf"]
-[ext_resource type="Shader" uid="uid://d1xp5g3oc7ris" path="res://mat/matcap.gdshader" id="2_cm4iu"]
 [ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_u1lrp"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="3_cm4iu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1l3hm"]
 render_priority = 0
@@ -13,14 +13,16 @@ shader_parameter/color = Color(0, 0, 0, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cl2sy"]
 render_priority = 0
 next_pass = SubResource("ShaderMaterial_1l3hm")
-shader = ExtResource("2_cm4iu")
-shader_parameter/color1 = Color(0.7658544, 0.50423986, 0.2995176, 1)
-shader_parameter/color2 = Color(0, 0, 0, 1)
-shader_parameter/lightness = 0.50000002375
-shader_parameter/sharpness = 1.5
-shader_parameter/x_offset = 0.0
-shader_parameter/y_offset = 0.0
-shader_parameter/z_offset = 1.0
+shader = ExtResource("3_cm4iu")
+shader_parameter/albedo_color = Color(0.6535022, 0.49431753, 0.23729214, 1)
+shader_parameter/albedo_intensity = 1.0
+shader_parameter/band_amount = 9.0
+shader_parameter/band_helper = 99.9999977648
+shader_parameter/first_band_intensity = 0.999999977648
+shader_parameter/second_band_intensity = 0.499999988824
+shader_parameter/third_band_intensity = 0.249999994412
+shader_parameter/use_third_band = true
+shader_parameter/current_band_intensity = 0.0
 
 [node name="toon_skel" instance=ExtResource("1_eh2kf")]
 

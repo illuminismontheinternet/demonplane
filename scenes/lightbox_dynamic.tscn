@@ -13,3 +13,8 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -
 light_temperature = 2200.0
 shadow_enabled = true
 spot_angle_attenuation = 5.4641585
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.0594227, 0)
+light_intensity_lumens = 2.0
+light_temperature = 2200.0

@@ -10,6 +10,7 @@ extends CSGBox3D
 @export var start_temp := 2200
 @export var target_intensity = 1000.0
 @onready var current_light = $SpotLight3D
+@onready var current_omnilight = $OmniLight3D
 @onready var current_box = $"."
 
 var custom_mat = StandardMaterial3D
@@ -22,6 +23,7 @@ func _ready() -> void:
 		custom_mat = current_box.material.duplicate()
 		current_box.material = custom_mat
 	current_light.light_temperature = start_temp
+	current_omnilight.light_temperature = start_temp
 	current_box.material.emission = start_color
 	current_light.light_intensity_lumens = target_intensity
 

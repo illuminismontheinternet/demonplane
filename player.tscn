@@ -31,11 +31,9 @@ ambient_light_sky_contribution = 0.1
 reflected_light_source = 2
 tonemap_mode = 2
 tonemap_exposure = 0.9
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_bounce_feedback = 0.1
 sdfgi_energy = 0.1
-glow_enabled = true
 glow_normalized = true
 volumetric_fog_length = 128.0
 adjustment_contrast = 1.2
@@ -139,6 +137,7 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25565803, 0)
 
 [node name="Camera3D" type="Camera3D" parent="neck/head"]
+cull_mask = 1048543
 environment = SubResource("Environment_vonw3")
 
 [node name="weapon" type="Node3D" parent="neck/head/Camera3D"]
@@ -186,11 +185,6 @@ target_position = Vector3(0, -2, 0)
 collision_mask = 256
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
-[node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
-visible = false
-mesh = SubResource("QuadMesh_1jxqw")
-
 [node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]
 transform = Transform3D(-0.99933094, -3.1974032e-09, -0.03657403, 0, -1, 8.742278e-08, -0.03657403, 8.7364285e-08, 0.99933094, -0.17512584, 0.080287755, -0.32501915)
 light_intensity_lumens = 20.0
@@ -199,6 +193,12 @@ light_volumetric_fog_energy = 0.1
 spot_range = 20.0
 spot_angle = 35.0
 spot_angle_attenuation = 1.9999985
+
+[node name="CameraQuad" type="MeshInstance3D" parent="neck/head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
+visible = false
+layers = 32
+mesh = SubResource("QuadMesh_1jxqw")
 
 [node name="player_ui" type="Control" parent="."]
 layout_mode = 3

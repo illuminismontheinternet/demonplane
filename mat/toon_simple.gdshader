@@ -1,13 +1,48 @@
-// Created by Ryan Remer
-// https://godotshaders.com/shader/gradienttexture-shader/
 shader_type spatial;
+render_mode depth_draw_opaque;
 
-uniform sampler2D color_ramp;
+uniform sampler2D albedo_texture;
+uniform vec4 albedo_color : source_color  = vec4(1.0);
+uniform float albedo_intensity : hint_range(0.0, 5.0, 0.01) = 1.0;
+//uniform vec4 outline_color : source_color  = vec4(1.0);
+//uniform float outline_amount : hint_range(0.0, 1.0, 0.01) = 1.0;
 
-void light() {
-	float dotnl = dot(NORMAL, LIGHT);
-	float sample_position = max((dotnl + 1.0) / 2.01, 0.01);
-	vec4 ramp_light = texture(color_ramp, vec2(sample_position, 0.0));
-	vec3 diffuse_light = ramp_light.rgb * clamp(LIGHT_COLOR * ATTENUATION, vec3(0,0,0), vec3(1,1,1));
-	DIFFUSE_LIGHT = max(diffuse_light, DIFFUSE_LIGHT);
+uniform float band_amount : hint_range(1, 9, 1.0) = 9.0;
+uniform float band_helper : hint_range(0.0, 100.0, 0.01) = 0.1;
+
+uniform float first_band_intensity : hint_range(0.0, 1.0, 0.01) = 0.9;
+uniform float second_band_intensity : hint_range(0.0, 1.0, 0.01) = 0.6;
+uniform float third_band_intensity : hint_range(0.0, 1.0, 0.01) = 0.6;
+uniform bool soften_lighting = false;
+
+uniform float current_band_intensity;
+void light()
+{
+	// clears the bands
+	if (soften_lighting)
+	{
+		DIFFUSE_LIGHT += ALBEDO * ATTENUATION * LIGHT_COLOR * max(dot(LIGHT,NORMAL), 0.0);
+	}
+	else
+	{
+		float lighting = dot(NORMAL, LIGHT);
+		if (lighting > 0.9)
+		{
+			//DIFFUSE_LIGHT += first_band_intensity * (ATTENUATION * LIGHT_COLOR * max(dot(LIGHT,NORMAL), 0.0));
+			DIFFUSE_LIGHT += first_band_intensity * band_helper * ALBEDO * ATTENUATION * LIGHT_COLOR * max(dot(LIGHT,NORMAL), 0.0);
+		}
+		else if (lighting > 0.6)
+		{
+			DIFFUSE_LIGHT += second_band_intensity * band_helper * ALBEDO * ATTENUATION * LIGHT_COLOR * max(dot(LIGHT,NORMAL), 0.1);
+		}
+		else 
+		{
+			DIFFUSE_LIGHT += third_band_intensity * band_helper* ALBEDO * ATTENUATION * LIGHT_COLOR * max(dot(LIGHT,NORMAL), 0.1);
+		}
+	}
+}
+
+void fragment()
+{
+	ALBEDO = albedo_color.rgb * albedo_intensity;
 }
