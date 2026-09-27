@@ -5,6 +5,8 @@ signal signal_player_died(peerID : int)
 @onready var head = $neck/head
 @onready var body = $"."
 @onready var playermesh = $toon_pilot
+@onready var anim_tree = $toon_pilot/AnimationTree
+
 @onready var camera = $neck/head/Camera3D
 @onready var wep_parent = $neck/head/Camera3D/weapon
 
@@ -84,6 +86,42 @@ var bWasFalling = false
 # damage values
 var damage = 20.0
 var attack_velocity_multiplier = 6.0
+
+# animation state values - can't replicate physics so use these on synchronizer
+enum ANIM_STATE {
+	IDLE,
+	RUN	,
+	JUMP_START,
+	FALL,
+	LAND,
+	DEAD
+}
+@export var current_state : ANIM_STATE
+
+func _handle_animation_tree() -> void:
+	# Authority manages state
+	if is_multiplayer_authority():
+		if velocity.length() > 0.1:
+			current_state = ANIM_STATE.RUN
+			print("run")
+		else:
+			current_state = ANIM_STATE.IDLE
+			
+	# set the travels
+	var state_machine = anim_tree["parameters/StateMachine/playback"]
+	match current_state:
+		ANIM_STATE.IDLE:
+			state_machine.travel("idle")
+		ANIM_STATE.RUN:
+			state_machine.travel("run")
+		ANIM_STATE.JUMP_START:
+			state_machine.travel("jump_start")
+		ANIM_STATE.FALL:
+			state_machine.travel("falling")
+		ANIM_STATE.LAND:
+			state_machine.travel("land")
+		ANIM_STATE.DEAD:
+			state_machine.travel("dead")
 
 func get_player_camera() -> Camera3D:
 	return camera
@@ -248,6 +286,7 @@ func _ready():
 	camera.current = true
 		
 func _physics_process(delta: float) -> void:
+	_handle_animation_tree()
 	if not is_multiplayer_authority(): return
 	# do normal inputs
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")

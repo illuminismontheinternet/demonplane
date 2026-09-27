@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=40 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
@@ -10,6 +10,61 @@
 [ext_resource type="PackedScene" uid="uid://bov0dflnrkp78" path="res://mesh/gascan.tscn" id="5_dw050"]
 [ext_resource type="Shader" uid="uid://wkv0el3jln2h" path="res://mat/canvas_overlay.gdshader" id="9_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://br5fl2x5koio1" path="res://textures/h_lines.png" id="10_nvl01"]
+[ext_resource type="Texture2D" uid="uid://docy2ptdrewwh" path="res://textures/main_crosshair.png" id="11_nvl01"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nvl01"]
+animation = &"falling"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bwjto"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ivps1"]
+animation = &"jump_start"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_urp6f"]
+animation = &"land"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_606se"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q13i1"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pbfsw"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u1c27"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_op7ga"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pylmc"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5tmop"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7ahtn"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7lmhl"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7lmhl"]
+states/Start/position = Vector2(170, -42)
+states/falling/node = SubResource("AnimationNodeAnimation_nvl01")
+states/falling/position = Vector2(515, 227)
+states/idle/node = SubResource("AnimationNodeAnimation_bwjto")
+states/idle/position = Vector2(350, 90)
+states/jump_start/node = SubResource("AnimationNodeAnimation_ivps1")
+states/jump_start/position = Vector2(350, 227)
+states/land/node = SubResource("AnimationNodeAnimation_urp6f")
+states/land/position = Vector2(515, 85)
+states/run/node = SubResource("AnimationNodeAnimation_606se")
+states/run/position = Vector2(146, 90)
+transitions = ["falling", "land", SubResource("AnimationNodeStateMachineTransition_q13i1"), "jump_start", "falling", SubResource("AnimationNodeStateMachineTransition_pbfsw"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_u1c27"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_op7ga"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pylmc"), "idle", "jump_start", SubResource("AnimationNodeStateMachineTransition_5tmop"), "run", "jump_start", SubResource("AnimationNodeStateMachineTransition_7ahtn"), "land", "idle", SubResource("AnimationNodeStateMachineTransition_7lmhl")]
+graph_offset = Vector2(-486, -151)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dx0e4"]
+graph_offset = Vector2(-724, -70)
+nodes/output/position = Vector2(280, 100)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_7lmhl")
+nodes/StateMachine/position = Vector2(-340, 100)
+node_connections = [&"output", 0, &"StateMachine"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
 
@@ -112,6 +167,9 @@ properties/7/replication_mode = 1
 properties/8/path = NodePath("neck/head/Camera3D/weapon/melee/wrench2/HitParticles:emitting")
 properties/8/spawn = true
 properties/8/replication_mode = 1
+properties/9/path = NodePath(".:current_state")
+properties/9/spawn = true
+properties/9/replication_mode = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ivps1"]
 shader = ExtResource("9_n7ghd")
@@ -125,6 +183,30 @@ script = ExtResource("1_4flbx")
 [node name="toon_pilot" parent="." instance=ExtResource("3_nvl01")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
+[node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
+bones/0/position = Vector3(0, 0.011796951, 0)
+bones/2/rotation = Quaternion(-0.80455565, 5.3799557e-08, -5.5696486e-08, 0.5938773)
+bones/3/rotation = Quaternion(0.0062306295, -0.00046092694, 0.06861341, 0.9976238)
+bones/4/rotation = Quaternion(0.00015439771, 0.00017733761, -0.75395834, 0.65692216)
+bones/6/rotation = Quaternion(-0.80455565, -5.173742e-08, 5.417433e-08, 0.5938773)
+bones/7/rotation = Quaternion(0.00623063, 0.00046092525, -0.068613425, 0.9976238)
+bones/8/rotation = Quaternion(0.0001543929, -0.00017732609, 0.75395846, 0.6569221)
+bones/12/rotation = Quaternion(1.5995089e-07, 1.03531654e-07, -0.65603703, 0.75472873)
+bones/13/rotation = Quaternion(0.09803473, -0.0024907922, -0.035375025, 0.99455094)
+bones/16/rotation = Quaternion(0.017432438, -0.008188951, -0.047089532, 0.99870497)
+bones/17/rotation = Quaternion(0.03736786, -0.020983215, -0.20403953, 0.9780241)
+bones/19/rotation = Quaternion(-0.36229277, 0.045634903, -0.015463919, 0.9308181)
+bones/20/rotation = Quaternion(-0.15571904, 0.047220282, -0.04415081, 0.9856838)
+bones/22/rotation = Quaternion(1.599509e-07, -1.03531676e-07, 0.65603703, 0.75472873)
+bones/23/rotation = Quaternion(0.09803473, 0.0024907922, 0.035375025, 0.99455094)
+bones/27/rotation = Quaternion(0.03736786, 0.020983215, 0.20403953, 0.9780241)
+bones/29/rotation = Quaternion(-0.36229277, -0.045634903, 0.015463919, 0.9308181)
+bones/32/rotation = Quaternion(0, 0, 0, 1)
+
+[node name="AnimationTree" type="AnimationTree" parent="toon_pilot"]
+tree_root = SubResource("AnimationNodeBlendTree_dx0e4")
+anim_player = NodePath("../AnimationPlayer")
+
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_2hs0m")
 metadata/_custom_type_script = "uid://bjty7py16yihl"
@@ -137,7 +219,7 @@ debug_fill = false
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.33512145, 0.88914895)
 
 [node name="neck" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.6687005, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.69209385, 0)
 
 [node name="head" type="Node3D" parent="neck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25565803, 0)
@@ -279,5 +361,25 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(32, 32)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("11_nvl01")
+
 [connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/BackToMain" to="player_ui" method="_on_back_to_main_pressed"]
 [connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/QuitGame" to="player_ui" method="_on_quit_game_pressed"]
+
+[editable path="toon_pilot"]

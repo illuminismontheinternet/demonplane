@@ -1,19 +1,19 @@
 [gd_scene load_steps=6 format=3 uid="uid://ci7qcx1yt2u68"]
 
-[ext_resource type="PackedScene" uid="uid://dgsfghflo7bjh" path="res://characters/toon_pilot.fbx" id="1_44vma"]
+[ext_resource type="PackedScene" uid="uid://b1jpgcp7ei4n5" path="res://characters/toon_pilot.blend" id="1_gs6ae"]
 [ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_gs6ae"]
 [ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="3_di38d"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qwni6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_di38d"]
 render_priority = 0
 shader = ExtResource("2_gs6ae")
-shader_parameter/weight = 1.0
+shader_parameter/weight = 0.010000000475
 shader_parameter/color = Color(0, 0, 0, 1)
-shader_parameter/use_divider = true
+shader_parameter/use_divider = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8nhk"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qwni6"]
 render_priority = 0
-next_pass = SubResource("ShaderMaterial_qwni6")
+next_pass = SubResource("ShaderMaterial_di38d")
 shader = ExtResource("3_di38d")
 shader_parameter/albedo_color = Color(0.40824077, 0.7290385, 1, 1)
 shader_parameter/albedo_intensity = 2.999999932944
@@ -27,7 +27,27 @@ shader_parameter/first_band_zone = 0.35999999195328
 shader_parameter/second_band_zone = 0.1499999966472
 shader_parameter/current_band_intensity = 0.0
 
-[node name="toon_pilot" instance=ExtResource("1_44vma")]
+[node name="toon_pilot" instance=ExtResource("1_gs6ae")]
 
-[node name="pilot1_001" parent="." index="0"]
-material_override = SubResource("ShaderMaterial_d8nhk")
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/0/position = Vector3(-0.0023500556, -0.04460438, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.7731832, -0.22598742, -0.150533, 0.5731119)
+bones/3/rotation = Quaternion(0.004717371, 0.0074922126, 0.32717225, 0.9449232)
+bones/4/rotation = Quaternion(0.0034810335, 0.002200645, -0.7509215, 0.66037863)
+bones/6/rotation = Quaternion(-0.8041049, -0.02738268, -0.026134131, 0.59328103)
+bones/7/rotation = Quaternion(0.0053895935, -0.0039168284, -0.20212105, 0.97933793)
+bones/8/rotation = Quaternion(0.009794737, 0.00081711356, 0.84945345, 0.5275719)
+bones/12/rotation = Quaternion(0.27017927, -0.035634913, -0.53955925, 0.7966236)
+bones/13/rotation = Quaternion(0.9096332, -0.051523317, 0.038378708, 0.41041416)
+bones/16/rotation = Quaternion(-0.013182447, -0.009600517, -0.6481624, 0.7613275)
+bones/17/rotation = Quaternion(-0.053926032, 0.0038949754, -0.55238354, 0.83183485)
+bones/19/rotation = Quaternion(-0.4900095, 0.024243759, -0.060599033, 0.86927027)
+bones/20/rotation = Quaternion(-0.3294351, 0.046275705, -0.12600875, 0.934587)
+bones/22/rotation = Quaternion(0.38675413, 0.269055, 0.47802007, 0.74130124)
+bones/23/rotation = Quaternion(0.7179846, 0.018985555, 0.01888324, 0.69554377)
+bones/27/rotation = Quaternion(0.026985886, -0.06514666, 0.7788459, 0.6232389)
+bones/29/rotation = Quaternion(-0.5767724, -0.01767139, 0.10016902, 0.8105476)
+bones/32/rotation = Quaternion(0, 0.013018394, 0, 0.99991524)
+
+[node name="pilot1_001" parent="Armature/Skeleton3D" index="0"]
+material_override = SubResource("ShaderMaterial_qwni6")
