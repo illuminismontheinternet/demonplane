@@ -6,7 +6,7 @@ signal signal_imp_died
 @onready var parent = $"."
 @onready var melee_ray = $mesh_parent/melee_ray
 @onready var imp_mesh = $mesh_parent
-@onready var anim_tree = $mesh_parent/imp_v3/AnimationTree
+@onready var anim_tree = $mesh_parent/toon_skel/AnimationTree
 @onready var collision = $CollisionShape3D
 
 enum IMP_STATE {

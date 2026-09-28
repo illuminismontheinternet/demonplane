@@ -1,51 +1,46 @@
-[gd_scene load_steps=16 format=3 uid="uid://bbljovy1yg3fh"]
+[gd_scene load_steps=14 format=3 uid="uid://bbljovy1yg3fh"]
 
 [ext_resource type="Script" uid="uid://bwr4kd304u2pk" path="res://enemies/character_imp.gd" id="1_1r7yi"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_eeun4"]
-[ext_resource type="PackedScene" uid="uid://b3y8bxrkb7wog" path="res://enemies/mesh_imp_v3.tscn" id="4_hvkrc"]
 [ext_resource type="PackedScene" uid="uid://db88yb5eq8lnd" path="res://enemies/mesh_toon_skel.tscn" id="4_u4gvu"]
 
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_eeun4"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fhjlg"]
+animation = &"dead"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eeun4"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7gdew"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_pak73"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e7wah"]
 animation = &"idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hvkrc"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uq4ub"]
 animation = &"run"
 
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_u4gvu"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_eeun4")
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_pby2w"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_e7wah")
 blend_point_0/pos = 0.0
-blend_point_1/node = SubResource("AnimationNodeAnimation_hvkrc")
+blend_point_1/node = SubResource("AnimationNodeAnimation_uq4ub")
 blend_point_1/pos = 1.0
 min_space = 0.0
 
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_eeun4"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_y8o48"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u4gvu"]
-animation = &"attack"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5w5rr"]
-animation = &"dead"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_eeun4"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_5w5rr"]
-graph_offset = Vector2(-956, -63)
-nodes/output/position = Vector2(460, 20)
-nodes/IdleRun/node = SubResource("AnimationNodeBlendSpace1D_u4gvu")
-nodes/IdleRun/position = Vector2(-500, 80)
-nodes/AttackOneShot/node = SubResource("AnimationNodeOneShot_eeun4")
-nodes/AttackOneShot/position = Vector2(-100, 100)
-nodes/attack/node = SubResource("AnimationNodeAnimation_u4gvu")
-nodes/attack/position = Vector2(-480, 300)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_eeun4")
-nodes/TimeScale/position = Vector2(-280, 60)
-nodes/dead/node = SubResource("AnimationNodeAnimation_5w5rr")
-nodes/dead/position = Vector2(100, 200)
-nodes/death_blend/node = SubResource("AnimationNodeBlend2_eeun4")
-nodes/death_blend/position = Vector2(280, 20)
-node_connections = [&"output", 0, &"death_blend", &"AttackOneShot", 0, &"TimeScale", &"AttackOneShot", 1, &"attack", &"TimeScale", 0, &"IdleRun", &"death_blend", 0, &"AttackOneShot", &"death_blend", 1, &"dead"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_hvkrc"]
+graph_offset = Vector2(-461, -60)
+nodes/output/position = Vector2(640, 100)
+nodes/IdleRun/node = SubResource("AnimationNodeBlendSpace1D_pby2w")
+nodes/IdleRun/position = Vector2(-260, 140)
+nodes/AttackOneShot/node = SubResource("AnimationNodeOneShot_pak73")
+nodes/AttackOneShot/position = Vector2(140, 120)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_7gdew")
+nodes/Animation/position = Vector2(-94.600006, 375.1)
+nodes/death_blend/node = SubResource("AnimationNodeBlend2_y8o48")
+nodes/death_blend/position = Vector2(420, 100)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_fhjlg")
+"nodes/Animation 2/position" = Vector2(300, 380)
+node_connections = [&"output", 0, &"death_blend", &"AttackOneShot", 0, &"IdleRun", &"AttackOneShot", 1, &"Animation", &"death_blend", 0, &"AttackOneShot", &"death_blend", 1, &"Animation 2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rtcij"]
 height = 1.5664063
@@ -78,42 +73,35 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1
 collision_mask = 4
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
-[node name="imp_v3" parent="mesh_parent" instance=ExtResource("4_hvkrc")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
-visible = false
+[node name="toon_skel" parent="mesh_parent" instance=ExtResource("4_u4gvu")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.006003976, 0)
 
-[node name="Skeleton3D" parent="mesh_parent/imp_v3/Armature" index="0"]
-bones/0/position = Vector3(-0.0016045793, 0.5277037, 0.049402807)
-bones/1/rotation = Quaternion(-0.6770633, -0.3684682, -0.29298148, 0.5656663)
-bones/2/rotation = Quaternion(0.012544796, 0.008574848, 0.31116283, 0.95023525)
-bones/3/rotation = Quaternion(0.011396328, 0.06750465, -0.5328417, 0.84344125)
-bones/4/position = Vector3(-0.0016045698, 0.5277037, 0.049402807)
-bones/4/rotation = Quaternion(-0.4467551, 0.5480966, 0.44675517, 0.54809666)
-bones/5/rotation = Quaternion(-0.76166344, -0.09564426, -0.07604993, 0.63634706)
-bones/6/rotation = Quaternion(0.012448061, -0.010925439, -0.37374616, 0.92738324)
-bones/7/rotation = Quaternion(0.06477766, -0.017120775, 0.94551116, 0.31862116)
-bones/8/position = Vector3(-0.0016045701, 0.5277037, 0.049402807)
-bones/9/rotation = Quaternion(0.30059037, -0.046477824, -0.054565, 0.95105624)
-bones/11/rotation = Quaternion(0.10885979, -0.20845126, -0.8105472, 0.5363869)
-bones/12/rotation = Quaternion(0.3842225, -0.006265482, -0.049454093, 0.9218938)
-bones/13/rotation = Quaternion(0.07841295, 0.53731114, 0.06330522, 0.8373414)
-bones/15/rotation = Quaternion(0.11500052, 0.14427409, 0.8570936, 0.48098922)
-bones/16/rotation = Quaternion(0.33601823, -0.026849316, 0.14939108, 0.9295447)
-bones/17/rotation = Quaternion(-0.16997209, -0.38564742, -0.02757014, 0.90643555)
-bones/19/rotation = Quaternion(-0.29582092, 0.08521842, 0.06721014, 0.9490579)
+[node name="Skeleton3D" parent="mesh_parent/toon_skel/Armature" index="0"]
+bones/0/position = Vector3(-3.3706948e-10, 0.464787, -0.039777122)
+bones/0/rotation = Quaternion(0.11496509, 2.3683785e-07, 2.7409815e-08, 0.9933696)
+bones/2/rotation = Quaternion(-0.5489601, -0.47298917, -0.45328683, 0.5190907)
+bones/3/rotation = Quaternion(0.014107826, 0.00068309624, 0.5843745, 0.81136125)
+bones/4/rotation = Quaternion(0.050407704, 0.03918468, -0.760072, 0.64669496)
+bones/6/rotation = Quaternion(-0.7094499, 0.1373854, 0.14213796, 0.67646354)
+bones/7/rotation = Quaternion(0.017883014, -0.00085190416, -0.46607238, 0.88456553)
+bones/8/rotation = Quaternion(0.07903197, -0.045365173, 0.92782146, 0.36172274)
+bones/9/rotation = Quaternion(-0.014911692, 0.0054889657, 0.0068731993, 0.99985015)
+bones/11/rotation = Quaternion(0.11517039, -0.2693385, -0.6336735, 0.71599615)
+bones/12/rotation = Quaternion(0.80119556, -0.124666706, -0.012526559, 0.58513856)
+bones/13/rotation = Quaternion(-0.651336, 0.48099986, -0.4384742, 0.3900524)
+bones/15/rotation = Quaternion(0.11835538, 0.28752717, 0.6749071, 0.669194)
+bones/16/rotation = Quaternion(0.74850583, 0.06542938, 0.057612628, 0.6573727)
+bones/17/rotation = Quaternion(-0.6613861, -0.46986985, 0.41185546, 0.41492897)
+bones/19/rotation = Quaternion(-0.20556347, 0.0051606456, 0.001991941, 0.97862816)
 
-[node name="AnimationTree" type="AnimationTree" parent="mesh_parent/imp_v3"]
-tree_root = SubResource("AnimationNodeBlendTree_5w5rr")
+[node name="AnimationTree" type="AnimationTree" parent="mesh_parent/toon_skel"]
+tree_root = SubResource("AnimationNodeBlendTree_hvkrc")
 anim_player = NodePath("../AnimationPlayer")
 parameters/IdleRun/blend_position = 0.0
 parameters/AttackOneShot/active = false
 parameters/AttackOneShot/internal_active = false
 parameters/AttackOneShot/request = 0
-parameters/TimeScale/scale = 3.0
 parameters/death_blend/blend_amount = 0.0
-
-[node name="toon_skel" parent="mesh_parent" instance=ExtResource("4_u4gvu")]
-transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.006003976, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21679688, 0)
@@ -130,4 +118,4 @@ replication_config = SubResource("SceneReplicationConfig_1r7yi")
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
 
-[editable path="mesh_parent/imp_v3"]
+[editable path="mesh_parent/toon_skel"]

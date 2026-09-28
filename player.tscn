@@ -184,24 +184,25 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(0, 0.011796951, 0)
-bones/2/rotation = Quaternion(-0.80455565, 5.3799557e-08, -5.5696486e-08, 0.5938773)
-bones/3/rotation = Quaternion(0.0062306295, -0.00046092694, 0.06861341, 0.9976238)
-bones/4/rotation = Quaternion(0.00015439771, 0.00017733761, -0.75395834, 0.65692216)
-bones/6/rotation = Quaternion(-0.80455565, -5.173742e-08, 5.417433e-08, 0.5938773)
-bones/7/rotation = Quaternion(0.00623063, 0.00046092525, -0.068613425, 0.9976238)
-bones/8/rotation = Quaternion(0.0001543929, -0.00017732609, 0.75395846, 0.6569221)
-bones/12/rotation = Quaternion(1.5995089e-07, 1.03531654e-07, -0.65603703, 0.75472873)
-bones/13/rotation = Quaternion(0.09803473, -0.0024907922, -0.035375025, 0.99455094)
-bones/16/rotation = Quaternion(0.017432438, -0.008188951, -0.047089532, 0.99870497)
-bones/17/rotation = Quaternion(0.03736786, -0.020983215, -0.20403953, 0.9780241)
-bones/19/rotation = Quaternion(-0.36229277, 0.045634903, -0.015463919, 0.9308181)
-bones/20/rotation = Quaternion(-0.15571904, 0.047220282, -0.04415081, 0.9856838)
-bones/22/rotation = Quaternion(1.599509e-07, -1.03531676e-07, 0.65603703, 0.75472873)
-bones/23/rotation = Quaternion(0.09803473, 0.0024907922, 0.035375025, 0.99455094)
-bones/27/rotation = Quaternion(0.03736786, 0.020983215, 0.20403953, 0.9780241)
-bones/29/rotation = Quaternion(-0.36229277, -0.045634903, 0.015463919, 0.9308181)
-bones/32/rotation = Quaternion(0, 0, 0, 1)
+bones/0/position = Vector3(-0.0023500556, -0.09762512, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.7480255, -0.3014309, -0.21148902, 0.55215013)
+bones/3/rotation = Quaternion(0.0065520485, 0.01181205, 0.46630287, 0.884522)
+bones/4/rotation = Quaternion(0.0014030489, -0.0012587698, -0.7869153, 0.6170582)
+bones/6/rotation = Quaternion(-0.8038217, 0.034956396, 0.02452608, 0.5933356)
+bones/7/rotation = Quaternion(0.006574444, -0.008232301, -0.3518602, 0.9359933)
+bones/8/rotation = Quaternion(0.0063478285, 0.0069554574, 0.89726293, 0.44139612)
+bones/9/rotation = Quaternion(0.02685474, -0.005523345, 0.0016895795, 0.9996227)
+bones/10/rotation = Quaternion(-0.061808325, 0.012712424, -0.0038887034, 0.99799955)
+bones/12/rotation = Quaternion(0.34716746, -0.12769733, -0.49058098, 0.7889857)
+bones/13/rotation = Quaternion(0.84954166, -0.09003582, -0.010506028, 0.51967496)
+bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
+bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
+bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
+bones/22/rotation = Quaternion(0.35182285, 0.20489527, 0.5196567, 0.7511295)
+bones/23/rotation = Quaternion(0.8085754, 0.001652489, -0.040355805, 0.5870047)
+bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
+bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
+bones/32/rotation = Quaternion(0.061414238, 0.013386585, 0.013952964, 0.9979251)
 
 [node name="AnimationTree" type="AnimationTree" parent="toon_pilot"]
 tree_root = SubResource("AnimationNodeBlendTree_dx0e4")
@@ -275,7 +276,7 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]
 transform = Transform3D(-0.99933094, -3.1974032e-09, -0.03657403, 0, -1, 8.742278e-08, -0.03657403, 8.7364285e-08, 0.99933094, -0.17512584, 0.080287755, -0.32501915)
-light_intensity_lumens = 20.0
+light_intensity_lumens = 15.0
 light_temperature = 2000.0
 light_volumetric_fog_energy = 0.1
 spot_range = 20.0

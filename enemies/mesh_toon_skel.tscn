@@ -1,23 +1,22 @@
 [gd_scene load_steps=6 format=3 uid="uid://db88yb5eq8lnd"]
 
-[ext_resource type="PackedScene" uid="uid://kmtt1l3dnyor" path="res://enemies/toon_skel.fbx" id="1_eh2kf"]
+[ext_resource type="PackedScene" uid="uid://cbx54xgpnewnq" path="res://enemies/toon_skel.blend" id="1_cm4iu"]
 [ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_u1lrp"]
 [ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="3_cm4iu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1l3hm"]
 render_priority = 0
 shader = ExtResource("2_u1lrp")
-shader_parameter/weight = 1.50000007125
+shader_parameter/weight = 0.010000000475
 shader_parameter/color = Color(0, 0, 0, 1)
-shader_parameter/use_divider = true
+shader_parameter/use_divider = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cl2sy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u1lrp"]
 render_priority = 0
 next_pass = SubResource("ShaderMaterial_1l3hm")
 shader = ExtResource("3_cm4iu")
 shader_parameter/albedo_color = Color(0.6535022, 0.49431753, 0.23729214, 1)
-shader_parameter/albedo_intensity = 1.0
-shader_parameter/band_helper = 99.9999977648
+shader_parameter/albedo_intensity = 3.999999910592
 shader_parameter/first_band_intensity = 0.999999977648
 shader_parameter/second_band_intensity = 0.499999988824
 shader_parameter/third_band_intensity = 0.249999994412
@@ -27,7 +26,7 @@ shader_parameter/first_band_zone = 0.0999999977648
 shader_parameter/second_band_zone = 0.00999999977648
 shader_parameter/current_band_intensity = 0.0
 
-[node name="toon_skel" instance=ExtResource("1_eh2kf")]
+[node name="toon_skel" instance=ExtResource("1_cm4iu")]
 
-[node name="polySurface25" parent="." index="0"]
-material_override = SubResource("ShaderMaterial_cl2sy")
+[node name="polySurface25" parent="Armature/Skeleton3D" index="0"]
+material_override = SubResource("ShaderMaterial_u1lrp")
