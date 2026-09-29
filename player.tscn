@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=42 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
@@ -11,6 +11,9 @@
 [ext_resource type="Shader" uid="uid://wkv0el3jln2h" path="res://mat/canvas_overlay.gdshader" id="9_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://br5fl2x5koio1" path="res://textures/h_lines.png" id="10_nvl01"]
 [ext_resource type="Texture2D" uid="uid://docy2ptdrewwh" path="res://textures/main_crosshair.png" id="11_nvl01"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u1c27"]
+animation = &"swing"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nvl01"]
 animation = &"falling"
@@ -59,12 +62,20 @@ states/run/position = Vector2(146, 90)
 transitions = ["falling", "land", SubResource("AnimationNodeStateMachineTransition_q13i1"), "jump_start", "falling", SubResource("AnimationNodeStateMachineTransition_pbfsw"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_u1c27"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_op7ga"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pylmc"), "idle", "jump_start", SubResource("AnimationNodeStateMachineTransition_5tmop"), "run", "jump_start", SubResource("AnimationNodeStateMachineTransition_7ahtn"), "land", "idle", SubResource("AnimationNodeStateMachineTransition_7lmhl")]
 graph_offset = Vector2(-486, -151)
 
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_op7ga"]
+filter_enabled = true
+filters = ["", "Armature/Skeleton3D:Fingers02_L", "Armature/Skeleton3D:Fingers03_L", "Armature/Skeleton3D:Fingers03_R", "Armature/Skeleton3D:Head", "Armature/Skeleton3D:LowerArm_L", "Armature/Skeleton3D:LowerArm_R", "Armature/Skeleton3D:Spine01", "Armature/Skeleton3D:Spine02", "Armature/Skeleton3D:Thumb02_L", "Armature/Skeleton3D:Thumb02_R", "Armature/Skeleton3D:Thumb03_L", "Armature/Skeleton3D:UpperArm_L", "Armature/Skeleton3D:UpperArm_R"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dx0e4"]
-graph_offset = Vector2(-724, -70)
-nodes/output/position = Vector2(280, 100)
+graph_offset = Vector2(-280, -83)
+nodes/output/position = Vector2(300, 80)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_7lmhl")
-nodes/StateMachine/position = Vector2(-340, 100)
-node_connections = [&"output", 0, &"StateMachine"]
+nodes/StateMachine/position = Vector2(-280, 100)
+nodes/SwingOneShot/node = SubResource("AnimationNodeOneShot_op7ga")
+nodes/SwingOneShot/position = Vector2(60, 80)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_u1c27")
+nodes/Animation/position = Vector2(-200, 300)
+node_connections = [&"output", 0, &"SwingOneShot", &"SwingOneShot", 0, &"StateMachine", &"SwingOneShot", 1, &"Animation"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xgho"]
 
@@ -184,29 +195,46 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(-0.0023500556, -0.09762512, -7.578017e-09)
-bones/2/rotation = Quaternion(-0.7480255, -0.3014309, -0.21148902, 0.55215013)
-bones/3/rotation = Quaternion(0.0065520485, 0.01181205, 0.46630287, 0.884522)
-bones/4/rotation = Quaternion(0.0014030489, -0.0012587698, -0.7869153, 0.6170582)
-bones/6/rotation = Quaternion(-0.8038217, 0.034956396, 0.02452608, 0.5933356)
-bones/7/rotation = Quaternion(0.006574444, -0.008232301, -0.3518602, 0.9359933)
-bones/8/rotation = Quaternion(0.0063478285, 0.0069554574, 0.89726293, 0.44139612)
-bones/9/rotation = Quaternion(0.02685474, -0.005523345, 0.0016895795, 0.9996227)
-bones/10/rotation = Quaternion(-0.061808325, 0.012712424, -0.0038887034, 0.99799955)
-bones/12/rotation = Quaternion(0.34716746, -0.12769733, -0.49058098, 0.7889857)
-bones/13/rotation = Quaternion(0.84954166, -0.09003582, -0.010506028, 0.51967496)
+bones/0/position = Vector3(-0.0023500556, -0.060808808, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.7663988, -0.24910854, -0.1747788, 0.5657122)
+bones/3/rotation = Quaternion(0.0065779826, 0.008857932, 0.371961, 0.92818284)
+bones/4/rotation = Quaternion(0.00053613854, -0.00026161317, -0.76424736, 0.64492303)
+bones/6/rotation = Quaternion(-0.80448806, -0.010601458, -0.0074380715, 0.59382755)
+bones/7/rotation = Quaternion(0.0065114866, -0.005069272, -0.24963255, 0.9683055)
+bones/8/rotation = Quaternion(0.004906359, 0.0052931802, 0.8685104, 0.49561837)
+bones/9/rotation = Quaternion(0.008207941, -0.0016881675, 0.0005164067, 0.9999648)
+bones/10/rotation = Quaternion(-0.018895993, 0.003886432, -0.0011888512, 0.99981326)
+bones/12/rotation = Quaternion(0.30010504, -0.060750958, -0.52553713, 0.7937613)
+bones/13/rotation = Quaternion(0.8921899, -0.060365908, 0.022292161, 0.44705275)
 bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
 bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
 bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
-bones/22/rotation = Quaternion(0.35182285, 0.20489527, 0.5196567, 0.7511295)
-bones/23/rotation = Quaternion(0.8085754, 0.001652489, -0.040355805, 0.5870047)
+bones/22/rotation = Quaternion(0.3781646, 0.24575354, 0.49900186, 0.73999584)
+bones/23/rotation = Quaternion(0.7475418, 0.013726431, 0.0007926619, 0.66407245)
 bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
 bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
-bones/32/rotation = Quaternion(0.061414238, 0.013386585, 0.013952964, 0.9979251)
+bones/32/rotation = Quaternion(0.018775731, 0.004092585, 0.0042657387, 0.9998063)
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="toon_pilot/Armature/Skeleton3D" index="1"]
+transform = Transform3D(-0.94206846, 0.21381517, 0.2584384, 0.31534433, 0.82714397, 0.4651789, -0.11430344, 0.5197272, -0.8466513, -0.23601186, 0.7045002, 0.44171518)
+bone_name = "Hand_R"
+bone_idx = 24
+
+[node name="wrench" parent="toon_pilot/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("4_1jxqw")]
+transform = Transform3D(0.39994064, -0.0067256577, -0.0015214104, -0.001663452, -0.00845243, -0.39990723, 0.0066918954, 0.39985424, -0.008479089, -0.057404876, 0.08794874, 0.07268438)
+
+[node name="SpineIK3D" type="SkeletonIK3D" parent="toon_pilot/Armature/Skeleton3D" index="2"]
+influence = 0.6
+root_bone = &"Spine02"
+tip_bone = &"Head"
+target_node = NodePath("../../../../neck/head/Camera3D/view_ik_target")
 
 [node name="AnimationTree" type="AnimationTree" parent="toon_pilot"]
 tree_root = SubResource("AnimationNodeBlendTree_dx0e4")
 anim_player = NodePath("../AnimationPlayer")
+parameters/SwingOneShot/active = false
+parameters/SwingOneShot/internal_active = false
+parameters/SwingOneShot/request = 0
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_2hs0m")
@@ -232,7 +260,28 @@ environment = SubResource("Environment_vonw3")
 [node name="weapon" type="Node3D" parent="neck/head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
 
+[node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
+target_position = Vector3(0, -2, 0)
+collision_mask = 10
+debug_shape_custom_color = Color(1, 0, 1, 1)
+
+[node name="env_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
+target_position = Vector3(0, -2, 0)
+debug_shape_custom_color = Color(1, 0, 1, 1)
+
+[node name="int_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
+target_position = Vector3(0, -2, 0)
+collision_mask = 256
+debug_shape_custom_color = Color(1, 0, 1, 1)
+
 [node name="melee" type="Node3D" parent="neck/head/Camera3D/weapon"]
+transform = Transform3D(0.9999999, 0, 0, 0, 1.0000001, 0, 0, 0, 0.99999976, 0, 0, 0)
 
 [node name="wrench2" parent="neck/head/Camera3D/weapon/melee" instance=ExtResource("4_1jxqw")]
 transform = Transform3D(0.3, 9.441573e-09, 1.7584197e-09, -9.441575e-09, 0.27988607, 0.10799904, 1.7584122e-09, -0.10799904, 0.27988607, 0.16416463, -0.16538495, -0.27407527)
@@ -254,26 +303,6 @@ color = Color(0.8553981, 0.67479974, 7.70092e-07, 1)
 transform = Transform3D(0.86053765, 0, -0.5093869, 0, 1, 0, 0.5093869, 0, 0.86053765, 0.028000006, -0.79061955, -0.385186)
 visible = false
 
-[node name="melee_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
-visible = false
-target_position = Vector3(0, -2, 0)
-collision_mask = 10
-debug_shape_custom_color = Color(1, 0, 1, 1)
-
-[node name="env_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
-visible = false
-target_position = Vector3(0, -2, 0)
-debug_shape_custom_color = Color(1, 0, 1, 1)
-
-[node name="int_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
-visible = false
-target_position = Vector3(0, -2, 0)
-collision_mask = 256
-debug_shape_custom_color = Color(1, 0, 1, 1)
-
 [node name="FlashLight" type="SpotLight3D" parent="neck/head/Camera3D"]
 transform = Transform3D(-0.99933094, -3.1974032e-09, -0.03657403, 0, -1, 8.742278e-08, -0.03657403, 8.7364285e-08, 0.99933094, -0.17512584, 0.080287755, -0.32501915)
 light_intensity_lumens = 15.0
@@ -288,6 +317,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7809113e-08, 0, -0.5468725)
 visible = false
 layers = 32
 mesh = SubResource("QuadMesh_1jxqw")
+
+[node name="view_ik_target" type="Node3D" parent="neck/head/Camera3D"]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1.7144825e-07, 0, -1.9611394)
 
 [node name="player_ui" type="Control" parent="."]
 layout_mode = 3

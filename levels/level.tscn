@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=35 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
 [ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
@@ -16,7 +16,6 @@
 [ext_resource type="Script" uid="uid://c753tnpyna4al" path="res://levels/act_islands.gd" id="11_hy0rb"]
 [ext_resource type="PackedScene" uid="uid://ct7eey8jtkwxv" path="res://mesh/island_01.tscn" id="11_pb8y7"]
 [ext_resource type="PackedScene" uid="uid://ckugt5ddg3uu2" path="res://pickups/pick_gascan.tscn" id="13_mxp4k"]
-[ext_resource type="PackedScene" uid="uid://db88yb5eq8lnd" path="res://enemies/mesh_toon_skel.tscn" id="16_ta7ci"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vnv7o"]
 font_color = Color(0.8584287, 0, 0.26486826, 1)
@@ -67,7 +66,6 @@ next_pass = SubResource("ShaderMaterial_u6cys")
 shader = ExtResource("6_0qmeg")
 shader_parameter/albedo_color = Color(1, 1, 1, 1)
 shader_parameter/albedo_intensity = 1.0
-shader_parameter/band_helper = 4.99999988824
 shader_parameter/first_band_intensity = 0.1999999955296
 shader_parameter/second_band_intensity = 0.0999999977648
 shader_parameter/third_band_intensity = 0.0499999988824
@@ -609,9 +607,6 @@ size = Vector3(10, 10, 10)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_d5x7l")
-
-[node name="toon_skel2" parent="." instance=ExtResource("16_ta7ci")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2156785, -1.998, -3.0302815)
 
 [connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]

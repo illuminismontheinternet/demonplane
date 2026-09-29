@@ -6,6 +6,9 @@ signal signal_player_died(peerID : int)
 @onready var body = $"."
 @onready var playermesh = $toon_pilot
 @onready var anim_tree = $toon_pilot/AnimationTree
+@onready var spine_ik = $toon_pilot/Armature/Skeleton3D/SpineIK3D
+
+#@onready var lefthand_ik = $toon_pilot/Armature/Skeleton3D/righthand_ik
 
 @onready var camera = $neck/head/Camera3D
 @onready var wep_parent = $neck/head/Camera3D/weapon
@@ -90,7 +93,8 @@ var attack_velocity_multiplier = 6.0
 # animation state values - can't replicate physics so use these on synchronizer
 enum ANIM_STATE {
 	IDLE,
-	RUN	,
+	RUN,
+	SWING,
 	JUMP_START,
 	FALL,
 	LAND,
@@ -101,12 +105,21 @@ enum ANIM_STATE {
 func _handle_animation_tree() -> void:
 	# Authority manages state
 	if is_multiplayer_authority():
-		if velocity.length() > 0.1:
-			current_state = ANIM_STATE.RUN
-			print("run")
-		else:
-			current_state = ANIM_STATE.IDLE
-			
+			if velocity.length() > 0.1 and current_state != ANIM_STATE.SWING:
+				current_state = ANIM_STATE.RUN
+			else:
+				current_state = ANIM_STATE.IDLE
+	
+	# match spine to rotation
+	#var bone_pose : Transform3D = skeleton.global_transform * skeleton.get_bone_global_pose(spine_bone)
+	#var current = skeleton.get_bone_pose_rotation(spine_bone)
+	#var pitch = Quaternion(Vector3.RIGHT, camera.rotation.x)
+	#print(spine_bone) bone 10
+	#skeleton.set_bone_pose_rotation(spine_bone, Quaternion(Vector3.RIGHT, deg_to_rad(45.0)))
+
+	#bone_pose = bone_pose.looking_at(inPosition + Vector3(0,0.5,0), Vector3(0,1,0), true)
+	#skeleton.set_bone_global_pose_override(neck_bone, skeleton.global_transform.affine_inverse() * bone_pose, 1.0, true)
+
 	# set the travels
 	var state_machine = anim_tree["parameters/StateMachine/playback"]
 	match current_state:
@@ -114,6 +127,8 @@ func _handle_animation_tree() -> void:
 			state_machine.travel("idle")
 		ANIM_STATE.RUN:
 			state_machine.travel("run")
+		ANIM_STATE.SWING:
+			anim_tree.set("parameters/SwingOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		ANIM_STATE.JUMP_START:
 			state_machine.travel("jump_start")
 		ANIM_STATE.FALL:
@@ -214,6 +229,7 @@ func action_interact():
 		add_inventory(target_pickup_component.get_type(), current_collider)
 				
 func _action_swing_melee():
+	current_state = ANIM_STATE.SWING
 	var rand_rot := Vector3(
 		randf_range(-melee_rand_pos, -melee_rand_pos/2),
 		randf_range(melee_rand_pos*0.75, melee_rand_pos),
@@ -272,6 +288,8 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 	
 func _ready():
+	spine_ik.start()
+	#lefthand_ik.start()
 	active_inventory_slot = 0
 	network_manager = get_parent()
 	global_position = network_manager.get_spawn_point()
@@ -280,7 +298,10 @@ func _ready():
 	# network manager bind for end match and respawn
 	signal_player_died.connect(network_manager.respawn_player)
 	network_manager.network_match_finished.connect(_on_level_match_finished)
+	# below will run only on local player view, anything above will be on both
+	wep_parent.visible = false
 	if not is_multiplayer_authority(): return
+	wep_parent.visible = true
 	playermesh.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = true

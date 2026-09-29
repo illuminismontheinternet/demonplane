@@ -9,6 +9,9 @@ signal signal_imp_died
 @onready var anim_tree = $mesh_parent/toon_skel/AnimationTree
 @onready var collision = $CollisionShape3D
 
+@onready var skeleton: Skeleton3D = $mesh_parent/toon_skel/Armature/Skeleton3D
+@onready var neck_bone = skeleton.find_bone("Head")
+
 enum IMP_STATE {
 	IDLE,
 	SEARCHING,
@@ -68,7 +71,7 @@ func reset_attack():
 	bCanAttack = true
 
 func attempt_attack():
-	if bIsAlive and bCanAttack and melee_ray.is_colliding():
+	if bIsAlive and melee_ray.is_colliding():
 		bCanAttack = false
 		get_tree().create_timer(attack_delay).timeout.connect(reset_attack)
 		var incoming_target = melee_ray.get_collider()
@@ -100,10 +103,15 @@ func get_target_player():
 		authority_pick_target()
 
 func turn_to_loc(inPosition):
+	# this turns the entire body
 	imp_mesh.look_at(inPosition, Vector3(0,1,0))
 	imp_mesh.rotation.x = 0
 	imp_mesh.rotation.z = 0
-			
+	# neck only
+	var bone_pose : Transform3D = skeleton.global_transform * skeleton.get_bone_global_pose(neck_bone)
+	bone_pose = bone_pose.looking_at(inPosition + Vector3(0,0.5,0), Vector3(0,1,0), true)
+	skeleton.set_bone_global_pose_override(neck_bone, skeleton.global_transform.affine_inverse() * bone_pose, 1.0, true)
+
 func handle_state_machine():
 	match current_state:
 		IMP_STATE.IDLE:
@@ -131,9 +139,10 @@ func handle_state_machine():
 			velocity = velocity.move_toward(new_safe_velocity,0.25)
 		IMP_STATE.ATTACKING:
 			#print("attac")
-			attempt_attack()
-			anim_tree.set("parameters/AttackOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-			current_state = IMP_STATE.SEARCHING
+			if bCanAttack:
+				attempt_attack()
+				anim_tree.set("parameters/AttackOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+				current_state = IMP_STATE.SEARCHING
 		IMP_STATE.JUMPINGLINK:
 			# Face the target
 			update_target_position(current_target_node.global_position)
