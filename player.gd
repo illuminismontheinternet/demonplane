@@ -267,11 +267,11 @@ func _handle_movebob():
 	wep_parent.position.x = sin(position.z) * viewbob_const
 	
 func _handle_land():
-	#print("_handle_land")
+	current_state = ANIM_STATE.LAND
+	
+func _rotate_look(inRelX, inRelY):	#print("_handle_land")
 	for i in range(1):
 		break
-	
-func _rotate_look(inRelX, inRelY):
 	if bCanLook:
 		body.rotate_y(-inRelX * LOOKSENS_HOR)
 		temp_rot = camera.rotation.x
@@ -340,8 +340,10 @@ func _physics_process(delta: float) -> void:
 		# handle jump
 		if Input.is_action_just_pressed("jump"):
 				velocity.y += JUMP_VELOCITY
+				current_state = ANIM_STATE.JUMP_START
 	# not on floor
 	else: 
+		current_state = ANIM_STATE.FALL
 		# Handle falling
 		bWasFalling = true
 	

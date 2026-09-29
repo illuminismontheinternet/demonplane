@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://m368h1v36mmq"]
+
+[ext_resource type="PackedScene" uid="uid://cf1dv2p72x4x1" path="res://mesh/heart.fbx" id="1_kg3g5"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="2_0tjit"]
+[ext_resource type="Script" uid="uid://cky8pgkslfbhd" path="res://pickups/spinny.gd" id="2_1yvym"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="2_wgypr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1yvym"]
+render_priority = 0
+shader = ExtResource("2_0tjit")
+shader_parameter/weight = 10.0
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/use_divider = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0tjit"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_1yvym")
+shader = ExtResource("2_wgypr")
+shader_parameter/albedo_color = Color(0.8018414, 6.6420434e-06, 0.32778272, 1)
+shader_parameter/albedo_intensity = 4.99999988824
+shader_parameter/first_band_intensity = 0.9
+shader_parameter/second_band_intensity = 0.6
+shader_parameter/third_band_intensity = 0.6
+shader_parameter/soften_lighting = false
+shader_parameter/use_third_band = true
+shader_parameter/first_band_zone = 0.9
+shader_parameter/second_band_zone = 0.6
+shader_parameter/current_band_intensity = 0.0
+
+[node name="heart" instance=ExtResource("1_kg3g5")]
+script = ExtResource("2_1yvym")
+
+[node name="Sphere" parent="." index="0"]
+layers = 1024
+material_override = SubResource("ShaderMaterial_0tjit")
