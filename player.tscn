@@ -111,8 +111,8 @@ shader_parameter/current_band_intensity = 0.0
 render_priority = 0
 next_pass = SubResource("ShaderMaterial_606se")
 shader = ExtResource("5_urp6f")
-shader_parameter/albedo_color = Color(0, 0.39769757, 0.11246208, 1)
-shader_parameter/albedo_intensity = 3.999999910592
+shader_parameter/albedo_color = Color(0.5019608, 0.73333335, 0.101960786, 1)
+shader_parameter/albedo_intensity = 1.999999955296
 shader_parameter/first_band_intensity = 0.9
 shader_parameter/second_band_intensity = 0.6
 shader_parameter/third_band_intensity = 0.6
@@ -246,28 +246,28 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(-0.0023500556, -0.10149397, -7.578017e-09)
-bones/2/rotation = Quaternion(-0.7455519, -0.30770975, -0.2158944, 0.5503242)
-bones/3/rotation = Quaternion(0.0065452266, 0.012114434, 0.47590375, 0.8793896)
-bones/4/rotation = Quaternion(0.0014940195, -0.0013634362, -0.7892378, 0.6140845)
-bones/6/rotation = Quaternion(-0.8036072, 0.039734658, 0.02787859, 0.5931773)
-bones/7/rotation = Quaternion(0.006576663, -0.008558455, -0.36234418, 0.93198186)
-bones/8/rotation = Quaternion(0.006521819, 0.0071561905, 0.9005349, 0.43467608)
-bones/9/rotation = Quaternion(0.028813532, -0.0059262197, 0.0018128182, 0.9995656)
-bones/10/rotation = Quaternion(-0.066309154, 0.0136381285, -0.0041718762, 0.99769723)
-bones/12/rotation = Quaternion(0.3519456, -0.13466264, -0.48668763, 0.7881214)
-bones/13/rotation = Quaternion(0.8446226, -0.09310097, -0.013941009, 0.52702063)
+bones/0/position = Vector3(-0.0023500556, -0.07984254, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.75733244, -0.2763268, -0.19387557, 0.55902004)
+bones/3/rotation = Quaternion(0.006573445, 0.010400441, 0.42134255, 0.9068181)
+bones/4/rotation = Quaternion(0.0009845237, -0.0007773099, -0.7760929, 0.63061756)
+bones/6/rotation = Quaternion(-0.8044547, 0.012961887, 0.009094363, 0.59380287)
+bones/7/rotation = Quaternion(0.0065534837, -0.006715552, -0.30296302, 0.9529562)
+bones/8/rotation = Quaternion(0.005654455, 0.0061556958, 0.8837957, 0.46779853)
+bones/9/rotation = Quaternion(0.017841425, -0.003669532, 0.001122502, 0.99983346)
+bones/10/rotation = Quaternion(-0.041094337, 0.008452075, -0.0025854718, 0.9991162)
+bones/12/rotation = Quaternion(0.32477215, -0.095476314, -0.50795865, 0.79207665)
+bones/13/rotation = Quaternion(0.87111133, -0.075800784, 0.005330653, 0.48517105)
 bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
 bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
 bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
-bones/22/rotation = Quaternion(0.3485428, 0.19987552, 0.52207017, 0.7523367)
-bones/23/rotation = Quaternion(0.81536496, 0.00018256171, -0.04532932, 0.57716995)
+bones/22/rotation = Quaternion(0.36467585, 0.2247074, 0.5098681, 0.74602455)
+bones/23/rotation = Quaternion(0.7802435, 0.007489871, -0.020528035, 0.62509423)
 bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
 bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
-bones/32/rotation = Quaternion(0.06660279, 0.014517545, 0.015131772, 0.9975592)
+bones/32/rotation = Quaternion(0.0408329, 0.008900429, 0.009277002, 0.9990833)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="toon_pilot/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.9434432, 0.22664642, 0.24196373, 0.29668787, 0.90288335, 0.31109187, -0.14795715, 0.36528516, -0.9190624, -0.23254578, 0.66219693, 0.38163906)
+transform = Transform3D(-0.9425735, 0.22021225, 0.25112134, 0.30752072, 0.86557907, 0.39522696, -0.13033152, 0.4497553, -0.88359153, -0.2341873, 0.68581456, 0.41453794)
 bone_name = "Hand_R"
 bone_idx = 24
 
@@ -289,6 +289,7 @@ parameters/SwingOneShot/request = 0
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_2hs0m")
+max_health = 5.0
 metadata/_custom_type_script = "uid://bjty7py16yihl"
 
 [node name="HealthSubViewport" type="SubViewport" parent="."]

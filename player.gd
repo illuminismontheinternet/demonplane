@@ -48,7 +48,13 @@ var pickup_gascan : Node3D
 
 # health component
 @onready var health_component = $Health
-
+@onready var health_hearts = [
+	$HealthSubViewport/Camera3D/HeartContainer/heart,
+	$HealthSubViewport/Camera3D/HeartContainer/heart2,
+	$HealthSubViewport/Camera3D/HeartContainer/heart3,
+	$HealthSubViewport/Camera3D/HeartContainer/heart4,
+	$HealthSubViewport/Camera3D/HeartContainer/heart5,
+]
 # network manager is just parent
 var network_manager : NetworkManager
 
@@ -87,7 +93,7 @@ var wish_dir : Vector3
 var bWasFalling = false
 
 # damage values
-var damage = 20.0
+@export var damage = 1.0
 var attack_velocity_multiplier = 6.0
 
 # animation state values - can't replicate physics so use these on synchronizer
@@ -145,9 +151,16 @@ func particle_play_melee():
 	melee_particle.emitting = true
 	await get_tree().create_timer(0.1).timeout
 	melee_particle.emitting = false
-	
-func player_hurt(inVelocity, _inHealth, _inMaxHealth):
-	#print("player_hurt")
+
+func player_restart_health():
+	for i in range(health_hearts.size()):
+		health_hearts.get(i).visible = true
+		
+func player_hurt(inVelocity, inHealth, inMaxHealth):
+	for i in range(int(inMaxHealth)):
+		health_hearts.get(i).visible = false
+	for i in range(int(inHealth)):
+		health_hearts.get(i).visible = true
 	OUTSIDE_VELOCITY += inVelocity
 	velocity.y += inVelocity.y
 
@@ -295,6 +308,7 @@ func _ready():
 	global_position = network_manager.get_spawn_point()
 	health_component.signal_died.connect(player_die)
 	health_component.signal_health_changed.connect(player_hurt)
+	health_component.signal_restart_health.connect(player_restart_health)
 	# network manager bind for end match and respawn
 	signal_player_died.connect(network_manager.respawn_player)
 	network_manager.network_match_finished.connect(_on_level_match_finished)

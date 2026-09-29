@@ -59,10 +59,11 @@ properties/2/replication_mode = 1
 [node name="character_imp" type="CharacterBody3D" groups=["enemy"]]
 collision_layer = 9
 script = ExtResource("1_1r7yi")
+attack_damage = 1
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_eeun4")
-max_health = 20.0
+max_health = 1.0
 metadata/_custom_type_script = "uid://bjty7py16yihl"
 
 [node name="mesh_parent" type="Node3D" parent="."]
@@ -77,22 +78,22 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.006003976, 0)
 
 [node name="Skeleton3D" parent="mesh_parent/toon_skel/Armature" index="0"]
-bones/0/position = Vector3(-1.4161657e-09, 0.45212734, -0.03977712)
+bones/0/position = Vector3(-2.7415137e-09, 0.43657863, -0.039777122)
 bones/0/rotation = Quaternion(0.11496509, 2.3683785e-07, 2.7409815e-08, 0.9933696)
-bones/2/rotation = Quaternion(-0.535221, -0.4883029, -0.46753755, 0.5064656)
-bones/3/rotation = Quaternion(0.013636999, 0.0012608654, 0.60914254, 0.7929426)
+bones/2/rotation = Quaternion(-0.51774263, -0.50661516, -0.48456466, 0.49038842)
+bones/3/rotation = Quaternion(0.013039759, 0.0019702155, 0.6388247, 0.7692393)
 bones/4/rotation = Quaternion(0.050407704, 0.03918468, -0.760072, 0.64669496)
-bones/6/rotation = Quaternion(-0.7084994, 0.14186394, 0.14627214, 0.6756537)
-bones/7/rotation = Quaternion(0.017556043, -0.0016848401, -0.4851004, 0.8742806)
-bones/8/rotation = Quaternion(0.081608616, -0.042265385, 0.9373795, 0.3359666)
-bones/9/rotation = Quaternion(-0.004637874, 0.0054437155, 0.008402914, 0.9999392)
-bones/11/rotation = Quaternion(0.09475042, -0.2420032, -0.6432182, 0.7202271)
-bones/12/rotation = Quaternion(0.81658965, -0.12614775, -0.010985352, 0.56315845)
+bones/6/rotation = Quaternion(-0.70729405, 0.14735734, 0.15134238, 0.67462325)
+bones/7/rotation = Quaternion(0.0171428, -0.002707734, -0.5081814, 0.8610752)
+bones/8/rotation = Quaternion(0.08469192, -0.038407546, 0.9481456, 0.3039279)
+bones/9/rotation = Quaternion(0.007983967, 0.0053873225, 0.010280879, 0.99990076)
+bones/11/rotation = Quaternion(0.069439776, -0.20791957, -0.65384626, 0.7241773)
+bones/12/rotation = Quaternion(0.8347128, -0.12784405, -0.00907876, 0.53556335)
 bones/13/rotation = Quaternion(-0.651336, 0.48099986, -0.4384742, 0.3900524)
-bones/15/rotation = Quaternion(0.09597975, 0.26186252, 0.6847607, 0.6732895)
-bones/16/rotation = Quaternion(0.7660097, 0.06464652, 0.057957448, 0.6369387)
+bones/15/rotation = Quaternion(0.06825894, 0.22980158, 0.6956965, 0.6771547)
+bones/16/rotation = Quaternion(0.78677833, 0.06361936, 0.058323987, 0.61117166)
 bones/17/rotation = Quaternion(-0.6613861, -0.46986985, 0.41185546, 0.41492897)
-bones/19/rotation = Quaternion(-0.22262633, 0.005954202, 0.0016518157, 0.9748843)
+bones/19/rotation = Quaternion(-0.24350281, 0.0069269612, 0.0012331211, 0.96987474)
 
 [node name="AnimationTree" type="AnimationTree" parent="mesh_parent/toon_skel"]
 tree_root = SubResource("AnimationNodeBlendTree_hvkrc")

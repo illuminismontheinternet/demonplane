@@ -2,6 +2,7 @@ class_name Health
 extends Node
 
 signal signal_died
+signal signal_restart_health
 signal signal_health_changed(outCurrent : float, outMax: float)
 
 @export var max_health : float = 100.0
@@ -15,6 +16,7 @@ func get_current_health() -> float:
 	
 @rpc("any_peer", "call_local","reliable")
 func restart_health_rpc():
+	signal_restart_health.emit()
 	health = max_health
 	
 func restart_health():
