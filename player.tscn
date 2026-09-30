@@ -179,22 +179,6 @@ shader_parameter/_NormalThreshold = 0.5
 material = SubResource("ShaderMaterial_2hs0m")
 size = Vector2(2, 2)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_onrkg"]
-shader = ExtResource("2_i3pqv")
-shader_parameter/blur_radius = 8
-shader_parameter/blur_scale = 4.00000019
-shader_parameter/darkness = 0.6000000285
-shader_parameter/fade_direction = 0
-shader_parameter/fade_cutoff = 1.0
-shader_parameter/fade_intensity = 0.10000000149012
-
-[sub_resource type="LabelSettings" id="LabelSettings_i3pqv"]
-font_size = 48
-
-[sub_resource type="LabelSettings" id="LabelSettings_onrkg"]
-font_size = 48
-font_color = Color(0.623739, 0, 0.07081313, 1)
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_hqtel"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -238,6 +222,22 @@ viewport_path = NodePath("HealthSubViewport")
 [sub_resource type="ViewportTexture" id="ViewportTexture_606se"]
 viewport_path = NodePath("WeaponSubViewport")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_onrkg"]
+shader = ExtResource("2_i3pqv")
+shader_parameter/blur_radius = 8
+shader_parameter/blur_scale = 4.00000019
+shader_parameter/darkness = 0.6000000285
+shader_parameter/fade_direction = 0
+shader_parameter/fade_cutoff = 1.0
+shader_parameter/fade_intensity = 0.10000000149012
+
+[sub_resource type="LabelSettings" id="LabelSettings_i3pqv"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_onrkg"]
+font_size = 48
+font_color = Color(0.623739, 0, 0.07081313, 1)
+
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 5
 script = ExtResource("1_4flbx")
@@ -246,28 +246,28 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(-0.0023500556, -0.07984254, -7.578017e-09)
-bones/2/rotation = Quaternion(-0.75733244, -0.2763268, -0.19387557, 0.55902004)
-bones/3/rotation = Quaternion(0.006573445, 0.010400441, 0.42134255, 0.9068181)
-bones/4/rotation = Quaternion(0.0009845237, -0.0007773099, -0.7760929, 0.63061756)
-bones/6/rotation = Quaternion(-0.8044547, 0.012961887, 0.009094363, 0.59380287)
-bones/7/rotation = Quaternion(0.0065534837, -0.006715552, -0.30296302, 0.9529562)
-bones/8/rotation = Quaternion(0.005654455, 0.0061556958, 0.8837957, 0.46779853)
-bones/9/rotation = Quaternion(0.017841425, -0.003669532, 0.001122502, 0.99983346)
-bones/10/rotation = Quaternion(-0.041094337, 0.008452075, -0.0025854718, 0.9991162)
-bones/12/rotation = Quaternion(0.32477215, -0.095476314, -0.50795865, 0.79207665)
-bones/13/rotation = Quaternion(0.87111133, -0.075800784, 0.005330653, 0.48517105)
+bones/0/position = Vector3(-0.0023500556, -0.060116217, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.7667108, -0.24811237, -0.17407985, 0.5659425)
+bones/3/rotation = Quaternion(0.0065777884, 0.0088013215, 0.3701439, 0.92890954)
+bones/4/rotation = Quaternion(0.00051981915, -0.00024284663, -0.7638114, 0.6454393)
+bones/6/rotation = Quaternion(-0.80447674, -0.011458697, -0.008039526, 0.59381926)
+bones/7/rotation = Quaternion(0.0065095806, -0.0050090766, -0.24767756, 0.96880776)
+bones/8/rotation = Quaternion(0.0048790458, 0.0052616955, 0.8679378, 0.49662128)
+bones/9/rotation = Quaternion(0.007857104, -0.0016160088, 0.00049433357, 0.99996775)
+bones/10/rotation = Quaternion(-0.01808807, 0.0037202626, -0.0011380204, 0.99982893)
+bones/12/rotation = Quaternion(0.29919553, -0.059485015, -0.52615565, 0.79379076)
+bones/13/rotation = Quaternion(0.8929161, -0.059801523, 0.022908311, 0.44564536)
 bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
 bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
 bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
-bones/22/rotation = Quaternion(0.36467585, 0.2247074, 0.5098681, 0.74602455)
-bones/23/rotation = Quaternion(0.7802435, 0.007489871, -0.020528035, 0.62509423)
+bones/22/rotation = Quaternion(0.3786499, 0.2465158, 0.49859917, 0.73976564)
+bones/23/rotation = Quaternion(0.7463084, 0.013952557, 0.0015683945, 0.6654523)
 bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
 bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
-bones/32/rotation = Quaternion(0.0408329, 0.008900429, 0.009277002, 0.9990833)
+bones/32/rotation = Quaternion(0.017972939, 0.003917598, 0.0040833484, 0.9998225)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="toon_pilot/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.9425735, 0.22021225, 0.25112134, 0.30752072, 0.86557907, 0.39522696, -0.13033152, 0.4497553, -0.88359153, -0.2341873, 0.68581456, 0.41453794)
+transform = Transform3D(-0.94205433, 0.21356957, 0.25869238, 0.31560126, 0.82564193, 0.46766594, -0.11370809, 0.52221036, -0.8452025, -0.23608416, 0.7051511, 0.44268218)
 bone_name = "Hand_R"
 bone_idx = 24
 
@@ -453,65 +453,6 @@ mesh = SubResource("QuadMesh_1jxqw")
 [node name="view_ik_target" type="Node3D" parent="neck/head/Camera3D"]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1.7144825e-07, 0, -1.9611394)
 
-[node name="player_ui" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("3_hqtel")
-
-[node name="ColorRect" type="ColorRect" parent="player_ui"]
-visible = false
-material = SubResource("ShaderMaterial_onrkg")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="player_ui"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -48.5
-offset_top = -33.0
-offset_right = 48.5
-offset_bottom = 33.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="win" type="Label" parent="player_ui/VBoxContainer"]
-visible = false
-layout_mode = 2
-text = "VICTORY"
-label_settings = SubResource("LabelSettings_i3pqv")
-
-[node name="lose" type="Label" parent="player_ui/VBoxContainer"]
-visible = false
-layout_mode = 2
-text = "DEFEAT"
-label_settings = SubResource("LabelSettings_onrkg")
-
-[node name="MenuOptions" type="VBoxContainer" parent="player_ui/VBoxContainer"]
-visible = false
-layout_mode = 2
-
-[node name="BackToMain" type="Button" parent="player_ui/VBoxContainer/MenuOptions"]
-layout_mode = 2
-text = "main menu"
-
-[node name="QuitGame" type="Button" parent="player_ui/VBoxContainer/MenuOptions"]
-layout_mode = 2
-text = "quit game"
-
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hqtel")
 
@@ -568,8 +509,67 @@ texture = SubResource("ViewportTexture_606se")
 expand_mode = 1
 stretch_mode = 4
 
-[connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/BackToMain" to="player_ui" method="_on_back_to_main_pressed"]
-[connection signal="pressed" from="player_ui/VBoxContainer/MenuOptions/QuitGame" to="player_ui" method="_on_quit_game_pressed"]
+[node name="player_ui" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_hqtel")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/player_ui"]
+visible = false
+material = SubResource("ShaderMaterial_onrkg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/player_ui"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.5
+offset_top = -33.0
+offset_right = 48.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="win" type="Label" parent="CanvasLayer/player_ui/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "VICTORY"
+label_settings = SubResource("LabelSettings_i3pqv")
+
+[node name="lose" type="Label" parent="CanvasLayer/player_ui/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "DEFEAT"
+label_settings = SubResource("LabelSettings_onrkg")
+
+[node name="MenuOptions" type="VBoxContainer" parent="CanvasLayer/player_ui/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="BackToMain" type="Button" parent="CanvasLayer/player_ui/VBoxContainer/MenuOptions"]
+layout_mode = 2
+text = "main menu"
+
+[node name="QuitGame" type="Button" parent="CanvasLayer/player_ui/VBoxContainer/MenuOptions"]
+layout_mode = 2
+text = "quit game"
+
+[connection signal="pressed" from="CanvasLayer/player_ui/VBoxContainer/MenuOptions/BackToMain" to="CanvasLayer/player_ui" method="_on_back_to_main_pressed"]
+[connection signal="pressed" from="CanvasLayer/player_ui/VBoxContainer/MenuOptions/QuitGame" to="CanvasLayer/player_ui" method="_on_quit_game_pressed"]
 
 [editable path="toon_pilot"]
 [editable path="WeaponSubViewport/Camera3D/WeaponContainer/wrench"]

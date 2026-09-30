@@ -44,7 +44,8 @@ var pickup_gascan : Node3D
 @onready var env_ray = $neck/head/Camera3D/weapon/env_ray
 
 # ui elements
-@onready var hud_manager = $player_ui
+@onready var entire_hud = $CanvasLayer
+@onready var hud_manager = $CanvasLayer/player_ui
 
 # health component
 @onready var health_component = $Health
@@ -314,7 +315,9 @@ func _ready():
 	network_manager.network_match_finished.connect(_on_level_match_finished)
 	# below will run only on local player view, anything above will be on both
 	wep_parent.visible = false
+	entire_hud.visible = false
 	if not is_multiplayer_authority(): return
+	entire_hud.visible = true
 	wep_parent.visible = true
 	playermesh.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
