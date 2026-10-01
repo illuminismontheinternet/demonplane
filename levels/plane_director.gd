@@ -45,7 +45,7 @@ var bool_array = [true, false]
 var em_weight = PackedFloat32Array([5,1])
 var em_active = false
 var em_roll = 0.0
-const em_mult = 20.0
+const em_mult = 15.0
 
 func set_plane_lowered(inLower : bool) -> void:
 	stairs.visible = inLower

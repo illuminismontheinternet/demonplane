@@ -89,6 +89,24 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 [node name="toon_skel" parent="mesh_parent" instance=ExtResource("4_u4gvu")]
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.006003976, 0)
 
+[node name="Skeleton3D" parent="mesh_parent/toon_skel/Armature" index="0"]
+bones/0/position = Vector3(-4.5786774e-09, 0.41502544, -0.03977712)
+bones/0/rotation = Quaternion(0.11496509, 2.3683785e-07, 2.7409815e-08, 0.9933696)
+bones/2/rotation = Quaternion(-0.49251527, -0.53098506, -0.50719756, 0.46715552)
+bones/3/rotation = Quaternion(0.0121815335, 0.002947919, 0.6784091, 0.7345775)
+bones/4/rotation = Quaternion(0.050407704, 0.03918468, -0.760072, 0.64669496)
+bones/6/rotation = Quaternion(-0.70555514, 0.15495773, 0.15835585, 0.67312974)
+bones/7/rotation = Quaternion(0.016550157, -0.0041218586, -0.5395668, 0.84177005)
+bones/8/rotation = Quaternion(0.088799484, -0.03298976, 0.9612307, 0.258963)
+bones/9/rotation = Quaternion(0.025476072, 0.005307713, 0.012881043, 0.99957836)
+bones/11/rotation = Quaternion(0.034175336, -0.16006723, -0.66647637, 0.7273375)
+bones/12/rotation = Quaternion(0.85830545, -0.12996224, -0.006421227, 0.49636716)
+bones/13/rotation = Quaternion(-0.651336, 0.48099986, -0.4384742, 0.3900524)
+bones/15/rotation = Quaternion(0.029661339, 0.18467993, 0.70861906, 0.6803475)
+bones/16/rotation = Quaternion(0.81412214, 0.062081188, 0.058726057, 0.5743712)
+bones/17/rotation = Quaternion(-0.6613861, -0.46986985, 0.41185546, 0.41492897)
+bones/19/rotation = Quaternion(-0.27224684, 0.008269695, 0.000651962, 0.9621917)
+
 [node name="AnimationTree" type="AnimationTree" parent="mesh_parent/toon_skel"]
 tree_root = SubResource("AnimationNodeBlendTree_hvkrc")
 anim_player = NodePath("../AnimationPlayer")

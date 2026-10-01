@@ -89,24 +89,22 @@ func attempt_attack():
 		if target_health:
 			var hurt_velocity = (incoming_target.global_position - parent.global_position).normalized() * attack_velocity_multiplier
 			target_health.apply_damage(attack_damage, hurt_velocity)
-'''
+
 @rpc("any_peer", "call_local", "reliable")
-func turn_to_loc_rpc(inPosition):
-	# this turns the entire body
-	imp_mesh.look_at(inPosition, Vector3(0,1,0))
-	imp_mesh.rotation.x = 0
-	imp_mesh.rotation.z = 0
-'''
-func turn_to_loc(inPosition):
-	#turn_to_loc_rpc.rpc(inPosition)
-	# this turns the entire body
-	imp_mesh.look_at(inPosition, Vector3(0,1,0))
-	imp_mesh.rotation.x = 0
-	imp_mesh.rotation.z = 0
+func head_turn_rpc(inPosition):
 	# neck only
 	var bone_pose : Transform3D = skeleton.global_transform * skeleton.get_bone_global_pose(neck_bone)
 	bone_pose = bone_pose.looking_at(inPosition + Vector3(0,0.5,0), Vector3(0,1,0), true)
 	skeleton.set_bone_global_pose_override(neck_bone, skeleton.global_transform.affine_inverse() * bone_pose, 1.0, true)
+	
+func turn_to_loc(inPosition):
+	#turn_to_loc_rpc.rpc(inPosition)
+	# this turns the entire body
+	if bIsAlive:
+		imp_mesh.look_at(inPosition, Vector3(0,1,0))
+		imp_mesh.rotation.x = 0
+		imp_mesh.rotation.z = 0
+		head_turn_rpc.rpc(inPosition)
 
 func handle_anim_state():
 	var state_machine = anim_tree["parameters/loco/playback"]

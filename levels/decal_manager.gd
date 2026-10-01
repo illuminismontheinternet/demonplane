@@ -18,6 +18,8 @@ func place_decal_impact(inReparentToStructure, inPosition, inNormal) -> void:
 		impact_array.get(current_index).rotation = Vector3(deg_to_rad(90),0,0)
 	if inReparentToStructure:
 		impact_array.get(current_index).reparent(main_structure)
+	else:
+		impact_array.get(current_index).reparent(self)
 	#impact_array.get(current_index).reparent(inCollider)
 	current_index = current_index + 1
 	if current_index >= decal_impact_pool_size:

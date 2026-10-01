@@ -160,17 +160,18 @@ func _ready() -> void:
 	try_start_match()
 	
 func _physics_process(_delta: float) -> void:
-	if not is_multiplayer_authority(): return
-	if not bTimerIsBlocked:
-		var seconds = get_elapsed_time() - adjust_total
-		#print("seconds was: ", seconds)
-		while next_event < events.size() and seconds >= events[next_event].time:
-			execute_plane_event.rpc(events[next_event].type)
-			execute_act_event.rpc(events[next_event].act)
-			next_event += 1
-	# calling this on the schedule now
-	#if seconds >= match_duration:
-		#match_finished.emit()
+	if bMatchStarted:
+		if not is_multiplayer_authority(): return
+		if not bTimerIsBlocked:
+			var seconds = get_elapsed_time() - adjust_total
+			#print("seconds was: ", seconds)
+			while next_event < events.size() and seconds >= events[next_event].time:
+				execute_plane_event.rpc(events[next_event].type)
+				execute_act_event.rpc(events[next_event].act)
+				next_event += 1
+		# calling this on the schedule now
+		#if seconds >= match_duration:
+			#match_finished.emit()
 
 func _on_act_engines_fully_repaired() -> void:
 	bEnginesBroken = false
