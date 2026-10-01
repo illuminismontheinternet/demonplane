@@ -608,6 +608,9 @@ size = Vector3(10, 10, 10)
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_d5x7l")
 
+[node name="PICK_Gas" parent="." instance=ExtResource("13_mxp4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28143334, -1.4334762, -2.3789296)
+
 [connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]
 [connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/HostButton" to="NetworkManager" method="_on_host_button_pressed"]

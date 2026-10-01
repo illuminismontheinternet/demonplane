@@ -12,13 +12,17 @@ config_version=5
 
 config/name="bonestompers"
 run/main_scene="uid://da0oeauvub05s"
-config/features=PackedStringArray("26.1", "Forward Plus", "Redot")
+config/features=PackedStringArray("26.2", "Forward Plus", "Redot")
 config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godotsteam/plugin.cfg")
 
 [global_group]
 
@@ -82,3 +86,14 @@ flashlight={
 [rendering]
 
 lights_and_shadows/use_physical_light_units=true
+
+[steam]
+
+initialization/app_data/app_type=0
+initialization/app_data/app_id=0
+initialization/app_data/demo_id=0
+initialization/app_data/playtest_id=0
+initialization/app_data/tool_id=0
+initialization/processes/initialize_on_startup=false
+initialization/processes/embed_callbacks=false
+multiplayer_peer/max_channels=4

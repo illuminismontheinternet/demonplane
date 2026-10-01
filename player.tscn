@@ -213,6 +213,12 @@ properties/9/replication_mode = 1
 properties/10/path = NodePath(".:anim_lower_state")
 properties/10/spawn = true
 properties/10/replication_mode = 1
+properties/11/path = NodePath("toon_pilot/Armature/Skeleton3D/BoneAttachment3D/gascan:visible")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath("toon_pilot/Armature/Skeleton3D/BoneAttachment3D/wrench:visible")
+properties/12/spawn = true
+properties/12/replication_mode = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ivps1"]
 shader = ExtResource("9_n7ghd")
@@ -249,33 +255,37 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(-0.0023500556, -0.062396526, -7.578017e-09)
-bones/2/rotation = Quaternion(-0.7656787, -0.2513907, -0.17638, 0.56518054)
-bones/3/rotation = Quaternion(0.0065783337, 0.0089875795, 0.3761212, 0.9265035)
-bones/4/rotation = Quaternion(0.0005735483, -0.00030463346, -0.7652455, 0.6437382)
-bones/6/rotation = Quaternion(-0.8045108, -0.008636256, -0.0060592527, 0.5938444)
-bones/7/rotation = Quaternion(0.0065157576, -0.005207191, -0.2541104, 0.9671393)
-bones/8/rotation = Quaternion(0.0049689505, 0.0053653303, 0.869819, 0.49331698)
-bones/9/rotation = Quaternion(0.00901221, -0.0018535854, 0.00056700764, 0.9999575)
-bones/10/rotation = Quaternion(-0.020748047, 0.0042673526, -0.0013053741, 0.9997748)
-bones/12/rotation = Quaternion(0.302187, -0.06365247, -0.5241135, 0.7936853)
-bones/13/rotation = Quaternion(0.89051443, -0.06165898, 0.020879412, 0.4502738)
+bones/0/position = Vector3(-0.0023500556, -0.088353515, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.7529768, -0.2883866, -0.20233695, 0.55580485)
+bones/3/rotation = Quaternion(0.0065652584, 0.011080338, 0.4430258, 0.8964164)
+bones/4/rotation = Quaternion(0.0011849095, -0.0010078119, -0.78130263, 0.62415045)
+bones/6/rotation = Quaternion(-0.80422425, 0.023494428, 0.01648417, 0.59363276)
+bones/7/rotation = Quaternion(0.0065657236, -0.0074448874, -0.32650438, 0.94514364)
+bones/8/rotation = Quaternion(0.005987108, 0.006539349, 0.89034164, 0.45520684)
+bones/9/rotation = Quaternion(0.022159802, -0.0045577143, 0.001394195, 0.9997431)
+bones/10/rotation = Quaternion(-0.051013276, 0.010492148, -0.0032095262, 0.99863774)
+bones/12/rotation = Quaternion(0.33557767, -0.11093672, -0.49974966, 0.79077876)
+bones/13/rotation = Quaternion(0.86100435, -0.082642324, -0.0022570242, 0.5018335)
 bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
 bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
 bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
-bones/22/rotation = Quaternion(0.37705073, 0.24400532, 0.49992314, 0.7405209)
-bones/23/rotation = Quaternion(0.75035745, 0.013207836, -0.0009856545, 0.6608995)
+bones/22/rotation = Quaternion(0.35855278, 0.2152403, 0.51459813, 0.7485322)
+bones/23/rotation = Quaternion(0.7940861, 0.0046940963, -0.030039791, 0.6070443)
 bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
 bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
-bones/32/rotation = Quaternion(0.020616021, 0.004493717, 0.004683843, 0.99976647)
+bones/32/rotation = Quaternion(0.05068849, 0.011048673, 0.011516135, 0.998587)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="toon_pilot/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.9421014, 0.21437463, 0.2578536, 0.3147482, 0.8305591, 0.4594622, -0.11566553, 0.51401895, -0.84994483, -0.23584796, 0.7030003, 0.43949276)
+transform = Transform3D(-0.9428738, 0.22283682, 0.24765515, 0.30356494, 0.8809126, 0.36310014, -0.13725036, 0.4175368, -0.8982346, -0.23347956, 0.6769322, 0.4020644)
 bone_name = "Hand_R"
 bone_idx = 24
 
 [node name="wrench" parent="toon_pilot/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("4_1jxqw")]
 transform = Transform3D(0.39994064, -0.0067256577, -0.0015214104, -0.001663452, -0.00845243, -0.39990723, 0.0066918954, 0.39985424, -0.008479089, -0.057404876, 0.08794874, 0.07268438)
+
+[node name="gascan" parent="toon_pilot/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("5_dw050")]
+transform = Transform3D(0.9963179, 0.08543104, -0.007218562, -0.06278786, 0.66972625, -0.73994946, -0.058380276, 0.73767835, 0.6726241, -0.15779664, -0.25669187, -0.3610478)
+visible = false
 
 [node name="SpineIK3D" type="SkeletonIK3D" parent="toon_pilot/Armature/Skeleton3D" index="2"]
 influence = 0.6
@@ -361,12 +371,19 @@ light_intensity_lumens = 5.0
 
 [node name="WeaponContainer" type="Node3D" parent="WeaponSubViewport/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.8742251)
+script = ExtResource("8_606se")
 
 [node name="wrench" parent="WeaponSubViewport/Camera3D/WeaponContainer" instance=ExtResource("4_1jxqw")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-script = ExtResource("8_606se")
 
 [node name="Cube" parent="WeaponSubViewport/Camera3D/WeaponContainer/wrench" index="0"]
+layers = 1024
+
+[node name="gascan" parent="WeaponSubViewport/Camera3D/WeaponContainer" instance=ExtResource("5_dw050")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.44010982, 0)
+visible = false
+
+[node name="Cube" parent="WeaponSubViewport/Camera3D/WeaponContainer/gascan" index="0"]
 layers = 1024
 
 [node name="WeaponShelfCSG" type="CSGBox3D" parent="WeaponSubViewport/Camera3D"]
@@ -576,3 +593,4 @@ text = "quit game"
 
 [editable path="toon_pilot"]
 [editable path="WeaponSubViewport/Camera3D/WeaponContainer/wrench"]
+[editable path="WeaponSubViewport/Camera3D/WeaponContainer/gascan"]

@@ -20,18 +20,23 @@ signal signal_player_died(peerID : int)
 
 var active_inventory_slot : int
 
-@onready var inventory_mesh = [
-	wep_wrench,
-	wep_wrench,
-	wep_wrench,
+@onready var multiplayer_mesh = [
+	$toon_pilot/Armature/Skeleton3D/BoneAttachment3D/wrench,
+	$toon_pilot/Armature/Skeleton3D/BoneAttachment3D/gascan
+]
+
+@onready var ui_mesh = [
+	$WeaponSubViewport/Camera3D/WeaponContainer/wrench,
+	$WeaponSubViewport/Camera3D/WeaponContainer/gascan
+]
+
+@onready var viewmodel_mesh = [
 	wep_wrench,
 	wep_gascan
 ]
+
 var inventory_bools = [
 	true,
-	false,
-	false,
-	false,
 	false
 ]
 var pickup_gascan : Node3D
@@ -214,9 +219,14 @@ func modify_inventory(inSlot : int, inOwnership: bool) -> void:
 	
 func swap_inventory(inSlot : int) -> void:
 	# hide all inventory options and show the in slot only
-	for entry in inventory_mesh:
-		entry.visible = false
-	inventory_mesh.get(inSlot).visible = true
+	for i in range(viewmodel_mesh.size()):
+		viewmodel_mesh.get(i).visible = false
+		multiplayer_mesh.get(i).visible = false
+		ui_mesh.get(i).visible = false
+		
+	viewmodel_mesh.get(inSlot).visible = true
+	multiplayer_mesh.get(inSlot).visible = true
+	ui_mesh.get(inSlot).visible = true
 	active_inventory_slot = inSlot
 	#print("in slot", inSlot)
 
@@ -226,7 +236,7 @@ func drop_inventory(inSlot : int):
 	if inSlot != 0:
 		inventory_bools.set(inSlot, false)
 		# Restore the previous pickup and place it in front of us
-		if inSlot == inventory_mesh.size()-1:
+		if inSlot == viewmodel_mesh.size()-1:
 			var target_pickup_component = pickup_gascan.get_node_or_null("Pickup")
 			target_pickup_component.on_drop(drop_location.global_position)
 		swap_inventory(0)
@@ -244,8 +254,8 @@ func add_inventory(type : Pickup.ENUM_PICKUPTYPE, inPickup : Node3D) -> void:
 			print("SHOVEL")
 		Pickup.ENUM_PICKUPTYPE.GASCAN:
 			#print("GASCAN")
-			modify_inventory(4, true)
-			swap_inventory(4)
+			modify_inventory(1, true)
+			swap_inventory(1)
 			pickup_gascan = inPickup
 			
 	
