@@ -518,10 +518,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.7790201)
 script = ExtResource("7_pb8y7")
 
 [node name="ImpRespawnPoint0" type="Node3D" parent="CSGPlaneParent/ACT_Plane_Enemies"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.8612585, -1.7510409)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 0.4586711, -1.7510409)
 
 [node name="ImpRespawnPoint1" type="Node3D" parent="CSGPlaneParent/ACT_Plane_Enemies"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 4.1923647, 5.231558)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, -0.21022272, 5.231558)
 
 [node name="EnemySpawner" type="MultiplayerSpawner" parent="CSGPlaneParent/ACT_Plane_Enemies"]
 _spawnable_scenes = PackedStringArray("uid://bbljovy1yg3fh")

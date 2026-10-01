@@ -3,19 +3,26 @@ extends Node3D
 @export var decal_impact_pool_size = 49
 @onready var decal_impact = $Decal_Impact
 @onready var network_manager = $".."
+@onready var main_structure = $"../../CSGPlaneParent"
 
 var current_index = 0
 var impact_array = []
 
-func place_decal_impact(inCollider, inPosition, inNormal) -> void:
+func place_decal_impact(inReparentToStructure, inPosition, inNormal) -> void:
 	impact_array.get(current_index).global_position = inPosition
-	impact_array.get(current_index).look_at(inPosition, inNormal)
-	#print(impact_array.get(current_index).rotation)
-	impact_array.get(current_index).reparent(inCollider)
+	if abs(inNormal.x) > 0.9:
+		impact_array.get(current_index).rotation = Vector3(0,0,deg_to_rad(90))
+	elif abs(inNormal.y) > 0.9:
+		impact_array.get(current_index).rotation = Vector3(0,deg_to_rad(90),0)
+	else:
+		impact_array.get(current_index).rotation = Vector3(deg_to_rad(90),0,0)
+	if inReparentToStructure:
+		impact_array.get(current_index).reparent(main_structure)
+	#impact_array.get(current_index).reparent(inCollider)
 	current_index = current_index + 1
 	if current_index >= decal_impact_pool_size:
 		current_index = 0
-	
+		
 func create_pool():
 	# Add the first one!
 	impact_array.append(decal_impact)

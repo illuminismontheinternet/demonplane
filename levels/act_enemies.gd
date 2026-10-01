@@ -3,7 +3,6 @@ class_name ActEnemies
 
 signal signal_imps_defeated
 
-@onready var multiplayer_spawner = $EnemySpawner
 @onready var network_manager = $"../../NetworkManager"
 
 const imp_scene = preload("res://enemies/character_imp.tscn")
@@ -15,7 +14,7 @@ const imp_scene = preload("res://enemies/character_imp.tscn")
 # TODO convert this into a spread sheet
 const max_total_enemies = 15
 const min_total_enemies = 9
-const max_burst_enemies = 1
+const max_burst_enemies = 4
 
 var target_enemy_count = 0
 var enemies_defeated = 0
@@ -47,11 +46,11 @@ func spawn_imp(inIteration) -> Node:
 	
 # spawns the burst of enemies and add them to the pool for 'recycling'
 func spawn_burst():
-	print("target_enemy_count ", target_enemy_count)
 	for i in range(max_burst_enemies):
 		spawn_imp(i)
-
+		
 func start_enemy_wave():
-	if !is_multiplayer_authority(): return
+	if not is_multiplayer_authority(): return
 	target_enemy_count = randi_range(min_total_enemies, max_total_enemies)
+	print("target enemy count", target_enemy_count)
 	spawn_burst()

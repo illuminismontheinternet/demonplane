@@ -20,7 +20,7 @@ enum IMP_STATE {
 	JUMPINGLINK,
 	DEAD
 }
-var current_state = IMP_STATE.IDLE
+@export var current_state = IMP_STATE.IDLE
 
 # act_enemies manager is just parent
 var act_enemies : ActEnemies
@@ -34,7 +34,6 @@ var current_target_node : Node3D
 var current_target_position : Vector3
 var SPEED = 3.0
 var new_safe_velocity : Vector3
-
 var target_jump_link : Vector3
 
 # health variables
@@ -46,13 +45,21 @@ var bIsAlive = false
 func imp_reset_loc_rpc():
 	global_position = act_enemies.get_imp_respawn_loc(0)
 
+'''
 @rpc("any_peer", "call_local", "reliable")
-func update_velocity_rpc(inVelocity):
+func update_velocity_nav_rpc(inVelocity):
+	velocity = inVelocity
+	
+func update_velocity_nav(inVelocity):
+	#update_velocity_nav_rpc.rpc(inVelocity)
+'''
+@rpc("any_peer", "call_local", "reliable")
+func update_velocity_hurt_rpc(inVelocity):
 	velocity += inVelocity
 	
 func imp_hurt(inVelocity, _inHealth, _inMaxHealth):
 	#print("imp_hurt")
-	update_velocity_rpc.rpc(inVelocity)
+	update_velocity_hurt_rpc.rpc(inVelocity)
 
 @rpc("any_peer","call_local","reliable")
 func imp_die_rpc():
@@ -82,27 +89,16 @@ func attempt_attack():
 		if target_health:
 			var hurt_velocity = (incoming_target.global_position - parent.global_position).normalized() * attack_velocity_multiplier
 			target_health.apply_damage(attack_damage, hurt_velocity)
-
-@rpc("authority", "call_local", "reliable")
-func propagate_target_rpc(inID):
-	for player in get_tree().get_nodes_in_group("player"):
-		if player.get_multiplayer_authority() == inID:
-			current_target_node = player
-			current_state = IMP_STATE.HUNTING
-	
-func authority_pick_target():
-	if !is_multiplayer_authority(): return
-	var players = get_tree().get_nodes_in_group("player")
-	if players.size() > 0:
-		var targetID = players.pick_random().get_multiplayer_authority()
-		#print("targetID was :", targetID)
-		propagate_target_rpc.rpc(targetID)
-
-func get_target_player():
-	if bIsAlive:
-		authority_pick_target()
-
+'''
+@rpc("any_peer", "call_local", "reliable")
+func turn_to_loc_rpc(inPosition):
+	# this turns the entire body
+	imp_mesh.look_at(inPosition, Vector3(0,1,0))
+	imp_mesh.rotation.x = 0
+	imp_mesh.rotation.z = 0
+'''
 func turn_to_loc(inPosition):
+	#turn_to_loc_rpc.rpc(inPosition)
 	# this turns the entire body
 	imp_mesh.look_at(inPosition, Vector3(0,1,0))
 	imp_mesh.rotation.x = 0
@@ -112,36 +108,57 @@ func turn_to_loc(inPosition):
 	bone_pose = bone_pose.looking_at(inPosition + Vector3(0,0.5,0), Vector3(0,1,0), true)
 	skeleton.set_bone_global_pose_override(neck_bone, skeleton.global_transform.affine_inverse() * bone_pose, 1.0, true)
 
+func handle_anim_state():
+	var state_machine = anim_tree["parameters/loco/playback"]
+	match current_state:
+		IMP_STATE.IDLE:
+			state_machine.travel("idle")
+		IMP_STATE.SEARCHING:
+			state_machine.travel("idle")
+		IMP_STATE.HUNTING:
+			state_machine.travel("run")
+		IMP_STATE.ATTACKING:
+			anim_tree.set("parameters/AttackOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+		IMP_STATE.DEAD:
+			state_machine.travel("idle")
+			anim_tree.set("parameters/death_blend/blend_amount", 1.0)
+			
 func handle_state_machine():
 	match current_state:
 		IMP_STATE.IDLE:
 			current_state = IMP_STATE.SEARCHING
-			#print("idle")
+			print("idle id: ", multiplayer.get_unique_id())
 		IMP_STATE.SEARCHING:
-			get_target_player()
-			#print("search")
+			var players = get_tree().get_nodes_in_group("player")
+			if players.size() > 0:
+				current_target_node = players.pick_random()
+				current_state = IMP_STATE.HUNTING
+			else:
+				print("somehow less than 0 players why do I exist?")
+				queue_free()
+			print("search id: ", multiplayer.get_unique_id())
 		IMP_STATE.HUNTING:
-			#print("hunt")
+			print("hunt id: ", multiplayer.get_unique_id())
 			# set anim tree
-			anim_tree.set("parameters/IdleRun/blend_position", velocity.length())
 			# Face the target
 			if current_target_node:
 				update_target_position(current_target_node.global_position)
 				turn_to_loc(current_target_position)
+				#print("turning! id: ", multiplayer.get_unique_id())
 			else:
+				print("no current target node so I search")
 				current_state = IMP_STATE.SEARCHING
 			# Move to target
 			var current_loc = global_transform.origin
 			var next_loc = nav.get_next_path_position()
-			var new_vel = (next_loc	 - current_loc).normalized() * SPEED
+			var new_vel = (next_loc - current_loc).normalized() * SPEED
 			# update avoidance information
 			nav.set_velocity(new_vel)
-			velocity = velocity.move_toward(new_safe_velocity,0.25)
+			velocity = velocity.move_toward(new_safe_velocity, 0.25)
 		IMP_STATE.ATTACKING:
 			#print("attac")
 			if bCanAttack:
 				attempt_attack()
-				anim_tree.set("parameters/AttackOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 				current_state = IMP_STATE.SEARCHING
 		IMP_STATE.JUMPINGLINK:
 			# Face the target
@@ -150,8 +167,7 @@ func handle_state_machine():
 			velocity = velocity.move_toward(new_safe_velocity,0.25)
 			await get_tree().create_timer(2).timeout
 			current_state = IMP_STATE.SEARCHING
-		IMP_STATE.DEAD:
-			anim_tree.set("parameters/death_blend/blend_amount", 1.0)
+
 			
 func _ready() -> void:
 	act_enemies = get_parent()
@@ -159,6 +175,8 @@ func _ready() -> void:
 	health_component.signal_health_changed.connect(imp_hurt)
 	
 func _physics_process(_delta: float):
+	handle_anim_state()
+	if not is_multiplayer_authority(): return
 	handle_state_machine()
 	if not is_on_floor():
 		velocity.y -= 5.8

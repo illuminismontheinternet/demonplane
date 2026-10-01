@@ -98,24 +98,34 @@ var bWasFalling = false
 var attack_velocity_multiplier = 6.0
 
 # animation state values - can't replicate physics so use these on synchronizer
-enum ANIM_STATE {
+enum ANIM_LOWER {
 	IDLE,
 	RUN,
-	SWING,
 	JUMP_START,
 	FALL,
 	LAND,
 	DEAD
 }
-@export var current_state : ANIM_STATE
+enum ANIM_UPPER {
+	HOLD_SINGLE_MELEE,
+	HOLD_DOUBLE_MELEE,
+	SWING_SINGLE_MELEE,
+	SWING_DOUBLE_MELEE,
+	HOLD_PISTOL,
+	SHOOT_PISTOL,
+	HOLD_SHOTGUN,
+	SHOOT_SHOTGUN
+}
+@export var anim_lower_state : ANIM_LOWER
+@export var anim_upper_state : ANIM_UPPER
 
 func _handle_animation_tree() -> void:
 	# Authority manages state
 	if is_multiplayer_authority():
-			if velocity.length() > 0.1 and current_state != ANIM_STATE.SWING:
-				current_state = ANIM_STATE.RUN
+			if velocity.length() > 0.1:
+				anim_lower_state = ANIM_LOWER.RUN
 			else:
-				current_state = ANIM_STATE.IDLE
+				anim_lower_state = ANIM_LOWER.IDLE
 	
 	# match spine to rotation
 	#var bone_pose : Transform3D = skeleton.global_transform * skeleton.get_bone_global_pose(spine_bone)
@@ -129,20 +139,24 @@ func _handle_animation_tree() -> void:
 
 	# set the travels
 	var state_machine = anim_tree["parameters/StateMachine/playback"]
-	match current_state:
-		ANIM_STATE.IDLE:
-			state_machine.travel("idle")
-		ANIM_STATE.RUN:
-			state_machine.travel("run")
-		ANIM_STATE.SWING:
+	match anim_upper_state:
+		#ANIM_UPPER.HOLD_SINGLE_MELEE:
+			#print("do nothing?")
+		ANIM_UPPER.SWING_SINGLE_MELEE:
 			anim_tree.set("parameters/SwingOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-		ANIM_STATE.JUMP_START:
+			anim_upper_state = ANIM_UPPER.HOLD_SINGLE_MELEE
+	match anim_lower_state:
+		ANIM_LOWER.IDLE:
+			state_machine.travel("idle")
+		ANIM_LOWER.RUN:
+			state_machine.travel("run")
+		ANIM_LOWER.JUMP_START:
 			state_machine.travel("jump_start")
-		ANIM_STATE.FALL:
+		ANIM_LOWER.FALL:
 			state_machine.travel("falling")
-		ANIM_STATE.LAND:
+		ANIM_LOWER.LAND:
 			state_machine.travel("land")
-		ANIM_STATE.DEAD:
+		ANIM_LOWER.DEAD:
 			state_machine.travel("dead")
 
 func get_player_camera() -> Camera3D:
@@ -192,8 +206,8 @@ func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
 		_action_swing_melee()
 
-func place_impact_decal(inCollider, inPosition, inNormal):
-	network_manager.place_impact_decal(inCollider, inPosition, inNormal)
+func place_impact_decal(inReparentToStructure, inPosition, inNormal):
+	network_manager.place_impact_decal(inReparentToStructure, inPosition, inNormal)
 
 func modify_inventory(inSlot : int, inOwnership: bool) -> void:
 	inventory_bools.set(inSlot, inOwnership)
@@ -243,7 +257,7 @@ func action_interact():
 		add_inventory(target_pickup_component.get_type(), current_collider)
 				
 func _action_swing_melee():
-	current_state = ANIM_STATE.SWING
+	anim_upper_state = ANIM_UPPER.SWING_SINGLE_MELEE
 	var rand_rot := Vector3(
 		randf_range(-melee_rand_pos, -melee_rand_pos/2),
 		randf_range(melee_rand_pos*0.75, melee_rand_pos),
@@ -264,8 +278,11 @@ func _action_swing_melee():
 			target_health_component.apply_damage(damage,hurt_velocity)
 	if env_ray.is_colliding():
 		particle_play_melee()
-		# Place decal
-		place_impact_decal(env_ray.get_collider(), env_ray.get_collision_point(), env_ray.get_collision_normal())
+		# Place decal and set if its parented to the main moving structure or not
+		if (str(env_ray.get_collider()).contains("PlaneParent")):
+			place_impact_decal(true, env_ray.get_collision_point(), env_ray.get_collision_normal())
+		else:
+			place_impact_decal(false, env_ray.get_collision_point(), env_ray.get_collision_normal())
 
 func _handle_flash_light():
 	if Input.is_action_just_pressed("flashlight"):
@@ -281,7 +298,7 @@ func _handle_movebob():
 	wep_parent.position.x = sin(position.z) * viewbob_const
 	
 func _handle_land():
-	current_state = ANIM_STATE.LAND
+	anim_lower_state = ANIM_LOWER.LAND
 	
 func _rotate_look(inRelX, inRelY):	#print("_handle_land")
 	for i in range(1):
@@ -357,10 +374,10 @@ func _physics_process(delta: float) -> void:
 		# handle jump
 		if Input.is_action_just_pressed("jump"):
 				velocity.y += JUMP_VELOCITY
-				current_state = ANIM_STATE.JUMP_START
+				anim_lower_state = ANIM_LOWER.JUMP_START
 	# not on floor
 	else: 
-		current_state = ANIM_STATE.FALL
+		anim_lower_state = ANIM_LOWER.FALL
 		# Handle falling
 		bWasFalling = true
 	

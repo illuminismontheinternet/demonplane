@@ -5,6 +5,7 @@ signal match_finished(bVictory: bool)
 
 # 300 seconds is 5 minutes
 var bTimerIsBlocked = false
+var bMatchStarted = false
 @export var match_duration := 300
 @onready var act_engines = $CSGPlaneParent/ACT_Engines
 @onready var act_enemies = $CSGPlaneParent/ACT_Plane_Enemies
@@ -115,6 +116,8 @@ func end_match():
 		match_finished.emit(true)
 		
 func start_match():
+	print("Match started!")
+	bMatchStarted = true
 	start_time = Time.get_ticks_msec() /  1000.0
 
 func get_elapsed_time() -> float:
@@ -143,11 +146,18 @@ func execute_act_event(act_type: ENUM_ACT):
 			set_timer_blocked(true)
 		ENUM_ACT.ATTEMPT_LAND:
 			end_match.rpc()
-		
+
+func try_start_match():
+	while not bMatchStarted:
+		await get_tree().create_timer(3.0).timeout
+		print("waiting for players...")
+		var players = get_tree().get_nodes_in_group("player")
+		if players.size() > 0:
+			start_match()
 # normal funcs
 func _ready() -> void:
 	if not is_multiplayer_authority(): return
-	start_match()
+	try_start_match()
 	
 func _physics_process(_delta: float) -> void:
 	if not is_multiplayer_authority(): return

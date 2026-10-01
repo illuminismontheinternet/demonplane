@@ -7,12 +7,12 @@ func SetNighttime() -> void:
 	print("SetNighttime")
 	
 func SetOutdoors(inCam : Camera3D) -> void:
-	print("outdoor lighting active")
+	#print("outdoor lighting active")
 	inCam.environment = inCam.environment.duplicate()
 	inCam.environment.volumetric_fog_enabled = true
 	
 func SetIndoors(inCam : Camera3D) -> void:
-	print("indoor lighting active")
+	#print("indoor lighting active")
 	inCam.environment = inCam.environment.duplicate()
 	inCam.environment.volumetric_fog_enabled = false
 
