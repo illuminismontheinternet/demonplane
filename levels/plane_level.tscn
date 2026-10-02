@@ -1,29 +1,21 @@
-[gd_scene load_steps=35 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=34 format=3 uid="uid://bhcfqsa0van8b"]
 
-[ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_gjl0y"]
-[ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_d5x7l"]
-[ext_resource type="Script" uid="uid://lnts3sqsxs8h" path="res://levels/decal_manager.gd" id="3_pb8y7"]
-[ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="3_safpt"]
-[ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="4_vnv7o"]
-[ext_resource type="Script" uid="uid://kyphb5uwrd13" path="res://levels/env_manager.gd" id="5_d7v53"]
-[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="6_0qmeg"]
-[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="6_lh335"]
-[ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="7_d5x7l"]
-[ext_resource type="Script" uid="uid://d3k4y3e8oc6mr" path="res://levels/act_enemies.gd" id="7_pb8y7"]
-[ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="7_rtcij"]
-[ext_resource type="Shader" uid="uid://b8aq4c5dlffo8" path="res://mat/water.gdshader" id="9_rtcij"]
-[ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="10_pb8y7"]
-[ext_resource type="Script" uid="uid://c753tnpyna4al" path="res://levels/act_islands.gd" id="11_hy0rb"]
-[ext_resource type="PackedScene" uid="uid://ct7eey8jtkwxv" path="res://mesh/island_01.tscn" id="11_pb8y7"]
-[ext_resource type="PackedScene" uid="uid://ckugt5ddg3uu2" path="res://pickups/pick_gascan.tscn" id="13_mxp4k"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_vnv7o"]
-font_color = Color(0.8584287, 0, 0.26486826, 1)
-outline_size = 10
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 4
-shadow_color = Color(0.69415313, 6.545782e-05, 0.56298167, 1)
-shadow_offset = Vector2(2, 1)
+[ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_vcmp4"]
+[ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_osdrb"]
+[ext_resource type="Script" uid="uid://lnts3sqsxs8h" path="res://levels/decal_manager.gd" id="3_l7huf"]
+[ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="4_enpvo"]
+[ext_resource type="Script" uid="uid://kyphb5uwrd13" path="res://levels/env_manager.gd" id="5_3j55p"]
+[ext_resource type="Shader" uid="uid://bfwjku6xj15gv" path="res://mat/inverted_hull.gdshader" id="6_ihhxf"]
+[ext_resource type="Shader" uid="uid://cfxt3d68j5p4" path="res://mat/toon_simple.gdshader" id="7_6gin4"]
+[ext_resource type="Script" uid="uid://c2qf1deodkowd" path="res://levels/plane_director.gd" id="8_8y8le"]
+[ext_resource type="PackedScene" uid="uid://dgyc3wmaqpve4" path="res://scenes/lightbox_dynamic.tscn" id="9_jixy5"]
+[ext_resource type="Script" uid="uid://dq5tfllgd1amx" path="res://levels/act_engines.gd" id="10_gst17"]
+[ext_resource type="Script" uid="uid://ctgdofd63ka1v" path="res://levels/act_inner_engines.gd" id="11_ftcjg"]
+[ext_resource type="Script" uid="uid://d3k4y3e8oc6mr" path="res://levels/act_enemies.gd" id="12_gvdxn"]
+[ext_resource type="Shader" uid="uid://b8aq4c5dlffo8" path="res://mat/water.gdshader" id="13_23kcy"]
+[ext_resource type="Script" uid="uid://c753tnpyna4al" path="res://levels/act_islands.gd" id="14_exvbp"]
+[ext_resource type="PackedScene" uid="uid://ct7eey8jtkwxv" path="res://mesh/island_01.tscn" id="15_nfty8"]
+[ext_resource type="PackedScene" uid="uid://ckugt5ddg3uu2" path="res://pickups/pick_gascan.tscn" id="16_8k7w5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d5x7l"]
 sky_top_color = Color(0.16323185, 0.17567575, 0.33544323, 1)
@@ -55,7 +47,7 @@ adjustment_contrast = 1.2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u6cys"]
 render_priority = 0
-shader = ExtResource("6_lh335")
+shader = ExtResource("6_ihhxf")
 shader_parameter/weight = 0.0150000007125
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/use_divider = false
@@ -63,7 +55,7 @@ shader_parameter/use_divider = false
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ta7ci"]
 render_priority = 0
 next_pass = SubResource("ShaderMaterial_u6cys")
-shader = ExtResource("6_0qmeg")
+shader = ExtResource("7_6gin4")
 shader_parameter/albedo_color = Color(1, 1, 1, 1)
 shader_parameter/albedo_intensity = 1.0
 shader_parameter/first_band_intensity = 0.1999999955296
@@ -94,7 +86,7 @@ emission_intensity = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ukwr8"]
 render_priority = 1
-shader = ExtResource("9_rtcij")
+shader = ExtResource("13_23kcy")
 shader_parameter/wave_scale = 3.0
 shader_parameter/albedo = Color(0.6866371, 0.84266186, 0.735329, 1)
 shader_parameter/emission = Color(0.076027654, 0.25118437, 0.38261053, 1)
@@ -131,64 +123,19 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="LevelManager" type="Node3D"]
-script = ExtResource("1_gjl0y")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="MultiplayerPanel" type="Panel" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MultiplayerPanel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -58.0
-offset_top = -64.0
-offset_right = 58.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MultiplayerPanel/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "BONE STOMPERS"
-label_settings = SubResource("LabelSettings_vnv7o")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HostButton" type="Button" parent="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "HOST GAME"
-
-[node name="JoinButton" type="Button" parent="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "JOIN GAME"
-
-[node name="Addy" type="LineEdit" parent="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-placeholder_text = "ENTER IP:"
+script = ExtResource("1_vcmp4")
 
 [node name="NetworkManager" type="Node3D" parent="."]
-script = ExtResource("2_d5x7l")
+script = ExtResource("2_osdrb")
 
 [node name="DecalManager" type="Node3D" parent="NetworkManager"]
-script = ExtResource("3_pb8y7")
+script = ExtResource("3_l7huf")
 
 [node name="Decal_Impact" type="Decal" parent="NetworkManager/DecalManager"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.31082973, 0.6755602)
 size = Vector3(0.2, 0.01, 0.2)
-texture_albedo = ExtResource("10_pb8y7")
-texture_orm = ExtResource("10_pb8y7")
+texture_albedo = ExtResource("4_enpvo")
+texture_orm = ExtResource("4_enpvo")
 
 [node name="SpawnPoint0" type="Node3D" parent="NetworkManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0890899, -1.3255911, 11.956375)
@@ -205,13 +152,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8222592, 0, -3.4317057)
 [node name="RespawnPoint0" type="Node3D" parent="NetworkManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.827945, -0.4114623, 12.525468)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="NetworkManager"]
-_spawnable_scenes = PackedStringArray("uid://bcaabpotsubyv")
-spawn_path = NodePath("..")
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vonw3")
-script = ExtResource("5_d7v53")
+script = ExtResource("5_3j55p")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.43743622, 0.33229834, 0.8356001, 0.028855072, -0.9339278, 0.3562954, 0.8987865, -0.13174519, -0.41812232, 0, 18.594637, 0)
@@ -226,7 +169,7 @@ material_override = SubResource("ShaderMaterial_ta7ci")
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-script = ExtResource("3_safpt")
+script = ExtResource("8_8y8le")
 
 [node name="PlaneArea3D" type="Area3D" parent="CSGPlaneParent"]
 
@@ -419,19 +362,19 @@ sides = 16
 
 [node name="lights" type="Node3D" parent="CSGPlaneParent"]
 
-[node name="lightbox3" parent="CSGPlaneParent/lights" instance=ExtResource("4_vnv7o")]
+[node name="lightbox3" parent="CSGPlaneParent/lights" instance=ExtResource("9_jixy5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6776576, 6.9273157)
 start_color = Color(0.61374855, 0.804532, 0.72389627, 1)
 start_temp = 3000
 target_intensity = 600.0
 
-[node name="lightbox4" parent="CSGPlaneParent/lights" instance=ExtResource("4_vnv7o")]
+[node name="lightbox4" parent="CSGPlaneParent/lights" instance=ExtResource("9_jixy5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6776576, -0.5793495)
 start_color = Color(0.61374855, 0.804532, 0.72389627, 1)
 start_temp = 3000
 target_intensity = 600.0
 
-[node name="lightbox5" parent="CSGPlaneParent/lights" instance=ExtResource("4_vnv7o")]
+[node name="lightbox5" parent="CSGPlaneParent/lights" instance=ExtResource("9_jixy5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6776576, -7.131027)
 start_color = Color(0.61374855, 0.804532, 0.72389627, 1)
 start_temp = 3000
@@ -471,7 +414,7 @@ size = Vector3(0.5, 0.5, 0.1)
 
 [node name="ACT_Engines" type="Node3D" parent="CSGPlaneParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.425654, -1.5130289, -13.035146)
-script = ExtResource("7_d5x7l")
+script = ExtResource("10_gst17")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGPlaneParent/ACT_Engines"]
 use_collision = true
@@ -488,7 +431,7 @@ use_collision = true
 collision_layer = 3
 height = 1.0
 material = SubResource("StandardMaterial3D_vnv7o")
-script = ExtResource("7_rtcij")
+script = ExtResource("11_ftcjg")
 
 [node name="fuel_cyl" type="CSGCylinder3D" parent="CSGPlaneParent/ACT_Engines"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99331605, 1.1805305)
@@ -496,7 +439,7 @@ use_collision = true
 collision_layer = 3
 height = 1.0
 material = SubResource("StandardMaterial3D_d5x7l")
-script = ExtResource("7_rtcij")
+script = ExtResource("11_ftcjg")
 
 [node name="air_cyl" type="CSGCylinder3D" parent="CSGPlaneParent/ACT_Engines"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99331605, -1.2311239)
@@ -504,9 +447,9 @@ use_collision = true
 collision_layer = 3
 height = 1.0
 material = SubResource("StandardMaterial3D_rtcij")
-script = ExtResource("7_rtcij")
+script = ExtResource("11_ftcjg")
 
-[node name="lightbox3" parent="CSGPlaneParent/ACT_Engines" instance=ExtResource("4_vnv7o")]
+[node name="lightbox3" parent="CSGPlaneParent/ACT_Engines" instance=ExtResource("9_jixy5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5149348, 4.2138453, 0.00269413)
 material = SubResource("StandardMaterial3D_pb8y7")
 bIsUnique = true
@@ -515,7 +458,7 @@ start_temp = 4000
 
 [node name="ACT_Plane_Enemies" type="Node3D" parent="CSGPlaneParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.7790201)
-script = ExtResource("7_pb8y7")
+script = ExtResource("12_gvdxn")
 
 [node name="ImpRespawnPoint0" type="Node3D" parent="CSGPlaneParent/ACT_Plane_Enemies"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25954646, 5.3812943, -1.7510409)
@@ -556,33 +499,33 @@ start_position = Vector3(-2.185, 3.81, 0)
 end_position = Vector3(0, -2.29, 0)
 
 [node name="ACT_Islands" type="Node3D" parent="."]
-script = ExtResource("11_hy0rb")
+script = ExtResource("14_exvbp")
 
-[node name="island01" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
+[node name="island01" parent="ACT_Islands" instance=ExtResource("15_nfty8")]
 transform = Transform3D(-1.7484555e-07, 0, 4, 0, 4, 0, -4, 0, -1.7484555e-07, -241.90324, -51.18954, 155.51614)
 
-[node name="island02" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
+[node name="island02" parent="ACT_Islands" instance=ExtResource("15_nfty8")]
 transform = Transform3D(-3.7803473, 0, 9.257914, 0, 10, 0, -9.257914, 0, -3.7803473, -2302.8018, -51.18954, 1078.7164)
 
-[node name="island03" parent="ACT_Islands" instance=ExtResource("11_pb8y7")]
+[node name="island03" parent="ACT_Islands" instance=ExtResource("15_nfty8")]
 transform = Transform3D(-8.575267, 0, -5.1443954, 0, 10, 0, 5.1443954, 0, -8.575267, 3371.0913, -51.18954, 690.4048)
 
-[node name="PICK_Gascan" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gascan" parent="ACT_Islands" instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 74.03005)
 
-[node name="PICK_Gascan2" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gascan2" parent="ACT_Islands" instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 76.097275)
 
-[node name="PICK_Gascan3" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gascan3" parent="ACT_Islands" instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.458527, -28.39695, 71.83939)
 
-[node name="PICK_Gascan4" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gascan4" parent="ACT_Islands" instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.44226, -28.39695, 71.83939)
 
-[node name="PICK_Gascan5" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gascan5" parent="ACT_Islands" instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.44226, -28.39695, 74.950554)
 
-[node name="PICK_Gascan6" parent="ACT_Islands" instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gascan6" parent="ACT_Islands" instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.44226, -28.39695, 73.18866)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="ACT_Islands"]
@@ -608,13 +551,11 @@ size = Vector3(10, 10, 10)
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_d5x7l")
 
-[node name="PICK_Gas" parent="." instance=ExtResource("13_mxp4k")]
+[node name="PICK_Gas" parent="." instance=ExtResource("16_8k7w5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28143334, -1.4334762, -2.3789296)
 
 [connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]
-[connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/HostButton" to="NetworkManager" method="_on_host_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/JoinButton" to="NetworkManager" method="_on_join_button_pressed"]
 [connection signal="signal_plane_refueled" from="CSGPlaneParent" to="." method="_on_act_plane_refueled"]
 [connection signal="body_entered" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_entered"]
 [connection signal="body_exited" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_exited"]

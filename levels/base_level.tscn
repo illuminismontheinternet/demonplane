@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3c46tlbwm1qg"]
+
+[ext_resource type="Script" uid="uid://7b5ffeklin8c" path="res://levels/lobby_manager.gd" id="1_satuh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vnv7o"]
+font_color = Color(0.8584287, 0, 0.26486826, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_color = Color(0.69415313, 6.545782e-05, 0.56298167, 1)
+shadow_offset = Vector2(2, 1)
+
+[node name="LobbyManager" type="Node3D"]
+script = ExtResource("1_satuh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LobbyMultiplayerPanel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/LobbyMultiplayerPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.5
+offset_top = -134.0
+offset_right = 120.5
+offset_bottom = 134.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "BONE STOMPERS"
+label_settings = SubResource("LabelSettings_vnv7o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OfflineBots" type="Button" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "SOLO WITH BOTS"
+
+[node name="Label2" type="Label" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HostButton" type="Button" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "HOST GAME"
+
+[node name="JoinButton" type="Button" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "JOIN GAME"
+
+[node name="Addy" type="LineEdit" parent="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "ENTER IP:"
+
+[node name="LobbySpawnPoint0" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0890899, -1.3255911, 11.956375)
+
+[node name="LobbySpawnPoint1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1048908, -1.1173468, 6.728099)
+
+[node name="LobbySpawnPoint2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7286177, 0, -0.41099143)
+
+[node name="LobbySpawnPoint3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8222592, 0, -3.4317057)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://bcaabpotsubyv")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer/OfflineBots" to="." method="_on_offline_bots_pressed"]
+[connection signal="pressed" from="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/LobbyMultiplayerPanel/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

@@ -61,8 +61,8 @@ var pickup_gascan : Node3D
 	$HealthSubViewport/Camera3D/HeartContainer/heart4,
 	$HealthSubViewport/Camera3D/HeartContainer/heart5,
 ]
-# network manager is just parent
-var network_manager : NetworkManager
+# lobby manager controls what happens in levels
+var lobby_manager : LobbyManager
 
 # viewbob constants
 const viewbob_const = 0.05
@@ -186,7 +186,7 @@ func player_hurt(inVelocity, inHealth, inMaxHealth):
 
 @rpc("any_peer", "call_local", "reliable")
 func player_reset_loc_rpc():
-	global_position = network_manager.get_respawn_loc()
+	global_position = lobby_manager.get_respawn_loc()
 	
 func player_die():
 	#if not multiplayer.is_server(): return
@@ -212,7 +212,7 @@ func _handle_weapon_input():
 		_action_swing_melee()
 
 func place_impact_decal(inReparentToStructure, inPosition, inNormal):
-	network_manager.place_impact_decal(inReparentToStructure, inPosition, inNormal)
+	lobby_manager.place_impact_decal(inReparentToStructure, inPosition, inNormal)
 
 func modify_inventory(inSlot : int, inOwnership: bool) -> void:
 	inventory_bools.set(inSlot, inOwnership)
@@ -285,7 +285,7 @@ func _action_swing_melee():
 		var target_health_component = current_collider.get_node_or_null("Health")
 		if target_health_component:
 			var hurt_velocity = (current_collider.global_position - global_position).normalized() * attack_velocity_multiplier
-			target_health_component.apply_damage(damage,hurt_velocity)
+			target_health_component.apply_damage(damage, hurt_velocity)
 	if env_ray.is_colliding():
 		particle_play_melee()
 		# Place decal and set if its parented to the main moving structure or not
@@ -332,14 +332,14 @@ func _ready():
 	spine_ik.start()
 	#lefthand_ik.start()
 	active_inventory_slot = 0
-	network_manager = get_parent()
-	global_position = network_manager.get_spawn_point()
+	lobby_manager = get_parent()
+	global_position = lobby_manager.get_spawn_point()
 	health_component.signal_died.connect(player_die)
 	health_component.signal_health_changed.connect(player_hurt)
 	health_component.signal_restart_health.connect(player_restart_health)
-	# network manager bind for end match and respawn
-	signal_player_died.connect(network_manager.respawn_player)
-	network_manager.network_match_finished.connect(_on_level_match_finished)
+	# lobby manager bind for end match and respawn
+	signal_player_died.connect(lobby_manager.respawn_player)
+	lobby_manager.signal_lobby_match_finished.connect(_on_level_match_finished)
 	# below will run only on local player view, anything above will be on both
 	wep_parent.visible = false
 	entire_hud.visible = false

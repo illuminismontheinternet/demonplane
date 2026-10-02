@@ -125,7 +125,7 @@ func handle_state_machine():
 	match current_state:
 		IMP_STATE.IDLE:
 			current_state = IMP_STATE.SEARCHING
-			print("idle id: ", multiplayer.get_unique_id())
+			#print("idle id: ", multiplayer.get_unique_id())
 		IMP_STATE.SEARCHING:
 			var players = get_tree().get_nodes_in_group("player")
 			if players.size() > 0:
@@ -134,9 +134,9 @@ func handle_state_machine():
 			else:
 				print("somehow less than 0 players why do I exist?")
 				queue_free()
-			print("search id: ", multiplayer.get_unique_id())
+			#print("search id: ", multiplayer.get_unique_id())
 		IMP_STATE.HUNTING:
-			print("hunt id: ", multiplayer.get_unique_id())
+			#print("hunt id: ", multiplayer.get_unique_id())
 			# set anim tree
 			# Face the target
 			if current_target_node:

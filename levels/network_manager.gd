@@ -1,8 +1,6 @@
 extends Node3D
 class_name NetworkManager
 
-@onready var multiplayer_panel = $"../CanvasLayer/MultiplayerPanel"
-@onready var addy_box = $"../CanvasLayer/MultiplayerPanel/MarginContainer/VBoxContainer/Addy"
 @onready var decal_manager = $DecalManager
 
 # spawn points
@@ -17,18 +15,7 @@ class_name NetworkManager
 	sp2,
 	sp3
 ]
-var current_spawn_index = -1
 @onready var respawn_point = $RespawnPoint0
-
-var active_players : Dictionary = {}
-
-const PORT = 9999
-const MAX_CLIENTS = 4
-const player_scene = preload("res://player.tscn")
-
-var enet_peer = ENetMultiplayerPeer.new()
-
-signal network_match_finished(bVictory: bool)
 
 @rpc("any_peer", "call_local", "reliable")
 func place_impact_decal_rpc(inReparentToStructure, inPosition, inNormal) -> void:
@@ -39,78 +26,3 @@ func place_impact_decal(inReparentToStructure, inPosition, inNormal) -> void:
 	
 func get_respawn_loc() -> Vector3:
 	return respawn_point.global_position
-	
-@rpc("any_peer", "call_local", "reliable")
-func respawn_player_rpc(inPeerID):
-	if not is_multiplayer_authority(): return
-	var respawning_player = active_players[inPeerID]
-	var health_component = respawning_player.get_node_or_null("Health")
-	if health_component:
-		health_component.restart_health()
-	
-func respawn_player(inPeerID):
-	respawn_player_rpc.rpc(inPeerID)
-
-func get_spawn_point() -> Vector3:
-	current_spawn_index = current_spawn_index + 1
-	#print("current spawn index: ", current_spawn_index)
-	#print(spawn_points.get(current_spawn_index).global_position)
-	return spawn_points.get(current_spawn_index).global_position
-	
-func remove_player(peer_id):
-	var leaving_player = get_node_or_null(str(peer_id))
-	if leaving_player:
-		# IMPORTANT: remove this from active_players
-		active_players.erase(peer_id)
-		leaving_player.queue_free()
-		
-func add_player(peer_id):
-	# WARNING peer_id is unique but the originating call is only ran on the host machine
-	var new_player = player_scene.instantiate()
-	new_player.name = str(peer_id)
-	#print("add_player - peer: ", peer_id)
-	# IMPORTANT: players are children of the network manager NOT the level
-	add_child(new_player)
-	active_players[peer_id] = new_player
-	#print(active_players)
-		
-func _on_host_button_pressed() -> void:
-	multiplayer_panel.hide()
-	enet_peer.create_server(PORT, MAX_CLIENTS)
-	
-	# the 'multiplayer' variable is a pre-existing object
-	multiplayer.multiplayer_peer = enet_peer
-	multiplayer.peer_connected.connect(add_player)
-	multiplayer.peer_disconnected.connect(remove_player)
-	add_player(multiplayer.get_unique_id())
-	
-	#TODO remove this so upnp works
-	# upnp_setup()
-	
-func _on_join_button_pressed() -> void:
-	multiplayer_panel.hide()
-	# TODO: change addy to the IP that works
-	# addy_box.text will do and prevent any calls if its empty
-	enet_peer.create_client("localhost", PORT)
-	# the 'multiplayer' variable is a pre-existing object
-	multiplayer.multiplayer_peer = enet_peer
-
-func upnp_setup():
-	var upnp = UPNP.new()
-	var disc_res = upnp.discover()
-	assert(disc_res == UPNP.UPNP_RESULT_SUCCESS, "UPNP Discover Failed! ERROR %s" % disc_res)
-	assert(upnp.get_gateway() and upnp.get_gateway().is_valid_gateway(), "UPNP Invalid Gateway!")
-	
-	var map_res = upnp.add_port_mapping(PORT)
-	assert(map_res == UPNP.UPNP_RESULT_SUCCESS, "UPNP Port Mapping Failed ERROR %s" % map_res)
-	
-	print("SUCCESS! JOIN ADDRESS: %s" % upnp.query_external_address())
-
-
-func _on_level_match_finished(bVictory: bool) -> void:
-	network_match_finished.emit(bVictory)
-	#print("network manager end match - peer: ", multiplayer.get_unique_id())
-	# DO NOT notify players manually let rpc handle it
-	#for key in active_players:
-		#active_players[key]._on_level_match_finished(bVictory)
-	

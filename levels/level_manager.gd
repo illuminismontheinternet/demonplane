@@ -6,6 +6,7 @@ signal match_finished(bVictory: bool)
 # 300 seconds is 5 minutes
 var bTimerIsBlocked = false
 var bMatchStarted = false
+
 @export var match_duration := 300
 @onready var act_engines = $CSGPlaneParent/ACT_Engines
 @onready var act_enemies = $CSGPlaneParent/ACT_Plane_Enemies
@@ -154,6 +155,7 @@ func try_start_match():
 		var players = get_tree().get_nodes_in_group("player")
 		if players.size() > 0:
 			start_match()
+			
 # normal funcs
 func _ready() -> void:
 	if not is_multiplayer_authority(): return

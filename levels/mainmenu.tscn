@@ -32,7 +32,7 @@ grow_vertical = 2
 texture = ExtResource("2_m1g0l")
 expand_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MainContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -47,23 +47,23 @@ grow_horizontal = 0
 grow_vertical = 2
 alignment = 1
 
-[node name="Label2" type="Label" parent="VBoxContainer"]
+[node name="Label2" type="Label" parent="MainContainer"]
 layout_mode = 2
 text = "BONE STOMPERS"
 label_settings = SubResource("LabelSettings_cmhrf")
 vertical_alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="MainButtons" type="VBoxContainer" parent="MainContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="StartButton" type="Button" parent="MainContainer/MainButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_bsv1t")
 theme_override_font_sizes/font_size = 89
 text = "START"
 
-[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="MainContainer/MainButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_bsv1t")
@@ -71,10 +71,95 @@ theme_override_font_sizes/font_size = 89
 text = "OPTIONS
 "
 
-[node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="MainContainer/MainButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3_bsv1t")
 theme_override_font_sizes/font_size = 89
 text = "QUIT
 "
+
+[node name="OptionsContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -896.0
+offset_top = -79.5
+offset_right = -155.0
+offset_bottom = 79.5
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="OptionsContainer"]
+layout_mode = 2
+text = "OPTIONS"
+label_settings = SubResource("LabelSettings_cmhrf")
+vertical_alignment = 2
+
+[node name="OptionsButtons" type="VBoxContainer" parent="OptionsContainer"]
+layout_mode = 2
+
+[node name="FullscreenCheckButton" type="CheckButton" parent="OptionsContainer/OptionsButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bsv1t")
+theme_override_font_sizes/font_size = 89
+text = "FULLSCREEN"
+
+[node name="BackButton" type="Button" parent="OptionsContainer/OptionsButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_bsv1t")
+theme_override_font_sizes/font_size = 89
+text = "BACK"
+
+[node name="QuitContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -896.0
+offset_top = -79.5
+offset_right = -155.0
+offset_bottom = 79.5
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="QuitContainer"]
+layout_mode = 2
+text = "ARE YOU SURE?"
+label_settings = SubResource("LabelSettings_cmhrf")
+vertical_alignment = 2
+
+[node name="QuitButtons" type="VBoxContainer" parent="QuitContainer"]
+layout_mode = 2
+
+[node name="ExitGameButton" type="Button" parent="QuitContainer/QuitButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_bsv1t")
+theme_override_font_sizes/font_size = 89
+text = "EXIT"
+
+[node name="BackButton" type="Button" parent="QuitContainer/QuitButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_bsv1t")
+theme_override_font_sizes/font_size = 89
+text = "TAKE ME BACK"
+
+[connection signal="pressed" from="MainContainer/MainButtons/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MainContainer/MainButtons/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MainContainer/MainButtons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="toggled" from="OptionsContainer/OptionsButtons/FullscreenCheckButton" to="." method="_on_fullscreen_check_button_toggled"]
+[connection signal="pressed" from="OptionsContainer/OptionsButtons/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="QuitContainer/QuitButtons/ExitGameButton" to="." method="_on_exit_game_button_pressed"]
+[connection signal="pressed" from="QuitContainer/QuitButtons/BackButton" to="." method="_on_back_button_pressed"]
