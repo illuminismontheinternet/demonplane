@@ -50,7 +50,7 @@ var pickup_gascan : Node3D
 
 # ui elements
 @onready var entire_hud = $CanvasLayer
-@onready var hud_manager = $CanvasLayer/player_ui
+@onready var hud_manager = $CanvasLayer/MainUI/player_ui
 
 # health component
 @onready var health_component = $Health
@@ -61,6 +61,15 @@ var pickup_gascan : Node3D
 	$HealthSubViewport/Camera3D/HeartContainer/heart4,
 	$HealthSubViewport/Camera3D/HeartContainer/heart5,
 ]
+
+# pause menu
+@onready var main_ui = $CanvasLayer/MainUI
+@onready var pause_ui = $CanvasLayer/PauseUI
+@onready var pause_buttons = $CanvasLayer/PauseUI/PauseButtons
+@onready var exit_buttons = $CanvasLayer/PauseUI/ExitButtons
+
+var bPauseMenuOpen = false
+
 # lobby manager controls what happens in levels
 var lobby_manager : LobbyManager
 
@@ -211,6 +220,19 @@ func _handle_weapon_input():
 	if Input.is_action_just_pressed("attack"):
 		_action_swing_melee()
 
+func _handle_pause_menu_input(bMimicButton : bool):
+	if Input.is_action_just_pressed("pause") or bMimicButton:
+		if not bPauseMenuOpen:
+			bPauseMenuOpen = true
+			main_ui.visible = false
+			pause_ui.visible = true
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			bPauseMenuOpen = false
+			main_ui.visible = true
+			pause_ui.visible = false
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
 func place_impact_decal(inReparentToStructure, inPosition, inNormal):
 	lobby_manager.place_impact_decal(inReparentToStructure, inPosition, inNormal)
 
@@ -322,7 +344,7 @@ func _rotate_look(inRelX, inRelY):	#print("_handle_land")
 		
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): return
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and not bPauseMenuOpen:
 		_rotate_look(event.relative.x, event.relative.y)
 
 func _enter_tree():
@@ -418,10 +440,14 @@ func _physics_process(delta: float) -> void:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(TARGET_SWAY), LERP_SWAY)
 	else:
 		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
-	_handle_flash_light()
-	_handle_drop_input()
-	_handle_weapon_input()
-	_handle_interaction()
+	# gate input events
+	if not bPauseMenuOpen:
+		_handle_flash_light()
+		_handle_weapon_input()
+		_handle_drop_input()
+		_handle_interaction()
+		
+	_handle_pause_menu_input(false)
 	_handle_melee_reset(delta)
 	_handle_movebob()
 	move_and_slide()
@@ -429,3 +455,18 @@ func _physics_process(delta: float) -> void:
 func _on_level_match_finished(bVictory: bool) -> void:
 	#print("player end match - peer: ", multiplayer.get_unique_id())
 	_show_end_screen(bVictory)
+
+
+func _on_pause_back_button_pressed() -> void:
+	_handle_pause_menu_input(true)
+
+func _on_quit_to_menu_button_pressed() -> void:
+	if pause_buttons.visible:
+		pause_buttons.visible = false
+		exit_buttons.visible = true
+	else:
+		pause_buttons.visible = true
+		exit_buttons.visible = false
+
+func _on_confirm_quit_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://levels/mainmenu.tscn")

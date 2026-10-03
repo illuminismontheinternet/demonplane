@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=53 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
@@ -15,6 +15,7 @@
 [ext_resource type="Shader" uid="uid://wkv0el3jln2h" path="res://mat/canvas_overlay.gdshader" id="9_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://br5fl2x5koio1" path="res://textures/h_lines.png" id="10_nvl01"]
 [ext_resource type="Texture2D" uid="uid://docy2ptdrewwh" path="res://textures/main_crosshair.png" id="11_nvl01"]
+[ext_resource type="FontFile" uid="uid://c3dqvapiw3v5g" path="res://textures/INVADER.TTF" id="16_u1c27"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u1c27"]
 animation = &"swing"
@@ -247,6 +248,15 @@ font_size = 48
 font_size = 48
 font_color = Color(0.623739, 0, 0.07081313, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_u1c27"]
+font = ExtResource("16_u1c27")
+font_size = 140
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_color = Color(0.5175985, 0.0031077063, 0.8625412, 0.4117647)
+shadow_offset = Vector2(10, 1)
+
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_layer = 5
 script = ExtResource("1_4flbx")
@@ -255,28 +265,28 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(-0.0023500556, -0.068448275, -7.578017e-09)
-bones/2/rotation = Quaternion(-0.7628731, -0.2600706, -0.18246998, 0.5631098)
-bones/3/rotation = Quaternion(0.006578452, 0.009480221, 0.39191353, 0.9199296)
-bones/4/rotation = Quaternion(0.00071651745, -0.00046905372, -0.7690438, 0.6391957)
-bones/6/rotation = Quaternion(-0.80455476, -0.0011445986, -0.00080298126, 0.5938768)
-bones/7/rotation = Quaternion(0.006530757, -0.005732017, -0.27113348, 0.9625026)
-bones/8/rotation = Quaternion(0.0052072294, 0.0056400234, 0.8747509, 0.48451206)
-bones/9/rotation = Quaternion(0.012077739, -0.0024840874, 0.0007598769, 0.9999237)
-bones/10/rotation = Quaternion(-0.027807036, 0.00571921, -0.0017494939, 0.9995954)
-bones/12/rotation = Quaternion(0.31008333, -0.07470559, -0.5186151, 0.79328793)
-bones/13/rotation = Quaternion(0.88398844, -0.06657932, 0.015490034, 0.46248424)
+bones/0/position = Vector3(-0.0023500556, -0.081793055, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.75635046, -0.27909744, -0.19581951, 0.55829513)
+bones/3/rotation = Quaternion(0.0065719043, 0.010556896, 0.42633674, 0.904479)
+bones/4/rotation = Quaternion(0.001030433, -0.00083011575, -0.777291, 0.62913996)
+bones/6/rotation = Quaternion(-0.8044137, 0.015376364, 0.0107884, 0.5937726)
+bones/7/rotation = Quaternion(0.006556648, -0.0068831844, -0.30837858, 0.9512162)
+bones/8/rotation = Quaternion(0.0057308096, 0.006243751, 0.8853119, 0.4649205)
+bones/9/rotation = Quaternion(0.018836385, -0.003874171, 0.0011851008, 0.99981445)
+bones/10/rotation = Quaternion(-0.043368183, 0.008919747, -0.0027285318, 0.9990157)
+bones/12/rotation = Quaternion(0.32726198, -0.09902486, -0.50609547, 0.7918088)
+bones/13/rotation = Quaternion(0.86883104, -0.07737284, 0.0035909829, 0.48901257)
 bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
 bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
 bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
-bones/22/rotation = Quaternion(0.37278596, 0.23732905, 0.50341, 0.742485)
-bones/23/rotation = Quaternion(0.7609462, 0.011227962, -0.007765819, 0.6486714)
+bones/22/rotation = Quaternion(0.36327738, 0.22254047, 0.5109593, 0.7466097)
+bones/23/rotation = Quaternion(0.7834607, 0.0068490906, -0.022710636, 0.6209886)
 bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
 bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
-bones/32/rotation = Quaternion(0.027630167, 0.006022604, 0.0062774178, 0.99958044)
+bones/32/rotation = Quaternion(0.04309224, 0.009392903, 0.009790312, 0.998979)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="toon_pilot/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.9422429, 0.21646479, 0.25558037, 0.31238043, 0.8432324, 0.43746752, -0.120817274, 0.4920388, -0.86214906, -0.23524237, 0.6971858, 0.4309459)
+transform = Transform3D(-0.9426381, 0.22082554, 0.25033873, 0.30663902, 0.8691927, 0.38791308, -0.13193142, 0.44242537, -0.88704795, -0.23402053, 0.6838034, 0.41170132)
 bone_name = "Hand_R"
 bone_idx = 24
 
@@ -478,8 +488,8 @@ replication_config = SubResource("SceneReplicationConfig_hqtel")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_ivps1")
+[node name="MainUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -487,8 +497,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-anchors_preset = 8
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI"]
+material = SubResource("ShaderMaterial_ivps1")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MainUI"]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -505,8 +524,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("11_nvl01")
 
-[node name="HealthViewport" type="TextureRect" parent="CanvasLayer"]
-anchors_preset = 2
+[node name="HealthViewport" type="TextureRect" parent="CanvasLayer/MainUI"]
+layout_mode = 0
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -512.0
@@ -515,8 +534,8 @@ grow_vertical = 0
 texture = SubResource("ViewportTexture_ivps1")
 stretch_mode = 4
 
-[node name="WeaponViewport" type="TextureRect" parent="CanvasLayer"]
-anchors_preset = 3
+[node name="WeaponViewport" type="TextureRect" parent="CanvasLayer/MainUI"]
+layout_mode = 0
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -529,9 +548,8 @@ texture = SubResource("ViewportTexture_606se")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="player_ui" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
+[node name="player_ui" type="Control" parent="CanvasLayer/MainUI"]
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -539,7 +557,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_hqtel")
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/player_ui"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI/player_ui"]
 visible = false
 material = SubResource("ShaderMaterial_onrkg")
 layout_mode = 1
@@ -550,7 +568,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/player_ui"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainUI/player_ui"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -564,32 +582,135 @@ offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="win" type="Label" parent="CanvasLayer/player_ui/VBoxContainer"]
+[node name="win" type="Label" parent="CanvasLayer/MainUI/player_ui/VBoxContainer"]
 visible = false
 layout_mode = 2
 text = "VICTORY"
 label_settings = SubResource("LabelSettings_i3pqv")
 
-[node name="lose" type="Label" parent="CanvasLayer/player_ui/VBoxContainer"]
+[node name="lose" type="Label" parent="CanvasLayer/MainUI/player_ui/VBoxContainer"]
 visible = false
 layout_mode = 2
 text = "DEFEAT"
 label_settings = SubResource("LabelSettings_onrkg")
 
-[node name="MenuOptions" type="VBoxContainer" parent="CanvasLayer/player_ui/VBoxContainer"]
+[node name="MenuOptions" type="VBoxContainer" parent="CanvasLayer/MainUI/player_ui/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="BackToMain" type="Button" parent="CanvasLayer/player_ui/VBoxContainer/MenuOptions"]
+[node name="BackToMain" type="Button" parent="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions"]
 layout_mode = 2
 text = "main menu"
 
-[node name="QuitGame" type="Button" parent="CanvasLayer/player_ui/VBoxContainer/MenuOptions"]
+[node name="QuitGame" type="Button" parent="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions"]
 layout_mode = 2
 text = "quit game"
 
-[connection signal="pressed" from="CanvasLayer/player_ui/VBoxContainer/MenuOptions/BackToMain" to="CanvasLayer/player_ui" method="_on_back_to_main_pressed"]
-[connection signal="pressed" from="CanvasLayer/player_ui/VBoxContainer/MenuOptions/QuitGame" to="CanvasLayer/player_ui" method="_on_quit_game_pressed"]
+[node name="PauseUI" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/PauseUI"]
+material = SubResource("ShaderMaterial_onrkg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PauseButtons" type="VBoxContainer" parent="CanvasLayer/PauseUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -122.5
+offset_top = -151.0
+offset_right = 122.5
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/PauseUI/PauseButtons"]
+layout_mode = 2
+text = "BONE STOMPERS"
+label_settings = SubResource("LabelSettings_u1c27")
+vertical_alignment = 2
+
+[node name="BackButton" type="Button" parent="CanvasLayer/PauseUI/PauseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("16_u1c27")
+theme_override_font_sizes/font_size = 89
+text = "BACK"
+
+[node name="OptionsButton" type="Button" parent="CanvasLayer/PauseUI/PauseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("16_u1c27")
+theme_override_font_sizes/font_size = 89
+text = "OPTIONS
+"
+
+[node name="QuitToMenuButton" type="Button" parent="CanvasLayer/PauseUI/PauseButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("16_u1c27")
+theme_override_font_sizes/font_size = 89
+text = "QUIT
+"
+
+[node name="ExitButtons" type="VBoxContainer" parent="CanvasLayer/PauseUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -122.5
+offset_top = -151.0
+offset_right = 122.5
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/PauseUI/ExitButtons"]
+layout_mode = 2
+text = "ARE YOU SURE?"
+label_settings = SubResource("LabelSettings_u1c27")
+vertical_alignment = 2
+
+[node name="ConfirmQuitButton" type="Button" parent="CanvasLayer/PauseUI/ExitButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("16_u1c27")
+theme_override_font_sizes/font_size = 89
+text = "QUIT
+"
+
+[node name="BackToPauseButton" type="Button" parent="CanvasLayer/PauseUI/ExitButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("16_u1c27")
+theme_override_font_sizes/font_size = 89
+text = "BACK"
+
+[connection signal="pressed" from="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions/BackToMain" to="CanvasLayer/MainUI/player_ui" method="_on_back_to_main_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions/QuitGame" to="CanvasLayer/MainUI/player_ui" method="_on_quit_game_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseUI/PauseButtons/BackButton" to="." method="_on_pause_back_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseUI/PauseButtons/QuitToMenuButton" to="." method="_on_quit_to_menu_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseUI/ExitButtons/ConfirmQuitButton" to="." method="_on_confirm_quit_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseUI/ExitButtons/BackToPauseButton" to="." method="_on_quit_to_menu_button_pressed"]
 
 [editable path="toon_pilot"]
 [editable path="WeaponSubViewport/Camera3D/WeaponContainer/wrench"]
