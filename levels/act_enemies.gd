@@ -2,10 +2,8 @@ extends Node3D
 class_name ActEnemies
 
 signal signal_imps_defeated
-
-@onready var network_manager = $"../../NetworkManager"
-
 const imp_scene = preload("res://enemies/character_imp.tscn")
+
 #TODO move this thing later
 @onready var imp_respawn_point0 = $ImpRespawnPoint0
 @onready var imp_respawn_point1 = $ImpRespawnPoint1

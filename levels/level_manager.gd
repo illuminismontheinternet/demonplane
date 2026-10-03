@@ -7,6 +7,8 @@ signal match_finished(bVictory: bool)
 var bTimerIsBlocked = false
 var bMatchStarted = false
 
+@export var spawn_locations : Array[Node3D] = []
+@export var respawn_point : Node3D
 @export var match_duration := 300
 @onready var act_engines = $CSGPlaneParent/ACT_Engines
 @onready var act_enemies = $CSGPlaneParent/ACT_Plane_Enemies

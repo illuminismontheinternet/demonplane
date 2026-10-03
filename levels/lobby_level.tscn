@@ -1,5 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://c17jn161qajuy"]
+[gd_scene load_steps=11 format=3 uid="uid://c17jn161qajuy"]
 
+[ext_resource type="Script" uid="uid://lnts3sqsxs8h" path="res://levels/decal_manager.gd" id="1_6j2sa"]
+[ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="2_jmi3x"]
 [ext_resource type="Script" uid="uid://kyphb5uwrd13" path="res://levels/env_manager.gd" id="5_hrvp7"]
 [ext_resource type="FontFile" uid="uid://c3dqvapiw3v5g" path="res://textures/INVADER.TTF" id="6_8bh2m"]
 [ext_resource type="Script" uid="uid://cky8pgkslfbhd" path="res://pickups/spinny.gd" id="7_k17w5"]
@@ -37,6 +39,15 @@ size = Vector3(90, 20, 90)
 size = Vector3(20, 20, 20)
 
 [node name="lobby_parent" type="Node3D"]
+
+[node name="DecalManager" type="Node3D" parent="."]
+script = ExtResource("1_6j2sa")
+
+[node name="Decal_Impact" type="Decal" parent="DecalManager"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.31082973, 0.6755602)
+size = Vector3(0.2, 0.01, 0.2)
+texture_albedo = ExtResource("2_jmi3x")
+texture_orm = ExtResource("2_jmi3x")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vonw3")

@@ -8,14 +8,16 @@ var lobby_level_world : Node3D
 var bLevelActive = false
 
 @onready var multiplayer_panel = $CanvasLayer/LobbyMultiplayerPanel
+var decal_manager : Node3D
 
 # similar to network manager
-@onready var spawn_points = [
+@onready var lobby_spawn_points = [
 	$LobbySpawnPoint0,
 	$LobbySpawnPoint1,
 	$LobbySpawnPoint2,
 	$LobbySpawnPoint3,
 ]
+var respawn_point : Node3D
 var current_spawn_index = -1
 
 const PORT = 9999
@@ -77,6 +79,14 @@ func upnp_setup():
 	
 	print("SUCCESS! JOIN ADDRESS: %s" % upnp.query_external_address())
 
+func move_players_into_spawns(spawnPoints : Array[Node3D]):
+	var players = get_tree().get_nodes_in_group("player")
+	var iterator = 0
+	for player in players:
+		player.global_position = spawnPoints.get(iterator).global_position
+	#for i in range(active_players.size()):
+		#active_players.get(i).global_position = spawnPoints.get(i).global_position
+		
 func _on_offline_bots_pressed() -> void:
 	multiplayer_panel.hide()
 	add_player(1)
@@ -85,14 +95,15 @@ func _on_offline_bots_pressed() -> void:
 func create_plane_level() -> void:
 	bLevelActive = true
 	call_deferred("remove_child", lobby_level_world)
-	#lobby_level_world.process_mode = Node.PROCESS_MODE_DISABLED
-	#lobby_level_world.visible = false
-	
 	var plane_level_scene = load("res://levels/plane_level.tscn")
 	var plane_level_world = plane_level_scene.instantiate()
 	add_child(plane_level_world)
 	# bind match ended signal
 	plane_level_world.match_finished.connect(internal_lobby_match_finished)
+	# get the decal manager
+	decal_manager = plane_level_world.get_node("DecalManager")
+	move_players_into_spawns(plane_level_world.spawn_locations)
+	respawn_point = plane_level_world.respawn_point
 	
 func create_lobby_level() -> void:
 	var lobby_level_scene = load("res://levels/lobby_level.tscn")
@@ -101,6 +112,8 @@ func create_lobby_level() -> void:
 	# go forth and bind the area body entered 
 	var plane_level_area = lobby_level_world.get_node("DemonPlaneArea3D")
 	plane_level_area.body_entered.connect(_on_demon_plane_area_3d_body_entered)
+	# get the decal manager
+	decal_manager = lobby_level_world.get_node("DecalManager")
 	
 func _on_demon_plane_area_3d_body_entered(body: Node3D) -> void:
 	if body.has_method("player_die") and not bLevelActive:
@@ -109,10 +122,13 @@ func _on_demon_plane_area_3d_body_entered(body: Node3D) -> void:
 # player specific functions
 func get_spawn_point() -> Vector3:
 	current_spawn_index = current_spawn_index + 1 % MAX_CLIENTS
-	return spawn_points.get(current_spawn_index).global_position
+	return lobby_spawn_points.get(current_spawn_index).global_position
 	
 func get_respawn_loc() -> Vector3:
-	return spawn_points.get(0).global_position
+	if respawn_point:
+		return respawn_point.global_position
+	else:
+		return lobby_spawn_points.get(0).global_position
 	
 @rpc("any_peer", "call_local", "reliable")
 func respawn_player_rpc(inPeerID):
@@ -126,7 +142,10 @@ func respawn_player() -> void:
 	respawn_player_rpc.rpc()
 	
 func place_impact_decal(inReparentToStructure, inPosition, inNormal) -> void:
-	print("lobby manager: please implement place_impact_decal")
+	if decal_manager:
+		decal_manager.place_decal_impact(inReparentToStructure, inPosition, inNormal)
+	else:
+		print("lobby manager has no decal manager")
 
 func internal_lobby_match_finished(bVictory : bool) -> void:
 	signal_lobby_match_finished.emit(bVictory)

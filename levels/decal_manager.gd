@@ -2,8 +2,7 @@ extends Node3D
 
 @export var decal_impact_pool_size = 49
 @onready var decal_impact = $Decal_Impact
-@onready var network_manager = $".."
-@onready var main_structure = $"../../CSGPlaneParent"
+@export var main_structure : Node3D
 
 var current_index = 0
 var impact_array = []

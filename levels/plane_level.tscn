@@ -1,7 +1,6 @@
-[gd_scene load_steps=34 format=3 uid="uid://bhcfqsa0van8b"]
+[gd_scene load_steps=33 format=3 uid="uid://bhcfqsa0van8b"]
 
 [ext_resource type="Script" uid="uid://d2sle4rlmtpfm" path="res://levels/level_manager.gd" id="1_vcmp4"]
-[ext_resource type="Script" uid="uid://cbtwbkqngihyw" path="res://levels/network_manager.gd" id="2_osdrb"]
 [ext_resource type="Script" uid="uid://lnts3sqsxs8h" path="res://levels/decal_manager.gd" id="3_l7huf"]
 [ext_resource type="Texture2D" uid="uid://bm5lumhn8g511" path="res://textures/decal_impact.png" id="4_enpvo"]
 [ext_resource type="Script" uid="uid://kyphb5uwrd13" path="res://levels/env_manager.gd" id="5_3j55p"]
@@ -122,34 +121,36 @@ properties/2/path = NodePath("CSGPlaneParent/stairs:visible")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
-[node name="LevelManager" type="Node3D"]
+[node name="LevelManager" type="Node3D" node_paths=PackedStringArray("spawn_locations", "respawn_point")]
 script = ExtResource("1_vcmp4")
+spawn_locations = [NodePath("SpawnParent/SpawnPoint0"), NodePath("SpawnParent/SpawnPoint1"), NodePath("SpawnParent/SpawnPoint2"), NodePath("SpawnParent/SpawnPoint3")]
+respawn_point = NodePath("SpawnParent/RespawnPoint0")
 
-[node name="NetworkManager" type="Node3D" parent="."]
-script = ExtResource("2_osdrb")
-
-[node name="DecalManager" type="Node3D" parent="NetworkManager"]
+[node name="DecalManager" type="Node3D" parent="." node_paths=PackedStringArray("main_structure")]
 script = ExtResource("3_l7huf")
+main_structure = NodePath("../CSGPlaneParent")
 
-[node name="Decal_Impact" type="Decal" parent="NetworkManager/DecalManager"]
+[node name="Decal_Impact" type="Decal" parent="DecalManager"]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.31082973, 0.6755602)
 size = Vector3(0.2, 0.01, 0.2)
 texture_albedo = ExtResource("4_enpvo")
 texture_orm = ExtResource("4_enpvo")
 
-[node name="SpawnPoint0" type="Node3D" parent="NetworkManager"]
+[node name="SpawnParent" type="Node3D" parent="."]
+
+[node name="SpawnPoint0" type="Node3D" parent="SpawnParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0890899, -1.3255911, 11.956375)
 
-[node name="SpawnPoint1" type="Node3D" parent="NetworkManager"]
+[node name="SpawnPoint1" type="Node3D" parent="SpawnParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1048908, -1.1173468, 6.728099)
 
-[node name="SpawnPoint2" type="Node3D" parent="NetworkManager"]
+[node name="SpawnPoint2" type="Node3D" parent="SpawnParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7286177, 0, -0.41099143)
 
-[node name="SpawnPoint3" type="Node3D" parent="NetworkManager"]
+[node name="SpawnPoint3" type="Node3D" parent="SpawnParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8222592, 0, -3.4317057)
 
-[node name="RespawnPoint0" type="Node3D" parent="NetworkManager"]
+[node name="RespawnPoint0" type="Node3D" parent="SpawnParent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.827945, -0.4114623, 12.525468)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -551,18 +552,14 @@ size = Vector3(10, 10, 10)
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_d5x7l")
 
-[node name="PICK_Gas" parent="." instance=ExtResource("16_8k7w5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28143334, -1.4334762, -2.3789296)
-
-[connection signal="match_finished" from="." to="NetworkManager" method="_on_level_match_finished"]
 [connection signal="plane_event" from="." to="CSGPlaneParent" method="_on_level_plane_event"]
 [connection signal="signal_plane_refueled" from="CSGPlaneParent" to="." method="_on_act_plane_refueled"]
 [connection signal="body_entered" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_entered"]
 [connection signal="body_exited" from="CSGPlaneParent/PlaneArea3D" to="WorldEnvironment" method="_on_plane_area_3d_body_exited"]
-[connection signal="body_entered" from="CSGPlaneParent/engine_right/FuelArea3D" to="CSGPlaneParent" method="_on_engine_area_3d_body_entered"]
 [connection signal="body_entered" from="CSGPlaneParent/engine_right/FuelArea3D" to="CSGPlaneParent" method="_on_fuel_area_3d_body_entered"]
-[connection signal="body_entered" from="CSGPlaneParent/engine_left/FuelArea3D" to="CSGPlaneParent" method="_on_engine_area_3d_body_entered"]
+[connection signal="body_entered" from="CSGPlaneParent/engine_right/FuelArea3D" to="CSGPlaneParent" method="_on_engine_area_3d_body_entered"]
 [connection signal="body_entered" from="CSGPlaneParent/engine_left/FuelArea3D" to="CSGPlaneParent" method="_on_fuel_area_3d_body_entered"]
+[connection signal="body_entered" from="CSGPlaneParent/engine_left/FuelArea3D" to="CSGPlaneParent" method="_on_engine_area_3d_body_entered"]
 [connection signal="fully_repaired" from="CSGPlaneParent/ACT_Engines" to="." method="_on_act_engines_fully_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/spark_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_spark_cyl_repaired"]
 [connection signal="repaired" from="CSGPlaneParent/ACT_Engines/fuel_cyl" to="CSGPlaneParent/ACT_Engines" method="_on_fuel_cyl_repaired"]
