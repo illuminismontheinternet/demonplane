@@ -129,18 +129,15 @@ func get_respawn_loc() -> Vector3:
 		return respawn_point.global_position
 	else:
 		return lobby_spawn_points.get(0).global_position
-	
-@rpc("any_peer", "call_local", "reliable")
-func respawn_player_rpc(inPeerID):
-	if not is_multiplayer_authority(): return
-	var respawning_player = active_players[inPeerID]
-	var health_component = respawning_player.get_node_or_null("Health")
-	if health_component:
-		health_component.restart_health()
 		
-func respawn_player() -> void:
-	respawn_player_rpc.rpc()
-	
+func lobby_player_died(inID) -> void:
+	print("lobby player died with id: ", inID)
+	await get_tree().create_timer(3.0).timeout
+	var players = get_tree().get_nodes_in_group("player")
+	for player in players:
+		if player.multiplayer.get_unique_id() == inID:
+			player.player_respawn()
+		
 func place_impact_decal(inReparentToStructure, inPosition, inNormal) -> void:
 	if decal_manager:
 		decal_manager.place_decal_impact(inReparentToStructure, inPosition, inNormal)

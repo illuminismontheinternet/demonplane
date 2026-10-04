@@ -50,9 +50,10 @@ var pickup_gascan : Node3D
 
 # ui elements
 @onready var entire_hud = $CanvasLayer
-@onready var hud_manager = $CanvasLayer/MainUI/player_ui
+@onready var hud_manager = $CanvasLayer/MainUI/AliveUI/player_ui
 
 # health component
+@export var bCanMove = true
 @onready var health_component = $Health
 @onready var health_hearts = [
 	$HealthSubViewport/Camera3D/HeartContainer/heart,
@@ -63,6 +64,8 @@ var pickup_gascan : Node3D
 ]
 
 # pause menu
+@onready var alive_ui = $CanvasLayer/MainUI/AliveUI
+@onready var dead_ui = $CanvasLayer/MainUI/DeadUI
 @onready var main_ui = $CanvasLayer/MainUI
 @onready var pause_ui = $CanvasLayer/PauseUI
 @onready var pause_buttons = $CanvasLayer/PauseUI/PauseButtons
@@ -141,16 +144,11 @@ func _handle_animation_tree() -> void:
 			else:
 				anim_lower_state = ANIM_LOWER.IDLE
 	
-	# match spine to rotation
-	#var bone_pose : Transform3D = skeleton.global_transform * skeleton.get_bone_global_pose(spine_bone)
-	#var current = skeleton.get_bone_pose_rotation(spine_bone)
-	#var pitch = Quaternion(Vector3.RIGHT, camera.rotation.x)
-	#print(spine_bone) bone 10
-	#skeleton.set_bone_pose_rotation(spine_bone, Quaternion(Vector3.RIGHT, deg_to_rad(45.0)))
-
-	#bone_pose = bone_pose.looking_at(inPosition + Vector3(0,0.5,0), Vector3(0,1,0), true)
-	#skeleton.set_bone_global_pose_override(neck_bone, skeleton.global_transform.affine_inverse() * bone_pose, 1.0, true)
-
+	if bCanMove == false:
+		anim_tree.set("parameters/DeathBlend/blend_amount", 1.0)
+	else:
+		anim_tree.set("parameters/DeathBlend/blend_amount", 0.0)
+		
 	# set the travels
 	var state_machine = anim_tree["parameters/StateMachine/playback"]
 	match anim_upper_state:
@@ -193,14 +191,26 @@ func player_hurt(inVelocity, inHealth, inMaxHealth):
 	OUTSIDE_VELOCITY += inVelocity
 	velocity.y += inVelocity.y
 
-@rpc("any_peer", "call_local", "reliable")
-func player_reset_loc_rpc():
+#@rpc("any_peer", "call_local", "reliable")
+func player_respawn():
+	print("player: player_respawn called id: ", multiplayer.get_unique_id())
+	health_component.restart_health()
+	alive_ui.visible = true
+	dead_ui.visible = false
+	self.rotation.x = deg_to_rad(0)
+	bCanLook = true
+	bCanMove = true
 	global_position = lobby_manager.get_respawn_loc()
 	
 func player_die():
-	#if not multiplayer.is_server(): return
+	alive_ui.visible = false
+	dead_ui.visible = true
+	self.rotation.x = deg_to_rad(-90)
+	bCanMove = false
+	bCanLook = false
 	print("player dead ", multiplayer.get_unique_id())
-	player_reset_loc_rpc.rpc()
+	#player_reset_loc_rpc.rpc()
+	#health_component.restart_health()
 	signal_player_died.emit(multiplayer.get_unique_id())
 		
 func _show_end_screen(bVictory):
@@ -360,7 +370,7 @@ func _ready():
 	health_component.signal_health_changed.connect(player_hurt)
 	health_component.signal_restart_health.connect(player_restart_health)
 	# lobby manager bind for end match and respawn
-	signal_player_died.connect(lobby_manager.respawn_player)
+	signal_player_died.connect(lobby_manager.lobby_player_died)
 	lobby_manager.signal_lobby_match_finished.connect(_on_level_match_finished)
 	# below will run only on local player view, anything above will be on both
 	wep_parent.visible = false
@@ -404,7 +414,7 @@ func _physics_process(delta: float) -> void:
 			SPRINT_MULT = 1.0
 		
 		# handle jump
-		if Input.is_action_just_pressed("jump"):
+		if bCanMove and Input.is_action_just_pressed("jump"):
 				velocity.y += JUMP_VELOCITY
 				anim_lower_state = ANIM_LOWER.JUMP_START
 	# not on floor
@@ -431,17 +441,19 @@ func _physics_process(delta: float) -> void:
 			velocity.y += grav
 
 	# Calculate final velocities
-	velocity.x = wish_dir.x + air_dir.x + OUTSIDE_VELOCITY.x
-	velocity.z = wish_dir.z + air_dir.z + OUTSIDE_VELOCITY.z
+	if bCanMove:
+		velocity.x = wish_dir.x + air_dir.x + OUTSIDE_VELOCITY.x
+		velocity.z = wish_dir.z + air_dir.z + OUTSIDE_VELOCITY.z
 
-	if input_dir.x > 0:
-		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(-TARGET_SWAY), LERP_SWAY)
-	elif input_dir.x < 0:
-		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(TARGET_SWAY), LERP_SWAY)
-	else:
-		head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
+		if input_dir.x > 0:
+			head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(-TARGET_SWAY), LERP_SWAY)
+		elif input_dir.x < 0:
+			head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(TARGET_SWAY), LERP_SWAY)
+		else:
+			head.rotation.z = lerp_angle(head.rotation.z, deg_to_rad(0), LERP_SWAY)
+			
 	# gate input events
-	if not bPauseMenuOpen:
+	if bCanMove and not bPauseMenuOpen:
 		_handle_flash_light()
 		_handle_weapon_input()
 		_handle_drop_input()

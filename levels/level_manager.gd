@@ -105,12 +105,10 @@ func set_timer_blocked(inVal : bool):
 	else:
 		adjust_total = (Time.get_ticks_msec() /  1000.0) - adjust_start
 
-@rpc("authority", "call_local", "reliable")
 func attempt_end_match():
 	if bEnginesBroken:
 		match_finished.emit(false)
 	
-@rpc("authority", "call_local", "reliable")
 func end_match():
 	#print("level manager end match - peer: ", multiplayer.get_unique_id())
 	if bEnginesBroken:
@@ -148,7 +146,7 @@ func execute_act_event(act_type: ENUM_ACT):
 			act_islands.start_island_minigame()
 			set_timer_blocked(true)
 		ENUM_ACT.ATTEMPT_LAND:
-			end_match.rpc()
+			end_match()
 
 func try_start_match():
 	while not bMatchStarted:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://bcaabpotsubyv"]
+[gd_scene load_steps=55 format=3 uid="uid://bcaabpotsubyv"]
 
 [ext_resource type="Script" uid="uid://djjdir7nx8om7" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://bjty7py16yihl" path="res://Health.gd" id="2_2hs0m"]
@@ -19,6 +19,8 @@
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u1c27"]
 animation = &"swing"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_u1c27"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nvl01"]
 animation = &"falling"
@@ -75,16 +77,23 @@ graph_offset = Vector2(-534, -99)
 filter_enabled = true
 filters = ["", "Armature/Skeleton3D:Fingers02_L", "Armature/Skeleton3D:Fingers03_L", "Armature/Skeleton3D:Fingers03_R", "Armature/Skeleton3D:Head", "Armature/Skeleton3D:LowerArm_L", "Armature/Skeleton3D:LowerArm_R", "Armature/Skeleton3D:Spine01", "Armature/Skeleton3D:Spine02", "Armature/Skeleton3D:Thumb02_L", "Armature/Skeleton3D:Thumb02_R", "Armature/Skeleton3D:Thumb03_L", "Armature/Skeleton3D:UpperArm_L", "Armature/Skeleton3D:UpperArm_R"]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_op7ga"]
+animation = &"death"
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dx0e4"]
-graph_offset = Vector2(-721, -29)
-nodes/output/position = Vector2(300, 80)
+graph_offset = Vector2(-732.7, 19.90001)
+nodes/output/position = Vector2(500, 60)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_7lmhl")
-nodes/StateMachine/position = Vector2(-300, 100)
+nodes/StateMachine/position = Vector2(-440, 140)
 nodes/SwingOneShot/node = SubResource("AnimationNodeOneShot_op7ga")
-nodes/SwingOneShot/position = Vector2(60, 80)
+nodes/SwingOneShot/position = Vector2(-80, 100)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_u1c27")
-nodes/Animation/position = Vector2(-200, 300)
-node_connections = [&"output", 0, &"SwingOneShot", &"SwingOneShot", 0, &"StateMachine", &"SwingOneShot", 1, &"Animation"]
+nodes/Animation/position = Vector2(-360, 320)
+nodes/DeathBlend/node = SubResource("AnimationNodeBlend2_u1c27")
+nodes/DeathBlend/position = Vector2(300, 60)
+nodes/death/node = SubResource("AnimationNodeAnimation_op7ga")
+nodes/death/position = Vector2(120, 200)
+node_connections = [&"output", 0, &"DeathBlend", &"SwingOneShot", 0, &"StateMachine", &"SwingOneShot", 1, &"Animation", &"DeathBlend", 0, &"SwingOneShot", &"DeathBlend", 1, &"death"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_606se"]
 render_priority = 0
@@ -220,6 +229,9 @@ properties/11/replication_mode = 1
 properties/12/path = NodePath("toon_pilot/Armature/Skeleton3D/BoneAttachment3D/wrench:visible")
 properties/12/spawn = true
 properties/12/replication_mode = 1
+properties/13/path = NodePath(".:bCanMove")
+properties/13/spawn = true
+properties/13/replication_mode = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ivps1"]
 shader = ExtResource("9_n7ghd")
@@ -265,28 +277,28 @@ script = ExtResource("1_4flbx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9773423, 0)
 
 [node name="Skeleton3D" parent="toon_pilot/Armature" index="0"]
-bones/0/position = Vector3(-0.0023500556, -0.081793055, -7.578017e-09)
-bones/2/rotation = Quaternion(-0.75635046, -0.27909744, -0.19581951, 0.55829513)
-bones/3/rotation = Quaternion(0.0065719043, 0.010556896, 0.42633674, 0.904479)
-bones/4/rotation = Quaternion(0.001030433, -0.00083011575, -0.777291, 0.62913996)
-bones/6/rotation = Quaternion(-0.8044137, 0.015376364, 0.0107884, 0.5937726)
-bones/7/rotation = Quaternion(0.006556648, -0.0068831844, -0.30837858, 0.9512162)
-bones/8/rotation = Quaternion(0.0057308096, 0.006243751, 0.8853119, 0.4649205)
-bones/9/rotation = Quaternion(0.018836385, -0.003874171, 0.0011851008, 0.99981445)
-bones/10/rotation = Quaternion(-0.043368183, 0.008919747, -0.0027285318, 0.9990157)
-bones/12/rotation = Quaternion(0.32726198, -0.09902486, -0.50609547, 0.7918088)
-bones/13/rotation = Quaternion(0.86883104, -0.07737284, 0.0035909829, 0.48901257)
+bones/0/position = Vector3(-0.0023500556, -0.08503561, -7.578017e-09)
+bones/2/rotation = Quaternion(-0.75469655, -0.28369433, -0.19904475, 0.55707437)
+bones/3/rotation = Quaternion(0.0065689017, 0.010816132, 0.434606, 0.9005318)
+bones/4/rotation = Quaternion(0.0011068034, -0.00091796526, -0.7792782, 0.6266766)
+bones/6/rotation = Quaternion(-0.80432993, 0.019389259, 0.0136039145, 0.5937108)
+bones/7/rotation = Quaternion(0.0065614344, -0.0071612, -0.31735402, 0.9482574)
+bones/8/rotation = Quaternion(0.0058575855, 0.0063899574, 0.88781136, 0.46012592)
+bones/9/rotation = Quaternion(0.020479446, -0.004212107, 0.0012884747, 0.9997806)
+bones/10/rotation = Quaternion(-0.047147326, 0.009697022, -0.0029662987, 0.99883646)
+bones/12/rotation = Quaternion(0.33138317, -0.104916625, -0.50297433, 0.7913245)
+bones/13/rotation = Quaternion(0.86499304, -0.07998067, 0.00070003193, 0.4953684)
 bones/16/rotation = Quaternion(-0.013182448, -0.00960053, -0.64816254, 0.76132745)
 bones/19/rotation = Quaternion(-0.4900095, 0.02424376, -0.060599048, 0.86927027)
 bones/20/rotation = Quaternion(-0.32943508, 0.0462757, -0.12600876, 0.934587)
-bones/22/rotation = Quaternion(0.36327738, 0.22254047, 0.5109593, 0.7466097)
-bones/23/rotation = Quaternion(0.7834607, 0.0068490906, -0.022710636, 0.6209886)
+bones/22/rotation = Quaternion(0.36094615, 0.21893458, 0.51276386, 0.7475685)
+bones/23/rotation = Quaternion(0.78874964, 0.005783978, -0.026335157, 0.614123)
 bones/27/rotation = Quaternion(0.026985895, -0.065146685, 0.77884585, 0.62323904)
 bones/29/rotation = Quaternion(-0.5767724, -0.017671393, 0.10016902, 0.8105476)
-bones/32/rotation = Quaternion(0.04309224, 0.009392903, 0.009790312, 0.998979)
+bones/32/rotation = Quaternion(0.046847265, 0.010211393, 0.010643432, 0.9987932)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="toon_pilot/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.9426381, 0.22082554, 0.25033873, 0.30663902, 0.8691927, 0.38791308, -0.13193142, 0.44242537, -0.88704795, -0.23402053, 0.6838034, 0.41170132)
+transform = Transform3D(-0.94275135, 0.2218307, 0.24902081, 0.30513978, 0.87507236, 0.375684, -0.13457298, 0.43016267, -0.8926648, -0.23374823, 0.6804311, 0.4069523)
 bone_name = "Hand_R"
 bone_idx = 24
 
@@ -309,6 +321,7 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/SwingOneShot/active = false
 parameters/SwingOneShot/internal_active = false
 parameters/SwingOneShot/request = 0
+parameters/DeathBlend/blend_amount = 0.0
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_2hs0m")
@@ -426,7 +439,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17189127, 0)
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 visible = false
 target_position = Vector3(0, -2, 0)
-collision_mask = 10
+collision_mask = 11
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="env_ray" type="RayCast3D" parent="neck/head/Camera3D/weapon"]
@@ -497,7 +510,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI"]
+[node name="AliveUI" type="Control" parent="CanvasLayer/MainUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI/AliveUI"]
 material = SubResource("ShaderMaterial_ivps1")
 layout_mode = 0
 anchor_right = 1.0
@@ -506,7 +528,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MainUI"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MainUI/AliveUI"]
 layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
@@ -524,7 +546,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("11_nvl01")
 
-[node name="HealthViewport" type="TextureRect" parent="CanvasLayer/MainUI"]
+[node name="HealthViewport" type="TextureRect" parent="CanvasLayer/MainUI/AliveUI"]
 layout_mode = 0
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -534,7 +556,7 @@ grow_vertical = 0
 texture = SubResource("ViewportTexture_ivps1")
 stretch_mode = 4
 
-[node name="WeaponViewport" type="TextureRect" parent="CanvasLayer/MainUI"]
+[node name="WeaponViewport" type="TextureRect" parent="CanvasLayer/MainUI/AliveUI"]
 layout_mode = 0
 anchor_left = 1.0
 anchor_top = 1.0
@@ -548,7 +570,7 @@ texture = SubResource("ViewportTexture_606se")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="player_ui" type="Control" parent="CanvasLayer/MainUI"]
+[node name="player_ui" type="Control" parent="CanvasLayer/MainUI/AliveUI"]
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -557,7 +579,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_hqtel")
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI/player_ui"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI/AliveUI/player_ui"]
 visible = false
 material = SubResource("ShaderMaterial_onrkg")
 layout_mode = 1
@@ -568,7 +590,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainUI/player_ui"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainUI/AliveUI/player_ui"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -582,29 +604,66 @@ offset_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="win" type="Label" parent="CanvasLayer/MainUI/player_ui/VBoxContainer"]
+[node name="win" type="Label" parent="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer"]
 visible = false
 layout_mode = 2
 text = "VICTORY"
 label_settings = SubResource("LabelSettings_i3pqv")
 
-[node name="lose" type="Label" parent="CanvasLayer/MainUI/player_ui/VBoxContainer"]
+[node name="lose" type="Label" parent="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer"]
 visible = false
 layout_mode = 2
 text = "DEFEAT"
 label_settings = SubResource("LabelSettings_onrkg")
 
-[node name="MenuOptions" type="VBoxContainer" parent="CanvasLayer/MainUI/player_ui/VBoxContainer"]
+[node name="MenuOptions" type="VBoxContainer" parent="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="BackToMain" type="Button" parent="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions"]
+[node name="BackToMain" type="Button" parent="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer/MenuOptions"]
 layout_mode = 2
 text = "main menu"
 
-[node name="QuitGame" type="Button" parent="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions"]
+[node name="QuitGame" type="Button" parent="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer/MenuOptions"]
 layout_mode = 2
 text = "quit game"
+
+[node name="DeadUI" type="Control" parent="CanvasLayer/MainUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MainUI/DeadUI"]
+material = SubResource("ShaderMaterial_onrkg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/MainUI/DeadUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -354.0
+offset_top = -70.0
+offset_right = 354.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "WAITING FOR RESPAWN"
+label_settings = SubResource("LabelSettings_u1c27")
+vertical_alignment = 2
 
 [node name="PauseUI" type="Control" parent="CanvasLayer"]
 visible = false
@@ -705,8 +764,8 @@ theme_override_fonts/font = ExtResource("16_u1c27")
 theme_override_font_sizes/font_size = 89
 text = "BACK"
 
-[connection signal="pressed" from="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions/BackToMain" to="CanvasLayer/MainUI/player_ui" method="_on_back_to_main_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainUI/player_ui/VBoxContainer/MenuOptions/QuitGame" to="CanvasLayer/MainUI/player_ui" method="_on_quit_game_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer/MenuOptions/BackToMain" to="CanvasLayer/MainUI/AliveUI/player_ui" method="_on_back_to_main_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/AliveUI/player_ui/VBoxContainer/MenuOptions/QuitGame" to="CanvasLayer/MainUI/AliveUI/player_ui" method="_on_quit_game_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseUI/PauseButtons/BackButton" to="." method="_on_pause_back_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseUI/PauseButtons/QuitToMenuButton" to="." method="_on_quit_to_menu_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseUI/ExitButtons/ConfirmQuitButton" to="." method="_on_confirm_quit_button_pressed"]
